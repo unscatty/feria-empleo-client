@@ -1,15 +1,24 @@
-import { LogLevel, Logger  } from 'msal';
-import * as dotenv from "dotenv";
-import { FrameworkOptions, Configuration, AuthOptions, CacheOptions, SystemOptions } from 'msal/lib-commonjs/Configuration';
+import { LogLevel, Logger } from 'msal';
+import * as dotenv from 'dotenv';
+import {
+  FrameworkOptions,
+  Configuration,
+  AuthOptions,
+  CacheOptions,
+  SystemOptions,
+} from 'msal/lib-commonjs/Configuration';
 
 dotenv.config();
 
-export function loggerCallback(logLevel: LogLevel.Verbose, message: string , piiEnabled: true) {}
+export function loggerCallback(
+  logLevel: LogLevel.Verbose,
+  message: string,
+  piiEnabled: true
+) {}
 
-const scopes = ['openid', `https://${process.env.VUE_APP_B2C_TENANT}/helix-auth/user_impersonation`]
+const scopes = ['openid', process.env.VUE_APP_B2C_CLIENTID];
 
 class MsalConfiguration {
-
   private resourceMap: any;
   private configuration: Configuration;
 
@@ -24,7 +33,11 @@ class MsalConfiguration {
    * @param string message The message thas is going to be sended
    * @param true piiEnabled The pii
    */
-  public loggerCallback(logLevel: LogLevel, message: string, piiEnabled: boolean) { }
+  public loggerCallback(
+    logLevel: LogLevel,
+    message: string,
+    piiEnabled: boolean
+  ) {}
 
   /**
    * @returns
@@ -39,7 +52,7 @@ class MsalConfiguration {
    * @memberof MsalConfiguration
    */
   private setResourceMap(): void {
-    this.resourceMap =  [ scopes ];
+    this.resourceMap = [scopes];
   }
 
   /**
@@ -49,11 +62,11 @@ class MsalConfiguration {
    */
   private getAuthOptions(): AuthOptions {
     return {
-      clientId:  process.env.VUE_APP_B2C_CLIENTID || "",
-      authority: `https://Helix123Auth.b2clogin.com/tfp/${process.env.VUE_APP_B2C_TENANT}/${process.env.VUE_APP_B2C_SIGNINPOLICY}`,
+      clientId: process.env.VUE_APP_B2C_CLIENTID || '',
+      authority: `https://${process.env.VUE_APP_B2C_TENANT}.b2clogin.com/tfp/${process.env.VUE_APP_B2C_TENANT}.onmicrosoft.com/${process.env.VUE_APP_B2C_SIGNINPOLICY}`,
       validateAuthority: false,
-      redirectUri: process.env.VUE_APP_B2C_REDIRECTURI || "",
-      postLogoutRedirectUri: process.env.VUE_APP_B2C_REDIRECTURI || "",
+      redirectUri: process.env.VUE_APP_B2C_REDIRECTURI || '',
+      postLogoutRedirectUri: process.env.VUE_APP_B2C_REDIRECTURI || '',
       navigateToLoginRequestUrl: false,
     };
   }
@@ -76,7 +89,7 @@ class MsalConfiguration {
    */
   private getSystemOptions(): SystemOptions {
     return {
-      logger: new Logger( this.loggerCallback , {
+      logger: new Logger(this.loggerCallback, {
         level: LogLevel.Info,
         correlationId: '03da1969-a5dc-45ef-bcc3-55283ea47a7f',
         piiLoggingEnabled: true,
@@ -92,8 +105,8 @@ class MsalConfiguration {
   private getFrameworkOptions(): FrameworkOptions {
     return {
       isAngular: true,
-      unprotectedResources:  ['https://www.microsoft.com/en-us/'],
-      protectedResourceMap: this.resourceMap
+      unprotectedResources: ['https://www.microsoft.com/en-us/'],
+      protectedResourceMap: this.resourceMap,
     };
   }
 
@@ -106,11 +119,10 @@ class MsalConfiguration {
       auth: this.getAuthOptions(),
       cache: this.getCacheOptions(),
       system: this.getSystemOptions(),
-      framework: this.getFrameworkOptions()
+      framework: this.getFrameworkOptions(),
     };
   }
 }
-
 
 const msalConfiguration = new MsalConfiguration();
 export default msalConfiguration;

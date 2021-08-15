@@ -1,40 +1,48 @@
+import axios from "axios";
+
+const jobTypeEnum: any = {
+    "Tiempo Completo": "full_time",
+    "Medio tiempo": "part_time"
+}
+
+const modalityEnum: any = {
+    "Remoto": "home_office",
+    "Presencial": "office",
+    "Hybrid": "hybrid"
+}
 export class FiltersComponent {
 
     public employers: string[];
-    public type1Selected: string | boolean;
-    public type2Selected: string | boolean;
-    public modality1Selected: string | boolean;
-    public modality2Selected: string | boolean;
+    public type: string;
+    public modality: string;
     public experience: string | null;
     public employerId: number | null;
 
     constructor() {
         this.employers = [];
-        this.type1Selected = 'on';
-        this.type2Selected = 'on';
-        this.modality1Selected = 'on';
-        this.modality2Selected = 'on';
+        this.type = "";
+        this.modality = "";
         this.employerId = null;
         this.experience = null;
     }
 
-    public selectType(context: any, type: string): void {
-        context.$emit('type', type);
+    public selectType(context: any, type: any): void {
+        this.type = type.target.value;
+        context.$emit('type', jobTypeEnum[this.type]);
     }
 
     public clearType(context: any): void {
-        this.type1Selected = false;
-        this.type2Selected = false;
+        this.type = "";
         context.$emit('type', null);
     }
 
-    public selectModality(context: any, modality: string): void {
-        context.$emit('modality', modality);
+    public selectModality(context: any, modality: any): void {
+        this.modality = modality.target.value;
+        context.$emit('modality', modalityEnum[this.modality]);
     }
 
     public clearModality(context: any): void {
-        this.modality1Selected = false;
-        this.modality2Selected = false;
+        this.modality = "";
         context.$emit('modality', null);
     }
 
@@ -62,6 +70,10 @@ export class FiltersComponent {
         this.clearExperience(context);
         this.clearCompany(context);
         context.$emit('type', null);
+    }
+
+    public async getEmployers() {
+        this.employers = await  (await axios.get("/company")).data;
     }
 
 }

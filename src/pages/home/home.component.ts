@@ -1,3 +1,4 @@
+import { validateUnauthorizedError } from "@/auth/auth.validatod";
 import axios from "axios";
 import { isEmpty, isEqual } from "lodash";
 
@@ -27,19 +28,15 @@ export class HomeComponent {
     }
 
     public showMessage(): void {
-        console.log("Hello world");
         // Vue.prototype.$AuthService.logout();
     }
 
     public async getPositions() {
-        this.positions = await (await axios.get(this.positionsUrl)).data.items;
-        if (!isEmpty(this.positions)) {
-            for (const currentPosition of this.positions) {
-                const employerName = currentPosition.employer_name;
-                const isPresent = (element: any) => element == employerName;
-                if (isEqual(this.employers.findIndex(isPresent), NOT_FOUND))
-                  this.employers.push(employerName);
-            }
+        try {
+            this.positions = await (await axios.get(this.positionsUrl)).data.items;
+        } catch (err) {
+            validateUnauthorizedError(err);
+            this.positions = [];
         }
     }
 
@@ -51,10 +48,10 @@ export class HomeComponent {
     private createQuery(filters: IFilters): string {
         let query = '?';
         if (filters.type != null) {
-          query += `type=${filters.type}&`;
+          query += `jobType=${filters.type}&`;
         }
         if (filters.modality != null) {
-          query += `modality=${filters.modality}&`;
+          query += `jobMode=${filters.modality}&`;
         }
         if (filters.experience != null) {
           query += `experience=${filters.experience}&`;

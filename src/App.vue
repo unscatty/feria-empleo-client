@@ -10,7 +10,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from './components/HelloWorld.vue';
 import AppLayout from './layouts/AppLayout.vue';
+
+
 import Filters from './components/filters/Filters.vue';
+
 @Component({
   components: {
     HelloWorld,

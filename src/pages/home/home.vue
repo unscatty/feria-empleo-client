@@ -10,58 +10,53 @@
                 v-on:experience="onExperienceSelected"
                 v-on:employerId="onEmployerIdSelected"
             />
-            <!-- <div class="col-lg-6" v-if="positions.length > 0">
+            <div class="col-lg-6" v-if="component.positions.length > 0">
               <div class="main-ws-sec">
                 <div class="posts-section">
-                  <Position
-                    v-for="position in positions"
+                  <Positions
+                    v-for="position in component.positions"
                     :key="position.id"
                     :position="position"
                     class="position"
-                  /> -->
-
+                  />
                   <!--post-bar end-->
-
-                  <!-- <div class="process-comm">
+                  <div class="process-comm">
                     <div class="spinner">
                       <div class="bounce1"></div>
                       <div class="bounce2"></div>
                       <div class="bounce3"></div>
                     </div>
-                  </div> -->
+                  </div>
                   <!--process-comm end-->
-                <!-- </div> -->
+                </div>
                 <!--posts-section end-->
-              <!-- </div> -->
-              <!--main-ws-sec end-->
-            <!-- </div> -->
+              </div>
+              <!-- main-ws-sec end -->
+            </div>
 
             <div v-if="component.positions.length == 0" class="no-vacants">
               Sin vacantes para mostrar
             </div>
-            <!-- <div class="col-lg-3">
+            <div class="col-lg-3">
               <div class="right-sidebar">
                 <TopChart
-                  :limit="5"
                   :endpoint="$router.resolve({ name: 'TopViewed' }).href"
                 >
                   Más vistos
                 </TopChart>
                 <TopChart
-                  :limit="5"
                   :endpoint="$router.resolve({ name: 'TopApplied' }).href"
                 >
                   Más aplicadas
                 </TopChart>
                 <TopChart
-                  :limit="5"
                   :endpoint="$router.resolve({ name: 'TopNew' }).href"
                 >
                   Más Recientes
                 </TopChart>
-              </div> -->
+              </div>
               <!--right-sidebar end-->
-            <!-- </div> -->
+            </div>
           </div>
         </div>
         <!-- main-section-data end-->
@@ -75,10 +70,14 @@
 import { Component, Vue } from "vue-property-decorator";
 import { HomeComponent } from "./home.component";
 import Filters from '../../components/filters/Filters.vue';
+import Positions from '../../components/positions/Positions.vue';
+import TopChart from '../../components/topchart/TopChart.vue';
 
 @Component({ 
     components: {
-        Filters
+        Filters,
+        Positions,
+        TopChart
     }
     })
 export default class Home extends Vue {
@@ -112,16 +111,5 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
-
-.position {
-  margin-top: 10%;
-}
-
-.no-vacants {
-  padding-right: 15%;
-  margin-top: 10%;
-  margin-left: 15%;
-  font-size: larger;
-  font-weight: bolder;
-}
+@import "./home.css";
 </style>

@@ -18,30 +18,14 @@
               ><button class="clear" v-on:click="clearType">Borrar</button></a
             >
           </div>
-          <ul class="avail-checks" id="search-type">
-            <li>
-              <input
-                type="radio"
-                name="cc"
-                id="c2"
-                v-on:click="selectType('Medio tiempo')"
-                v-model="filterComponent.type1Selected"
-              />
-              <label for="c2"> <span></span> </label>
-              <small>Medio Tiempo</small>
-            </li>
-            <li>
-              <input
-                type="radio"
-                name="cc"
-                id="c3"
-                v-on:click="selectType('Tiempo Completo')"
-                v-model="filterComponent.type2Selected"
-              />
-              <label for="c3"> <span></span> </label>
-              <small>Tiempo Completo</small>
-            </li>
-          </ul>
+            <form class="job-tp">
+              <select v-on:change="selectType($event)" v-model="filterComponent.type">
+                <option disabled>Selecciona una opción</option>
+                <option value="Medio tiempo">Medio Tiempo</option>
+                <option value="Tiempo Completo">Tiempo Completo</option>
+              </select>
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </form>
         </div>
 
         <div class="filter-dd">
@@ -53,40 +37,25 @@
               </button></a
             >
           </div>
-          <ul class="avail-checks">
-            <li>
-              <input
-                type="radio"
-                name="mod"
-                id="mod1"
-                v-on:click="selectModality('Remoto')"
-                v-model="filterComponent.modality1Selected"
-              />
-              <label for="mod1"> <span></span> </label>
-              <small>Remoto</small>
-            </li>
-            <li>
-              <input
-                type="radio"
-                name="mod"
-                id="mod2"
-                v-on:click="selectModality('Presencial')"
-                v-model="filterComponent.modality1Selected"
-              />
-              <label for="mod2"> <span></span> </label>
-              <small>Presencial</small>
-            </li>
-          </ul>
+           <form class="job-tp">
+              <select v-on:change="selectModality($event)" v-model="filterComponent.modality">
+                <option disabled>Selecciona una opción</option>
+                <option value="Remoto">Remoto</option>
+                <option value="Presencial">Presencial</option>
+                <option value="Hybrid">Híbrido</option>
+              </select>
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </form>
         </div>
 
         <div class="filter-dd">
           <div class="filter-ttl">
             <h3>Experiencia</h3>
-            <a href="#" title=""
-              ><button class="clear" v-on:click="clearExperience">
+            <a href="#" title="">
+              <button class="clear" v-on:click="clearExperience">
                 Borrar
-              </button></a
-            >
+              </button>
+            </a>
           </div>
           <form class="job-tp">
             <select v-on:change="selectExperience($event)" v-model="filterComponent.experience">
@@ -151,16 +120,15 @@ export default class Filters extends Vue {
 
     public clearEmployerId() { this.filterComponent.clearCompany(this) }
 
-    public clearAllFilters() { this.filterComponent.clearAllFilters(this) } 
+    public clearAllFilters() { this.filterComponent.clearAllFilters(this) }
+
+    created() {
+      this.filterComponent.getEmployers();
+    }
 }
 
 </script>
 
 <style>
-.clear {
-  border: none;
-  background-color: white;
-  font-size: 14px;
-  color: #666666;
-}
+@import "./filters.css";
 </style>

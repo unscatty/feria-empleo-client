@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { AuthGuard } from './auth/auth.guard';
+import AdminCompanies from './pages/dashboard/company/companies.vue';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: () => import('./pages/home/home.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    // beforeEnter: AuthGuard.canActivate,
     meta: {
       layout: 'LayoutHome',
     },
@@ -20,6 +21,15 @@ const routes: Array<RouteConfig> = [
   {
     path: '/dashboard',
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutDashboard',
+    },
+  },
+  {
+    path: '/dashboard/empresas',
+    name: 'AdminCompanies',
+    component: AdminCompanies,
     beforeEnter: AuthGuard.canActivate,
     meta: {
       layout: 'LayoutDashboard',

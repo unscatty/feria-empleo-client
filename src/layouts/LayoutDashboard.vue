@@ -70,6 +70,11 @@ export default class LayoutDashboard extends Vue {
       to: '/dashboard',
     },
     {
+      icon: 'mdi-apps',
+      title: 'Empresas',
+      to: '/dashboard/empresas',
+    },
+    {
       icon: 'mdi-chart-bubble',
       title: 'Inspire',
       to: '/inspire',

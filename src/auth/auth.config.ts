@@ -1,116 +1,87 @@
-import { LogLevel, Logger  } from 'msal';
-import * as dotenv from "dotenv";
-import { FrameworkOptions, Configuration, AuthOptions, CacheOptions, SystemOptions } from 'msal/lib-commonjs/Configuration';
+/**
+ * Configuration object to be passed to MSAL instance on creation.
+ * For a full list of MSAL.js configuration parameters, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
+ * For more details on using MSAL.js with Azure AD B2C, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/working-with-b2c.md
+ */
 
-dotenv.config();
+import { Configuration, LogLevel } from '@azure/msal-browser';
+import { apiConfig } from './api.config';
+import { b2cPolicies } from './policies';
 
-export function loggerCallback(logLevel: LogLevel.Verbose, message: string , piiEnabled: true) {}
+const ENV = process.env;
 
-const scopes = ['openid', `https://${process.env.VUE_APP_B2C_TENANT}/helix-auth/user_impersonation`]
+export const msalConfig: Configuration = {
+  auth: {
+    clientId: ENV.VUE_APP_B2C_CLIENTID, // This is the ONLY mandatory field; everything else is optional.
+    authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
+    knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
+    navigateToLoginRequestUrl: false,
+    postLogoutRedirectUri: ENV.VUE_APP_B2C_LOGOUT_URI,
+    // Redirect uri will have to be set on login/token request
+  },
+  cache: {
+    cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+    storeAuthStateInCookie: false, // If you wish to store cache items in cookies as well as browser cache, set this to "true".
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback: (
+        level: LogLevel,
+        message: string,
+        containsPii: boolean
+      ) => {
+        if (containsPii) {
+          return;
+        }
+        switch (level) {
+          case LogLevel.Error:
+            console.error(message);
+            return;
+          case LogLevel.Info:
+            console.info(message);
+            return;
+          case LogLevel.Verbose:
+            console.debug(message);
+            return;
+          case LogLevel.Warning:
+            console.warn(message);
+            return;
+        }
+      },
+    },
+  },
+};
 
-class MsalConfiguration {
+export const candidateRedirectRequest = {
+  redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI,
+};
 
-  private resourceMap: any;
-  private configuration: Configuration;
+export const companyRedirectRequest = {
+  redirectUri: ENV.VUE_APP_B2C_COMPANY_REGISTER_REDIRECT_URI,
+};
 
-  constructor() {
-    this.configuration = {} as any;
-    this.setResourceMap();
-    this.setConfiguration();
-  }
+export const ACCESS_TOKEN_KEY = ENV.VUE_APP_B2C_TOKEN;
+export const REQUEST_STATE_KEY = ENV.VUE_APP_B2C_STATE_KEY;
+export const LOGOUT_REDIRECT_URI = ENV.VUE_APP_B2C_LOGOUT_URI;
 
-  /**
-   * @param LogLevel.Verbose logLevel The log level
-   * @param string message The message thas is going to be sended
-   * @param true piiEnabled The pii
-   */
-  public loggerCallback(logLevel: LogLevel, message: string, piiEnabled: boolean) { }
+/**
+ * Scopes you add here will be prompted for user consent during sign-in.
+ * By default, MSAL.js will add OIDC scopes (openid, profile, email) to any login request.
+ * For more information about OIDC scopes, visit:
+ * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+ */
+export const loginRequest = {
+  scopes: ['openid', ...apiConfig.b2cScopes],
+};
 
-  /**
-   * @returns
-   * @memberof MsalConfiguration
-   */
-  public getConfiguration() {
-    return this.configuration;
-  }
-
-  /**
-   * @private
-   * @memberof MsalConfiguration
-   */
-  private setResourceMap(): void {
-    this.resourceMap =  [ scopes ];
-  }
-
-  /**
-   * @private
-   * @returns {AuthOptions}
-   * @memberof MsalConfiguration
-   */
-  private getAuthOptions(): AuthOptions {
-    return {
-      clientId:  process.env.VUE_APP_B2C_CLIENTID || "",
-      authority: `https://Helix123Auth.b2clogin.com/tfp/${process.env.VUE_APP_B2C_TENANT}/${process.env.VUE_APP_B2C_SIGNINPOLICY}`,
-      validateAuthority: false,
-      redirectUri: process.env.VUE_APP_B2C_REDIRECTURI || "",
-      postLogoutRedirectUri: process.env.VUE_APP_B2C_REDIRECTURI || "",
-      navigateToLoginRequestUrl: false,
-    };
-  }
-
-  /**
-   * @private
-   * @returns {CacheOptions}
-   * @memberof MsalConfiguration
-   */
-  private getCacheOptions(): CacheOptions {
-    return {
-      cacheLocation: 'localStorage',
-    };
-  }
-
-  /**
-   * @private
-   * @returns {SystemOptions}
-   * @memberof MsalConfiguration
-   */
-  private getSystemOptions(): SystemOptions {
-    return {
-      logger: new Logger( this.loggerCallback , {
-        level: LogLevel.Info,
-        correlationId: '03da1969-a5dc-45ef-bcc3-55283ea47a7f',
-        piiLoggingEnabled: true,
-      }),
-    };
-  }
-
-  /**
-   * @private
-   * @returns {FrameworkOptions}
-   * @memberof MsalConfiguration
-   */
-  private getFrameworkOptions(): FrameworkOptions {
-    return {
-      isAngular: true,
-      unprotectedResources:  ['https://www.microsoft.com/en-us/'],
-      protectedResourceMap: this.resourceMap
-    };
-  }
-
-  /**
-   * @private
-   * @memberof MsalConfiguration
-   */
-  private setConfiguration() {
-    this.configuration = {
-      auth: this.getAuthOptions(),
-      cache: this.getCacheOptions(),
-      system: this.getSystemOptions(),
-      framework: this.getFrameworkOptions()
-    };
-  }
-}
-
-
-const msalConfiguration = new MsalConfiguration();
-export default msalConfiguration;
+/**
+ * Scopes you add here will be used to request a token from Azure AD B2C to be used for accessing a protected resource.
+ * To learn more about how to work with scopes and resources, see:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
+ */
+export const tokenRequest = {
+  scopes: [...apiConfig.b2cScopes], // e.g. ["https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read"]
+  forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
+};

@@ -183,6 +183,10 @@ export default class AuthService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
+  getState() {
+    return localStorage.getItem(this.STATE_KEY);
+  }
+
   async getTokenRedirect(request: RedirectRequest) {
     /**
      * See here for more info on account retrieval:

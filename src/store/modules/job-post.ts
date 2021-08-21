@@ -112,7 +112,9 @@ class JobPost extends VuexModule<JobPostState> {
   @Action
   async updateJobPost({ id, data }: any) {
     try {
-      const res = await axios.put(`job-posts/${id}`, data);
+      const formData = new FormData();
+      buildFormData(formData, data);
+      const res = await axios.put(`job-posts/${id}`, formData);
       this.context.dispatch(
         'Ui/showToast',
         { text: 'Vacante actualizada con éxito' },

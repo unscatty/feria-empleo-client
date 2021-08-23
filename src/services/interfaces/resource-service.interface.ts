@@ -32,12 +32,22 @@ export class ResourceService<T extends { id?: string | number }>
       timeout,
     };
 
-    const token = localStorage.getItem(process.env.VUE_APP_B2C_TOKEN);
-    if (token) {
-      instanceConfig.headers = { Authorization: `Bearer ${token}` };
-    }
-
     this.axiosInstance = axios.create(instanceConfig);
+
+    this.axiosInstance.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem(process.env.VUE_APP_B2C_TOKEN);
+
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
   }
 
   async getAll(config?: AxiosRequestConfig) {

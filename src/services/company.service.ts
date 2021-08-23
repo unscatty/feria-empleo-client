@@ -46,4 +46,13 @@ export class CompanyService extends ResourceService<ICompany> {
       return false;
     }
   }
+
+  async register(stateToken: string, endpoint = '/register') {
+    const response = await this.axiosInstance.post<
+      ICompany,
+      AxiosResponse<ICompany>
+    >(endpoint, { token: stateToken });
+    
+    return response.data;
+  }
 }

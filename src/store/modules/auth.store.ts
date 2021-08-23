@@ -1,11 +1,8 @@
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 
 import AuthService from '@/auth/auth.service';
-
-export const AUTH_STORE_NAME = 'authStore';
-
-@Module({ name: AUTH_STORE_NAME, namespaced: true })
-export default class AuthStore extends VuexModule {
+@Module({ namespaced: true })
+class AuthStore extends VuexModule {
   authService = new AuthService();
 
   get isAuthenticated() {
@@ -44,3 +41,6 @@ export default class AuthStore extends VuexModule {
     return this.authService.logout(...params);
   }
 }
+
+export default AuthStore;
+export const AUTH_STORE_NAME = AuthStore.name;

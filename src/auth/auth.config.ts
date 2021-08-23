@@ -54,11 +54,11 @@ export const msalConfig: Configuration = {
   },
 };
 
-export const candidateRedirectRequest = {
+export const CANDIDATE_REDIRECT_REQUEST = {
   redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI,
 };
 
-export const companyRedirectRequest = {
+export const COMPANY_REDIRECT_REQUEST = {
   redirectUri: ENV.VUE_APP_B2C_COMPANY_REGISTER_REDIRECT_URI,
 };
 

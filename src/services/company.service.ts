@@ -1,13 +1,7 @@
+import { CompanyInvite } from '@/models/company/company-forms';
 import { ICompany } from '@/models/company/company.interface';
 import { AxiosResponse } from 'axios';
-import ObjectLiteral from '../utils/object-literal.interface';
 import { ResourceService } from './interfaces/resource-service.interface';
-
-export interface CompanyInvite extends ObjectLiteral {
-  name: string;
-  email: string;
-  image: File;
-}
 
 export class CompanyService extends ResourceService<ICompany> {
   static toFormaData(company: CompanyInvite): FormData {
@@ -22,16 +16,34 @@ export class CompanyService extends ResourceService<ICompany> {
     return formData;
   }
 
-  async invite(company: CompanyInvite) {
+  async invite(company: CompanyInvite, endpoint = '/invite') {
     const formData = CompanyService.toFormaData(company);
 
     const response = await this.axiosInstance.post<
       ICompany,
       AxiosResponse<ICompany>
-    >('/invite', formData, {
+    >(endpoint, formData, {
       headers: { ContentType: 'multipart/form-data' },
     });
 
     return response.data;
+  }
+
+  async verifyInvitationToken(
+    token: string,
+    endpoint = '/validate-invitation-token',
+    tokenName = 'token'
+  ) {
+    try {
+      const response = await this.axiosInstance.get(endpoint, {
+        params: { [tokenName]: token },
+      });
+
+      console.log(response);
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

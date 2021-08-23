@@ -9,6 +9,8 @@ import {
 } from '@azure/msal-browser';
 import {
   ACCESS_TOKEN_KEY,
+  CANDIDATE_REDIRECT_REQUEST,
+  COMPANY_REDIRECT_REQUEST,
   loginRequest,
   LOGOUT_REDIRECT_URI,
   msalConfig,
@@ -27,8 +29,12 @@ export default class AuthService {
     private STATE_KEY: string = REQUEST_STATE_KEY,
     private defaultLoginRequest: RedirectRequest = loginRequest,
     private defaultTokenRequest: RedirectRequest = tokenRequest,
-    private candidateRedirectRequest: RedirectRequest = candidateRedirectRequest,
-    private companyRedirectRequest: RedirectRequest = companyRedirectRequest,
+    private candidateRedirectRequest: Partial<
+      RedirectRequest
+    > = CANDIDATE_REDIRECT_REQUEST,
+    private companyRedirectRequest: Partial<
+      RedirectRequest
+    > = COMPANY_REDIRECT_REQUEST,
     private policies: typeof b2cPolicies = b2cPolicies
   ) {
     this.clientApplication = new PublicClientApplication(config);
@@ -145,7 +151,7 @@ export default class AuthService {
   }
 
   login(
-    request?: RedirectRequest,
+    request?: Partial<RedirectRequest>,
     extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>
   ) {
     const redirectRequest: RedirectRequest = {

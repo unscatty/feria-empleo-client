@@ -105,7 +105,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { CompanyService } from "@/services/company.service";
 import { PaginationResponse } from "@/utils/pagination.interface";
 
-import InviteDialog from "@/components/companies/InviteDialog.vue";
+import InviteDialog from "@/components/companies/InvitationDialog.vue";
 
 import { ICompany } from "@/models/company/company.interface";
 import { AdminCompaniesComponent } from "./companies.component";

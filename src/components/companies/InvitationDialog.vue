@@ -81,7 +81,8 @@ import { rules } from "@/helpers/form";
 import Cropper from "@/components/general/cropper.vue";
 
 import { VForm } from "@/models/form";
-import { CompanyInvite, CompanyService } from "@/services/company.service";
+import { CompanyService } from "@/services/company.service";
+import { CompanyInvite } from "@/models/company/company-forms";
 
 @Component({ components: { Cropper } })
 export default class InviteModal extends Vue {
@@ -109,7 +110,6 @@ export default class InviteModal extends Vue {
 
   // Refs
   @Ref("form") readonly formRef!: VForm;
-  @Ref("cropper") readonly cropperRef!: any;
 
   get show() {
     return this.dialog;
@@ -144,6 +144,7 @@ export default class InviteModal extends Vue {
     if (!isValid) {
       return;
     }
+
     this.loading = true;
     const companyInvitation = this.form;
 
@@ -151,7 +152,7 @@ export default class InviteModal extends Vue {
 
     console.log(response);
 
-    this.$emit('invited', response);
+    this.$emit("invited", response);
 
     this.loading = false;
     this.$emit("close");

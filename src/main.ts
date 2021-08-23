@@ -16,7 +16,7 @@ Vue.use(TiptapVuetifyPlugin, {
   iconsGroup: 'mdi',
 });
 
-Vue.prototype.$AuthService = new AuthService();
+// Vue.prototype.$AuthService = new AuthService();
 
 Vue.config.productionTip = false;
 

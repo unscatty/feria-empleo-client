@@ -25,6 +25,18 @@ const routes: Array<RouteConfig> = [
       layout: 'LayoutDashboard',
     },
   },
+  {
+    path: '/top-job-posts/viewed',
+    name: 'TopViewed',
+  },
+  {
+    path: '/top-job-posts/applied',
+    name: 'TopApplied',
+  },
+  {
+    path: '/top-job-posts/new',
+    name: 'TopNew',
+  },
 ];
 
 export default routes;

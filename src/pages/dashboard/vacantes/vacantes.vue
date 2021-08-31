@@ -37,8 +37,18 @@
                   <p>Cargando...</p>
                 </div>
               </template>
-              <template v-slot:[`item.imageUrl`]="{ item }">
-                <v-img max-height="70" aspect-ratio="1" contain :src="item.imageUrl"></v-img>
+              <template v-slot:[`item.image`]="{ value }">
+                <div class="py-4">
+                  <v-img
+                    max-height="60"
+                    aspect-ratio="1"
+                    contain
+                    :src="
+                      value && value.imageURL ? value.imageURL : require('@/assets/no-image.png')
+                    "
+                  >
+                  </v-img>
+                </div>
               </template>
               <template v-slot:[`item.salary`]="{ item }">
                 {{ item.salaryMin }} -
@@ -168,6 +178,20 @@ export default class AdminVacantes extends Vue {
   closeDialog() {
     this.component.dialog = false;
     this.component.updating = false;
+  }
+
+  imageUrlError(index: any) {
+    console.log(index);
+
+    /* const itemImage: any = this.$refs.itemImage as any;
+    console.log(index);
+    console.log(itemImage);
+
+    if (itemImage) {
+      //console.log(itemImage[index]);
+
+      itemImage.src = require('@/assets/no-image.png');
+    } */
   }
 }
 </script>

@@ -13,7 +13,7 @@ export class AdminVacantesComponent {
       text: 'Imagen',
       align: 'center',
       sortable: false,
-      value: 'imageUrl',
+      value: 'image',
     },
     {
       text: 'Titulo',

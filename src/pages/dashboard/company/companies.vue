@@ -10,7 +10,7 @@
           "
         >
           <v-icon class="mr-2">mdi-plus-circle</v-icon>
-          Agregar vacante
+          Invitar empresa
         </v-btn>
       </v-col>
 
@@ -21,8 +21,8 @@
               ref="table"
               item-class="success"
               :headers="component.headers"
-              :items="jobPositions"
-              :server-items-length="jobsPaginationData.totalItems"
+              :items="companies"
+              :server-items-length="paginationResponse.meta.totalItems"
               :options.sync="pagOptions"
               :footer-props="{
                 disableItemsPerPage: true,
@@ -37,32 +37,18 @@
                   <p>Cargando...</p>
                 </div>
               </template>
-              <template v-slot:[`item.image`]="{ value }">
-                <div class="py-4">
-                  <v-img
-                    max-height="60"
-                    aspect-ratio="1"
-                    contain
-                    :src="
-                      value && value.imageURL ? value.imageURL : require('@/assets/no-image.png')
-                    "
-                  >
-                  </v-img>
-                </div>
-              </template>
-              <template v-slot:[`item.salary`]="{ item }">
-                {{ item.salaryMin }} -
-                {{ item.salaryMax }}
-              </template>
-              <template v-slot:[`item.jobType`]="{ value }">
-                {{ component.parseJobType(value) }}
-              </template>
-              <template v-slot:[`item.jobMode`]="{ value }">
-                {{ component.parseJobMode(value) }}
+              <template v-slot:[`item.imageURL`]="{ item }">
+                <v-img
+                  max-height="70"
+                  aspect-ratio="1"
+                  contain
+                  :src="item.image ? item.image.imageURL : ''"
+                  class="rounded-circle"
+                ></v-img>
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
-                <v-icon class="mx-2" @click="component.editPosition(item)">
+                <v-icon class="mx-2" @click="component.editCompany(item)">
                   mdi-pencil
                 </v-icon>
                 <v-icon class="mx-2" @click="component.openDeleteDialog(item)">
@@ -75,17 +61,21 @@
       </v-col>
     </v-row>
 
-    <AddEditJobPost
+    <InviteDialog
       :position="component.currentPosition"
       :dialog="component.dialog"
       :isUpdate="component.updating"
+      :service="companyService"
       @close="closeDialog"
-    ></AddEditJobPost>
+      @invited="invitationSent"
+    ></InviteDialog>
 
     <v-dialog v-model="component.deleteDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> Eliminar vacante </v-card-title>
-        <v-card-text> ¿Estas seguro que deseas eliminar esta vacante?</v-card-text>
+        <v-card-text>
+          ¿Estas seguro que deseas eliminar esta vacante?</v-card-text
+        >
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -111,87 +101,91 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { CompanyService } from "@/services/company.service";
+import { PaginationResponse } from "@/utils/pagination.interface";
 
-import AddEditJobPost from '@/components/job-post/AddEditJobPost.vue';
-import { namespace } from 'vuex-class';
+import InviteDialog from "@/components/companies/InvitationDialog.vue";
 
-import { IJobPost } from '@/models/job-post/job-post.interface';
-import { AdminVacantesComponent } from './vacantes.component';
-import { IFilters } from '@/store/modules/job-post';
+import { ICompany } from "@/models/company/company.interface";
+import { AdminCompaniesComponent } from "./companies.component";
 
-const jobPost = namespace('JobPost');
 @Component({
-  components: { AddEditJobPost },
+  components: { InviteDialog },
 })
-export default class AdminVacantes extends Vue {
-  private component: AdminVacantesComponent = new AdminVacantesComponent();
+export default class AdminCompanies extends Vue {
+  protected companyService: CompanyService = new CompanyService(
+    process.env.VUE_APP_SERVER_HOST,
+    "company",
+    10_000
+  );
+  private component = new AdminCompaniesComponent();
 
-  // Store
-  @jobPost.State
-  public jobPositions!: IJobPost[];
+  public paginationResponse: PaginationResponse<ICompany> = {
+    items: [],
+    meta: {
+      itemCount: 0,
+      totalItems: 0,
+      itemsPerPage: 0,
+      totalPages: 0,
+      currentPage: 0,
+    },
+  };
 
-  @jobPost.State
-  public jobsPaginationData!: any;
-
-  @jobPost.State
-  public jobPostFilters!: IFilters;
-
-  @jobPost.Mutation
-  public updateFilters!: (filters: IFilters) => void;
-
-  @jobPost.Action
-  public findAllJobPosts!: () => void;
-
-  @jobPost.Action
-  public findAllSkillSets!: () => void;
-
-  @jobPost.Action
-  public deleteJobPost!: (id: number) => void;
+  public companies: ICompany[] = [];
 
   public pagOptions: any = {};
 
-  @Watch('pagOptions')
+  @Watch("pagOptions")
   async pagOptionsChange() {
-    const { page } = this.pagOptions;
-    this.updateFilters({ page });
+    // const { page } = this.pagOptions;
     this.component.loadingTable = true;
-    await this.findAllJobPosts();
+    // Load companies
+    await this.getCompanies();
     this.component.loadingTable = false;
   }
 
   async created() {
     this.pagOptions = {
-      itemsPerPage: this.jobPostFilters.limit,
+      page: 1,
+      itemsPerPage: 10,
     };
 
-    this.findAllSkillSets();
+    await this.getCompanies();
+  }
+
+  async getCompanies() {
+    const { page, itemsPerPage } = this.pagOptions;
+
+    this.paginationResponse = await this.companyService.getAllPaginated({
+      params: { page, limit: itemsPerPage },
+    });
+
+    this.companies = this.paginationResponse.items;
   }
 
   async onDeleteJobPost() {
+    const toDelete = this.component.currentPosition;
     this.component.loading = true;
-    await this.deleteJobPost(this.component.currentPosition.id);
+
+    // Delete on backend
+    await this.companyService.delete(toDelete);
+    // Update table
+    const index = this.companies.indexOf(toDelete);
+    this.companies.splice(index, 1);
+    this.pagOptions.itemsPerPage--;
+    
     this.component.loading = false;
     this.component.deleteDialog = false;
+  }
+
+  invitationSent(company : ICompany) {
+    this.companies.push(company);
   }
 
   closeDialog() {
     this.component.dialog = false;
     this.component.updating = false;
-  }
-
-  imageUrlError(index: any) {
-    console.log(index);
-
-    /* const itemImage: any = this.$refs.itemImage as any;
-    console.log(index);
-    console.log(itemImage);
-
-    if (itemImage) {
-      //console.log(itemImage[index]);
-
-      itemImage.src = require('@/assets/no-image.png');
-    } */
   }
 }
 </script>

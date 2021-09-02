@@ -84,7 +84,6 @@
               <v-col cols="12">
                 <v-file-input
                   v-model="inputImage"
-                  :rules="[rules.required]"
                   label="Imagen"
                   accept="image/*"
                   @change="setImage($event)"
@@ -109,7 +108,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :loading="loading" color="darken-1" text @click="show = false">Cancelar</v-btn>
-          <v-btn :loading="loading" color="#FF5072" dark @click="save"> Guardar </v-btn>
+          <v-btn :loading="loading" color="#FF5072" dark @click="save">
+            Guardar
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -193,10 +194,14 @@ export default class AddEditJobPost extends Vue {
         this.formRef.resetValidation();
       }
       if (this.isEdit) {
-        const { tags } = this.position;
+        const { tags, image } = this.position;
         const skillSets = tags;
-        this.form = { ...this.position, skillSets };
-        this.oldForm = { ...this.position, skillSets };
+        const data = { ...this.position, skillSets, image: null, company: null };
+        if (image && image.imageURL) {
+          this.imagePreview = image.imageURL;
+        }
+        this.form = { ...data };
+        this.oldForm = { ...data };
       }
     }
   }

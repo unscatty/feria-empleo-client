@@ -2,7 +2,7 @@ import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App.vue';
-import { AuthService } from './auth/auth.service';
+import AuthService from './auth/auth.service';
 import './axios';
 import vuetify from './plugins/vuetify';
 import routes from './routes';
@@ -16,7 +16,7 @@ Vue.use(TiptapVuetifyPlugin, {
   iconsGroup: 'mdi',
 });
 
-Vue.prototype.$AuthService = new AuthService();
+// Vue.prototype.$AuthService = new AuthService();
 
 Vue.config.productionTip = false;
 

@@ -2,6 +2,9 @@ import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { AuthGuard } from './auth/auth.guard';
+import AdminCompanies from './pages/dashboard/company/companies.vue';
+import CompanyRegistration from './pages/company/CompanyRegistration.vue';
+import InvitationVerification from './pages/company/InvitationVerification.vue';
 
 dotenv.config();
 
@@ -12,7 +15,7 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: () => import('./pages/home/home.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    // beforeEnter: AuthGuard.canActivate,
     meta: {
       layout: 'LayoutHome',
     },
@@ -24,6 +27,29 @@ const routes: Array<RouteConfig> = [
     meta: {
       layout: 'LayoutDashboard',
     },
+  },
+  {
+    path: '/dashboard/empresas',
+    name: 'AdminCompanies',
+    component: AdminCompanies,
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutDashboard',
+    },
+  },
+  {
+    path: '/empresas/registro',
+    name: 'CompanyRegistration',
+    component: CompanyRegistration,
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutHome',
+    },
+  },
+  {
+    path: '/empresas/verificar-invitacion',
+    name: 'InvitationVerification',
+    component: InvitationVerification,
   },
   {
     path: '/top-job-posts/viewed',

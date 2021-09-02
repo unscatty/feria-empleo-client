@@ -18,6 +18,30 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/companies',
+    component: () => import('./pages/companies/Companies.vue'),
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
+    path: '/showCompany/:id',
+    component: () => import('./pages/show-company/showCompany.vue'),
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
+    path: '/apply/:id',
+    component: () => import('./pages/apply/Apply.vue'),
+    beforeEnter: AuthGuard.canActivate,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
     path: '/dashboard',
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
     beforeEnter: AuthGuard.canActivate,

@@ -7,6 +7,7 @@ import {
   PublicClientApplication,
   RedirectRequest,
 } from '@azure/msal-browser';
+import { injectable as Injectable } from 'inversify-props';
 import {
   ACCESS_TOKEN_KEY,
   CANDIDATE_REDIRECT_REQUEST,
@@ -18,6 +19,8 @@ import {
   tokenRequest,
 } from './auth.config';
 import { b2cPolicies } from './policies';
+
+@Injectable()
 export default class AuthService {
   private clientApplication: PublicClientApplication;
   private _account: AccountInfo;
@@ -63,6 +66,8 @@ export default class AuthService {
 
     // In case of page refresh
     this.selectAccount();
+
+    console.log(this.account);
   }
 
   get client() {
@@ -71,6 +76,10 @@ export default class AuthService {
 
   get account() {
     return this._account;
+  }
+
+  get isAuthenticated() {
+    return Boolean(this.getToken())
   }
 
   private setAccount(account: AccountInfo) {
@@ -153,7 +162,7 @@ export default class AuthService {
   login(
     request?: Partial<RedirectRequest>,
     extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>
-  ) {
+  ): Promise<void> {
     const redirectRequest: RedirectRequest = {
       // Default scopes
       ...this.defaultLoginRequest,
@@ -163,7 +172,7 @@ export default class AuthService {
       ...extra,
     };
 
-    this.clientApplication.loginRedirect(redirectRequest);
+    return this.clientApplication.loginRedirect(redirectRequest);
   }
 
   loginCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
@@ -182,7 +191,7 @@ export default class AuthService {
 
     this.clearStore();
 
-    this.clientApplication.logoutRedirect(logoutRequest);
+    return this.clientApplication.logoutRedirect(logoutRequest);
   }
 
   getToken(): string {

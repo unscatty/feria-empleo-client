@@ -1,6 +1,8 @@
+import 'reflect-metadata'
 import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import buildDependencyContainer from './app.container';
 import App from './App.vue';
 import AuthService from './auth/auth.service';
 import './axios';
@@ -15,6 +17,9 @@ Vue.use(TiptapVuetifyPlugin, {
   // optional, default to 'md' (default vuetify icons before v2.0.0)
   iconsGroup: 'mdi',
 });
+
+// Inject dependencies defined in the container
+buildDependencyContainer();
 
 // Vue.prototype.$AuthService = new AuthService();
 

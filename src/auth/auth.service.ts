@@ -7,7 +7,7 @@ import {
   PublicClientApplication,
   RedirectRequest,
 } from '@azure/msal-browser';
-import { injectable as Injectable } from 'inversify-props';
+import { injectable as Injectable } from 'inversify';
 import {
   ACCESS_TOKEN_KEY,
   CANDIDATE_REDIRECT_REQUEST,

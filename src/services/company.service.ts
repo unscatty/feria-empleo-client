@@ -1,8 +1,10 @@
 import { CompanyInvite } from '@/models/company/company-forms';
 import { ICompany } from '@/models/company/company.interface';
 import { AxiosResponse } from 'axios';
+import { injectable as Injectable } from 'inversify';
 import { ResourceService } from './interfaces/resource-service.interface';
 
+@Injectable()
 export class CompanyService extends ResourceService<ICompany> {
   static toFormaData(company: CompanyInvite): FormData {
     const formData = new FormData();

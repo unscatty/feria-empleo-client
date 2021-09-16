@@ -15,7 +15,7 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: () => import('./pages/home/home.vue'),
-    // beforeEnter: AuthGuard,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome',
     },

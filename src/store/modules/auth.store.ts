@@ -1,6 +1,6 @@
+import AuthService from '@/auth/auth.service';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 
-import AuthService from '@/auth/auth.service';
 @Module({ namespaced: true })
 class AuthStore extends VuexModule {
   authService = new AuthService();
@@ -13,6 +13,10 @@ class AuthStore extends VuexModule {
     return this.authService.getToken();
   }
 
+  get getAccount() {
+    return this.authService.account;
+  }
+
   get responseState() {
     return this.authService.getState();
   }
@@ -23,16 +27,12 @@ class AuthStore extends VuexModule {
   }
 
   @Action
-  loginCompany(
-    ...params: Parameters<typeof AuthService.prototype.loginCompany>
-  ) {
+  loginCompany(...params: Parameters<typeof AuthService.prototype.loginCompany>) {
     return this.authService.loginCompany(...params);
   }
 
   @Action
-  loginCandidate(
-    ...params: Parameters<typeof AuthService.prototype.loginCandidate>
-  ) {
+  loginCandidate(...params: Parameters<typeof AuthService.prototype.loginCandidate>) {
     return this.authService.loginCandidate(...params);
   }
 

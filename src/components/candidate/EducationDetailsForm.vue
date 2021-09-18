@@ -1,13 +1,29 @@
 <template>
   <v-row>
+    <slot />
     <v-col cols="12" class="candidate-registration__input-item">
-      <v-select v-model="form.level" :items="levelItems" label="Nivel"></v-select>
+      <v-select
+        :rules="[rules.required]"
+        v-model="form.level"
+        :items="levelItems"
+        label="Nivel"
+      ></v-select>
     </v-col>
     <v-col cols="6" class="candidate-registration__input-item">
-      <v-text-field label="Escuela" v-model="form.institutionName" type="text" />
+      <v-text-field
+        :rules="[rules.required]"
+        label="Escuela"
+        v-model="form.institutionName"
+        type="text"
+      />
     </v-col>
     <v-col cols="6" class="candidate-registration__input-item">
-      <v-text-field label="Titulo o carrera" v-model="form.degree" type="text" />
+      <v-text-field
+        :rules="[rules.required]"
+        label="Titulo o carrera"
+        v-model="form.degree"
+        type="text"
+      />
     </v-col>
     <v-col cols="4" class="candidate-registration__input-item">
       <v-menu
@@ -23,6 +39,7 @@
           <v-text-field
             v-model="form.startDate"
             label="Inicio"
+            :rules="[rules.required]"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -64,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+import { rules } from '@/helpers/form';
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 
 import { levelItems } from '../../constants/candidate';
@@ -79,6 +97,10 @@ export default class EducationDetailsForm extends Vue {
   menuEndDate: any = null;
 
   levelItems: any[] = levelItems;
+
+  get rules() {
+    return rules;
+  }
 }
 </script>
 

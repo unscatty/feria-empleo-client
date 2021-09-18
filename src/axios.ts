@@ -34,15 +34,13 @@ axios.interceptors.response.use(
       const errorCode = error.response.data.error;
 
       if (error.response.status === 401) {
+        // TODO: refresh token
         // const authService = container.get<AuthService>(cid.AuthService);
-        // authService.logout()
-        //place your reentry code
       }
 
       switch (errorCode) {
         case 'NOT_USER_REGISTER':
-          console.log('no esta registrado');
-          router.replace('/registro');
+          router.replace('/registro').catch(() => {});
           break;
 
         default:
@@ -50,6 +48,6 @@ axios.interceptors.response.use(
       }
     }
 
-    return error;
+    return Promise.reject(error);
   }
 );

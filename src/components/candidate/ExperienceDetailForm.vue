@@ -1,11 +1,16 @@
 <template>
   <v-row>
+    <slot />
     <v-col cols="6" class="pt-0">
-      <v-text-field label="Puesto" v-model="form.jobTitle" type="text" />
-      <!-- <v-select v-model="form.level" :items="levelItems" label="Nivel"></v-select> -->
+      <v-text-field :rules="[rules.required]" label="Puesto" v-model="form.jobTitle" type="text" />
     </v-col>
     <v-col cols="6" class="pt-0">
-      <v-text-field label="Empresa" v-model="form.companyName" type="text" />
+      <v-text-field
+        label="Empresa"
+        :rules="[rules.required]"
+        v-model="form.companyName"
+        type="text"
+      />
     </v-col>
     <v-col cols="12" class="pt-0">
       <v-textarea label="Actividades y logros" v-model="form.jobDescription" type="text" />
@@ -27,6 +32,7 @@
             readonly
             v-bind="attrs"
             v-on="on"
+            :rules="[rules.required]"
           ></v-text-field>
         </template>
         <v-date-picker type="month" v-model="form.startDate" @input="menuStartDate = false">
@@ -65,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+import { rules } from '@/helpers/form';
 import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 
 import { levelItems } from '../../constants/candidate';
@@ -80,6 +87,10 @@ export default class ExperienceDetailsForm extends Vue {
   menuEndDate: any = null;
 
   levelItems: any[] = levelItems;
+
+  get rules() {
+    return rules;
+  }
 }
 </script>
 

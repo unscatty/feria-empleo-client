@@ -22,7 +22,7 @@
                     <h4 class="text-center mt-4">
                       Ingresa tus datos para que las empresas puedan conocerte mejor
                     </h4>
-                    <v-form class="mt-4" ref="form" lazy-validation>
+                    <v-form :disabled="loading" class="mt-4" ref="form" lazy-validation>
                       <v-row>
                         <v-col cols="12" class="candidate-registration__input-item">
                           <v-text-field
@@ -36,7 +36,7 @@
                         <v-col cols="12" class="candidate-registration__input-item">
                           <v-text-field
                             label="Nombre"
-                            name="name"
+                            v-model="form.name"
                             :value="getAccount ? getAccount.idTokenClaims.name : ''"
                             prepend-icon="mdi-email"
                             type="text"
@@ -55,7 +55,6 @@
                             multiple
                             chips
                             deletable-chips
-                            return-object
                           ></v-autocomplete>
                         </v-col>
                         <v-col cols="6">
@@ -76,7 +75,19 @@
                         >
                           <v-card class="elevation-2">
                             <v-card-text>
-                              <ExperienceDetailForm :form="detail"></ExperienceDetailForm>
+                              <ExperienceDetailForm :form="detail">
+                                <v-col class="text-right" cols="12">
+                                  <v-btn
+                                    @click="form.experienceDetails.splice(index, 1)"
+                                    color="danger"
+                                    text
+                                  >
+                                    <v-icon color="error">
+                                      mdi-minus-circle-outline
+                                    </v-icon>
+                                  </v-btn>
+                                </v-col>
+                              </ExperienceDetailForm>
                             </v-card-text>
                           </v-card>
                         </v-col>
@@ -98,7 +109,19 @@
                         >
                           <v-card class="elevation-2">
                             <v-card-text>
-                              <EducationDetailsForm :form="detail"></EducationDetailsForm>
+                              <EducationDetailsForm :form="detail">
+                                <v-col class="text-right" cols="12">
+                                  <v-btn
+                                    @click="form.educationDetails.splice(index, 1)"
+                                    color="danger"
+                                    text
+                                  >
+                                    <v-icon color="error">
+                                      mdi-minus-circle-outline
+                                    </v-icon>
+                                  </v-btn>
+                                </v-col>
+                              </EducationDetailsForm>
                             </v-card-text>
                           </v-card>
                         </v-col>
@@ -106,7 +129,9 @@
                     </v-form>
                   </v-card-text>
                   <div class="text-center mt-3 py-3 pb-5">
-                    <v-btn rounded color="primary" @click="save" dark>Guardar</v-btn>
+                    <v-btn :loading="loading" rounded color="primary" @click="save" dark>
+                      Guardar
+                    </v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -118,20 +143,23 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { Component, Ref, Vue } from 'vue-property-decorator';
 import { rules } from '@/helpers/form';
 import { VForm } from '@/models/form';
 import { namespace } from 'vuex-class';
-import AuthStore, { AUTH_STORE_NAME } from '@/store/modules/auth.store';
 import EducationDetailsForm from '../../components/candidate/EducationDetailsForm.vue';
 import ExperienceDetailForm from '../../components/candidate/ExperienceDetailForm.vue';
+import { container } from '@/app.container';
 
 import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
+import AuthService from '../../auth/auth.service';
+import axios from 'axios';
 
-const authStore = namespace(AUTH_STORE_NAME);
 const jobStore = namespace(JOBPOST_STORE_NAME);
+const uiStore = namespace('Ui');
 
+const authService = container.get(AuthService);
 @Component({
   components: {
     EducationDetailsForm,
@@ -140,12 +168,10 @@ const jobStore = namespace(JOBPOST_STORE_NAME);
 })
 export default class CandidateRegistration extends Vue {
   form: any = {
-    educationDetails: [{}],
-    experienceDetails: [{}],
+    educationDetails: [],
+    experienceDetails: [],
   };
-
-  @authStore.Getter
-  getAccount: typeof AuthStore.prototype.getAccount;
+  loading = false;
 
   // Refs
   @Ref('form') readonly formRef!: VForm;
@@ -156,22 +182,51 @@ export default class CandidateRegistration extends Vue {
   @jobStore.State
   public skillSets!: any[];
 
+  @uiStore.Action
+  public showToast!: (config: any) => void;
+
   get rules() {
     return rules;
   }
 
   get skillSetItems() {
-    return this.skillSets.map((s) => ({ name: s.name }));
+    return this.skillSets.map((s) => ({ name: s.name, value: s.id }));
+  }
+
+  get getAccount() {
+    return authService.account;
   }
 
   created() {
     this.findAllSkillSets();
+    this.form.name = this.getAccount.name;
   }
 
-  save() {
+  async save() {
     const isValid = this.formRef.validate();
     if (!isValid) {
       return;
+    }
+    this.loading = true;
+
+    try {
+      await axios.post('candidate/register', this.form);
+      this.$router.replace('/');
+    } catch (error) {
+      switch (error.response.data.error) {
+        case 'USER_ALREADY_EXISTS':
+          this.$router.replace('/');
+          break;
+
+        default:
+          this.showToast({
+            text: 'Error en el registro contacta a un administrador',
+            color: 'error',
+          });
+          break;
+      }
+    } finally {
+      this.loading = false;
     }
   }
 }

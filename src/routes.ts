@@ -80,8 +80,7 @@ const routes: Array<RouteConfig> = [
     path: '/registro',
     name: 'CandidateRegistration',
     component: CandidateRegistration,
-    //beforeEnter: AuthGuard,
-
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutVuetifyDefault',
     },

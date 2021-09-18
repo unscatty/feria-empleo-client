@@ -1,46 +1,46 @@
-import AuthService from '@/auth/auth.service';
-import { Action, Module, VuexModule } from 'vuex-module-decorators';
+// import { Action, Module, VuexModule } from 'vuex-module-decorators';
 
-@Module({ namespaced: true })
-class AuthStore extends VuexModule {
-  authService = new AuthService();
+// import AuthService from '@/auth/auth.service';
+// @Module({ namespaced: true })
+// class AuthStore extends VuexModule {
+//   authService = new AuthService();
 
-  get isAuthenticated() {
-    return Boolean(this.accessToken);
-  }
+//   get isAuthenticated() {
+//     return Boolean(this.accessToken);
+//   }
 
-  get accessToken() {
-    return this.authService.getToken();
-  }
+//   get accessToken() {
+//     return this.authService.getToken();
+//   }
 
-  get getAccount() {
-    return this.authService.account;
-  }
+//   get responseState() {
+//     return this.authService.getState();
+//   }
 
-  get responseState() {
-    return this.authService.getState();
-  }
+//   @Action
+//   public login(...params: Parameters<typeof AuthService.prototype.login>) {
+//     return this.authService.login(...params);
+//   }
 
-  @Action
-  public login(...params: Parameters<typeof AuthService.prototype.login>) {
-    return this.authService.login(...params);
-  }
+//   @Action
+//   loginCompany(
+//     ...params: Parameters<typeof AuthService.prototype.loginCompany>
+//   ) {
+//     return this.authService.loginCompany(...params);
+//   }
 
-  @Action
-  loginCompany(...params: Parameters<typeof AuthService.prototype.loginCompany>) {
-    return this.authService.loginCompany(...params);
-  }
+//   @Action
+//   loginCandidate(
+//     ...params: Parameters<typeof AuthService.prototype.loginCandidate>
+//   ) {
+//     return this.authService.loginCandidate(...params);
+//   }
 
-  @Action
-  loginCandidate(...params: Parameters<typeof AuthService.prototype.loginCandidate>) {
-    return this.authService.loginCandidate(...params);
-  }
+//   @Action
+//   public logout(...params: Parameters<typeof AuthService.prototype.logout>) {
+//     return this.authService.logout(...params);
+//   }
+// }
 
-  @Action
-  public logout(...params: Parameters<typeof AuthService.prototype.logout>) {
-    return this.authService.logout(...params);
-  }
-}
-
-export default AuthStore;
-export const AUTH_STORE_NAME = AuthStore.name;
+// export default AuthStore;
+// export const AUTH_STORE_NAME = AuthStore.name;

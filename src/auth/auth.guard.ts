@@ -1,11 +1,21 @@
-import Vue from "vue"
-import { isEmpty } from "lodash"
+import { NavigationGuard, NavigationGuardNext, Route } from "vue-router";
+import { container } from "@/app.container";
+import AuthService from "./auth.service";
 
-export class AuthGuard extends Vue{
+const AuthGuard: NavigationGuard = async (from: Route, to: Route, next: NavigationGuardNext) => {
+    // Get service from container
+    const authService = container.get(AuthService);
 
-    public static canActivate(to: any, from: any, next: any): void {
-        const isAuthenticated: boolean = !isEmpty(Vue.prototype.$AuthService.getToken());
-        if (to.name !== 'Login' && !isAuthenticated) Vue.prototype.$AuthService.login();
-        else next();
+    // Wait for any interaction in progress
+    await authService.handleRedirect();
+
+    // TODO: import login route and use it here
+    if (authService.isAuthenticated || to.name === 'Login') {
+        next()
+    }
+    else {
+        await authService.login();
     }
 }
+
+export default AuthGuard;

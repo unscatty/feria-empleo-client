@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import { AuthGuard } from './auth/auth.guard';
+import AuthGuard from './auth/auth.guard';
 import AdminCompanies from './pages/dashboard/company/companies.vue';
 import CompanyRegistration from './pages/company/CompanyRegistration.vue';
 import InvitationVerification from './pages/company/InvitationVerification.vue';
@@ -15,7 +15,7 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: () => import('./pages/home/home.vue'),
-    // beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome',
     },
@@ -23,7 +23,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/companies',
     component: () => import('./pages/companies/Companies.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome'
     }
@@ -31,7 +31,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/showCompany/:id',
     component: () => import('./pages/show-company/showCompany.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome'
     }
@@ -39,7 +39,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/apply/:id',
     component: () => import('./pages/apply/Apply.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome'
     }
@@ -47,7 +47,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/dashboard',
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutDashboard',
     },
@@ -56,7 +56,7 @@ const routes: Array<RouteConfig> = [
     path: '/dashboard/empresas',
     name: 'AdminCompanies',
     component: AdminCompanies,
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutDashboard',
     },
@@ -65,7 +65,7 @@ const routes: Array<RouteConfig> = [
     path: '/empresas/registro',
     name: 'CompanyRegistration',
     component: CompanyRegistration,
-    beforeEnter: AuthGuard.canActivate,
+    beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutHome',
     },

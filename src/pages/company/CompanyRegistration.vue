@@ -29,36 +29,38 @@ import { rules } from "@/helpers/form";
 import { ICompany } from "@/models/company/company.interface";
 import { VForm } from "@/models/form";
 import { CompanyService } from "@/services/company.service";
-import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
+// import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
 import { Component, Ref, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import Wysiwyg from "@/components/general/wysiwyg.vue";
+import { lazyInject } from "@/app.container";
+import AuthService from "@/auth/auth.service";
 
-const authStore = namespace(AUTH_STORE_NAME);
+// const authStore = namespace(AUTH_STORE_NAME);
 
 @Component({ components: { Wysiwyg } })
 export default class CompanyRegistration extends Vue {
   form: ICompany = null;
 
+  @lazyInject(AuthService)
+  authservice: AuthService;
+
   // Refs
   @Ref("form") readonly formRef!: VForm;
 
-  protected companyService: CompanyService = new CompanyService(
-    process.env.VUE_APP_SERVER_HOST,
-    "company",
-    10_000
-  );
+  @lazyInject(CompanyService)
+  protected companyService: CompanyService;
 
   get rules() {
     return rules;
   }
 
-  @authStore.Getter
-  responseState: typeof AuthStore.prototype.responseState;
+  // @authStore.Getter
+  // responseState: typeof AuthStore.prototype.responseState;
 
   async created() {
     // Register company
-    const state = this.responseState;
+    const state = this.authservice.getState();
     const response = await this.companyService.register(state);
     this.form = response;
   }

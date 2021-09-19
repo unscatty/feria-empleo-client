@@ -109,16 +109,14 @@ import InviteDialog from "@/components/companies/InvitationDialog.vue";
 
 import { ICompany } from "@/models/company/company.interface";
 import { AdminCompaniesComponent } from "./companies.component";
+import { lazyInject } from "@/app.container";
 
 @Component({
   components: { InviteDialog },
 })
 export default class AdminCompanies extends Vue {
-  protected companyService: CompanyService = new CompanyService(
-    process.env.VUE_APP_SERVER_HOST,
-    "company",
-    10_000
-  );
+  @lazyInject(CompanyService)
+  protected companyService: CompanyService;
   private component = new AdminCompaniesComponent();
 
   public paginationResponse: PaginationResponse<ICompany> = {
@@ -157,11 +155,19 @@ export default class AdminCompanies extends Vue {
   async getCompanies() {
     const { page, itemsPerPage } = this.pagOptions;
 
-    this.paginationResponse = await this.companyService.getAllPaginated({
-      params: { page, limit: itemsPerPage },
-    });
+    try {
+      const response = await this.companyService.getAllPaginated({
+        params: { page, limit: itemsPerPage },
+      });
 
-    this.companies = this.paginationResponse.items;
+      console.log(response);
+
+      this.paginationResponse = response;
+
+      this.companies = this.paginationResponse.items;
+    } catch (error) {
+      // console.error(error);
+    }
   }
 
   async onDeleteJobPost() {
@@ -174,12 +180,12 @@ export default class AdminCompanies extends Vue {
     const index = this.companies.indexOf(toDelete);
     this.companies.splice(index, 1);
     this.pagOptions.itemsPerPage--;
-    
+
     this.component.loading = false;
     this.component.deleteDialog = false;
   }
 
-  invitationSent(company : ICompany) {
+  invitationSent(company: ICompany) {
     this.companies.push(company);
   }
 

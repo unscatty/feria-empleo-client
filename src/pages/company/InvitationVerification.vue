@@ -4,24 +4,26 @@
 
 <script setup lang="ts">
 import { CompanyService } from "@/services/company.service";
-import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
+// import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+import { lazyInject } from "@/app.container";
+import AuthService from "@/auth/auth.service";
 
-const authStore = namespace(AUTH_STORE_NAME);
+// const authStore = namespace(AUTH_STORE_NAME);
 
 @Component
 export default class InvitationVerification extends Vue {
-  protected companyService: CompanyService = new CompanyService(
-    process.env.VUE_APP_SERVER_HOST,
-    "company",
-    10_000
-  );
+  @lazyInject(CompanyService)
+  protected companyService: CompanyService;
+
+  @lazyInject(AuthService)
+  authService: AuthService;
 
   message = "";
 
-  @authStore.Action
-  loginCompany: typeof AuthStore.prototype.loginCompany;
+  // @authStore.Action
+  // loginCompany: typeof AuthStore.prototype.loginCompany;
 
   async created() {
     const urlToken = this.$route.query.token as string;
@@ -37,7 +39,7 @@ export default class InvitationVerification extends Vue {
 
     if (validToken) {
       this.message = "Token válido";
-      this.loginCompany({ state: urlToken });
+      this.authService.loginCompany({ state: urlToken });
     } else {
       this.message = "Token inválido";
     }

@@ -7,6 +7,7 @@ import {
   PublicClientApplication,
   RedirectRequest,
 } from '@azure/msal-browser';
+import { injectable as Injectable } from 'inversify';
 import {
   ACCESS_TOKEN_KEY,
   CANDIDATE_REDIRECT_REQUEST,
@@ -18,6 +19,8 @@ import {
   tokenRequest,
 } from './auth.config';
 import { b2cPolicies } from './policies';
+
+@Injectable()
 export default class AuthService {
   private clientApplication: PublicClientApplication;
   private _account: AccountInfo;
@@ -38,39 +41,26 @@ export default class AuthService {
     private policies: typeof b2cPolicies = b2cPolicies
   ) {
     this.clientApplication = new PublicClientApplication(config);
-
-    this.clientApplication
-      .handleRedirectPromise()
-      .then((response) => {
-        if (response) {
-          /**
-           * For the purpose of setting an active account for UI update, we want to consider only the auth response resulting
-           * from SUSI flow. "tfp" claim in the id token tells us the policy (NOTE: legacy policies may use "acr" instead of "tfp").
-           * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
-           */
-          const responseTokenClaims = response.idTokenClaims as any;
-          if (
-            responseTokenClaims['tfp'].toUpperCase() ===
-            this.policies.names.signUpSignIn.toUpperCase()
-          ) {
-            this.handleResponse(response);
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    // In case of page refresh
-    this.selectAccount();
   }
 
-  get client() {
+  protected get client() {
     return this.clientApplication;
   }
 
-  get account() {
+  public get account() {
     return this._account;
+  }
+
+  public get state() {
+    return localStorage.getItem(this.STATE_KEY);
+  }
+
+  public get token() {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  public get isAuthenticated() {
+    return Boolean(this.account)
   }
 
   private setAccount(account: AccountInfo) {
@@ -95,7 +85,33 @@ export default class AuthService {
     this.storeState(response.state);
   }
 
-  async handleResponse(response: AuthenticationResult) {
+  public async handleRedirect() {
+    try {
+      const result = await this.clientApplication.handleRedirectPromise();
+
+      if (result) {
+        /**
+         * For the purpose of setting an active account for UI update, we want to consider only the auth response resulting
+         * from SUSI flow. "tfp" claim in the id token tells us the policy (NOTE: legacy policies may use "acr" instead of "tfp").
+         * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
+         */
+        const responseTokenClaims = result.idTokenClaims as any;
+        if (
+          responseTokenClaims['tfp'].toUpperCase() ===
+          this.policies.names.signUpSignIn.toUpperCase()
+        ) {
+          this.handleResponse(result);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    // In case of page refresh
+    this.selectAccount();
+  }
+
+  handleResponse(response: AuthenticationResult) {
     if (response) {
       this.setAccount(response.account);
       this.storeResponseItems(response);
@@ -150,10 +166,10 @@ export default class AuthService {
     }
   }
 
-  login(
+  async login(
     request?: Partial<RedirectRequest>,
     extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>
-  ) {
+  ): Promise<void> {
     const redirectRequest: RedirectRequest = {
       // Default scopes
       ...this.defaultLoginRequest,
@@ -163,18 +179,18 @@ export default class AuthService {
       ...extra,
     };
 
-    this.clientApplication.loginRedirect(redirectRequest);
+    return this.clientApplication.loginRedirect(redirectRequest);
   }
 
-  loginCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
+  async loginCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
     this.login(this.companyRedirectRequest, extra);
   }
 
-  loginCandidate(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
+  async loginCandidate(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
     this.login(this.candidateRedirectRequest, extra);
   }
 
-  logout(request?: EndSessionRequest) {
+  async logout(request?: EndSessionRequest) {
     const logoutRequest: EndSessionRequest = {
       postLogoutRedirectUri: this.logoutUri,
       ...request,
@@ -182,15 +198,15 @@ export default class AuthService {
 
     this.clearStore();
 
-    this.clientApplication.logoutRedirect(logoutRequest);
+    return this.clientApplication.logoutRedirect(logoutRequest);
   }
 
   getToken(): string {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return this.token;
   }
 
   getState() {
-    return localStorage.getItem(this.STATE_KEY);
+    return this.state;
   }
 
   async getTokenRedirect(request: RedirectRequest) {

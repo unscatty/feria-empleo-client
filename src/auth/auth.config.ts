@@ -17,8 +17,9 @@ export const msalConfig: Configuration = {
     clientId: ENV.VUE_APP_B2C_CLIENTID, // This is the ONLY mandatory field; everything else is optional.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
     knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
-    navigateToLoginRequestUrl: false,
+    navigateToLoginRequestUrl: true,
     postLogoutRedirectUri: ENV.VUE_APP_B2C_LOGOUT_URI,
+    redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI
     // Redirect uri will have to be set on login/token request
   },
   cache: {

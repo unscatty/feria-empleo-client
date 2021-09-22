@@ -100,8 +100,7 @@ class JobPost extends VuexModule<JobPostState> {
     try {
       const formData = new FormData();
       buildFormData(formData, data);
-
-      const res = await axios.post('job-posts', formData);
+      await axios.post('job-posts', formData);
       this.context.dispatch('Ui/showToast', { text: 'Vacante creada con éxito' }, { root: true });
       this.context.dispatch('findAllJobPosts');
     } catch (error) {
@@ -142,3 +141,4 @@ class JobPost extends VuexModule<JobPostState> {
   }
 }
 export default JobPost;
+export const JOBPOST_STORE_NAME = JobPost.name;

@@ -2,9 +2,10 @@ import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import AuthGuard from './auth/auth.guard';
-import AdminCompanies from './pages/dashboard/company/companies.vue';
+import CandidateRegistration from './pages/candidate-registration/CandidateRegistration.vue';
 import CompanyRegistration from './pages/company/CompanyRegistration.vue';
 import InvitationVerification from './pages/company/InvitationVerification.vue';
+import AdminCompanies from './pages/dashboard/company/companies.vue';
 
 dotenv.config();
 
@@ -25,24 +26,24 @@ const routes: Array<RouteConfig> = [
     component: () => import('./pages/companies/Companies.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/showCompany/:id',
     component: () => import('./pages/show-company/showCompany.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/apply/:id',
     component: () => import('./pages/apply/Apply.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/dashboard',
@@ -76,6 +77,15 @@ const routes: Array<RouteConfig> = [
     component: InvitationVerification,
   },
   {
+    path: '/registro',
+    name: 'CandidateRegistration',
+    component: CandidateRegistration,
+    beforeEnter: AuthGuard,
+    meta: {
+      layout: 'LayoutVuetifyDefault',
+    },
+  },
+  {
     path: '/top-job-posts/viewed',
     name: 'TopViewed',
   },
@@ -89,4 +99,7 @@ const routes: Array<RouteConfig> = [
   },
 ];
 
-export default routes;
+export default new VueRouter({
+  mode: 'history',
+  routes,
+});

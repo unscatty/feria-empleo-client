@@ -1,11 +1,11 @@
-import 'reflect-metadata'
+import 'reflect-metadata';
 import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import './axios';
 import vuetify from './plugins/vuetify';
-import routes from './routes';
+import router from './routes';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -17,11 +17,6 @@ Vue.use(TiptapVuetifyPlugin, {
 });
 
 Vue.config.productionTip = false;
-
-const router = new VueRouter({
-  mode: 'history',
-  routes,
-});
 
 new Vue({
   render: (h) => h(App),

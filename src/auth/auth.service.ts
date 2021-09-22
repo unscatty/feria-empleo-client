@@ -32,12 +32,8 @@ export default class AuthService {
     private STATE_KEY: string = REQUEST_STATE_KEY,
     private defaultLoginRequest: RedirectRequest = loginRequest,
     private defaultTokenRequest: RedirectRequest = tokenRequest,
-    private candidateRedirectRequest: Partial<
-      RedirectRequest
-    > = CANDIDATE_REDIRECT_REQUEST,
-    private companyRedirectRequest: Partial<
-      RedirectRequest
-    > = COMPANY_REDIRECT_REQUEST,
+    private candidateRedirectRequest: Partial<RedirectRequest> = CANDIDATE_REDIRECT_REQUEST,
+    private companyRedirectRequest: Partial<RedirectRequest> = COMPANY_REDIRECT_REQUEST,
     private policies: typeof b2cPolicies = b2cPolicies
   ) {
     this.clientApplication = new PublicClientApplication(config);
@@ -60,7 +56,7 @@ export default class AuthService {
   }
 
   public get isAuthenticated() {
-    return Boolean(this.account)
+    return Boolean(this.account);
   }
 
   private setAccount(account: AccountInfo) {
@@ -147,11 +143,7 @@ export default class AuthService {
 
       if (accounts.length > 1) {
         // localAccountId identifies the entity for which the token asserts information.
-        if (
-          accounts.every(
-            (account) => account.localAccountId === accounts[0].localAccountId
-          )
-        ) {
+        if (accounts.every((account) => account.localAccountId === accounts[0].localAccountId)) {
           // All accounts belong to the same user
           this.setAccount(accounts[0]);
         } else {
@@ -214,9 +206,7 @@ export default class AuthService {
      * See here for more info on account retrieval:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
      */
-    request.account = this.clientApplication.getAccountByHomeId(
-      this.account.homeAccountId
-    );
+    request.account = this.clientApplication.getAccountByHomeId(this.account.homeAccountId);
 
     try {
       const response = await this.clientApplication.acquireTokenSilent(request);
@@ -230,10 +220,7 @@ export default class AuthService {
       }
     } catch (error) {
       if (error instanceof InteractionRequiredAuthError) {
-        console.log(
-          'Silent token acquisition fails. Acquiring token using redirect. \n',
-          error
-        );
+        console.log('Silent token acquisition fails. Acquiring token using redirect. \n', error);
         // fallback to interaction when silent call fails
         return this.clientApplication.acquireTokenRedirect(request);
       } else {

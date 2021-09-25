@@ -6,6 +6,7 @@ import {
   InteractionRequiredAuthError,
   PublicClientApplication,
   RedirectRequest,
+  SilentRequest,
 } from '@azure/msal-browser';
 import { injectable as Injectable } from 'inversify';
 import {
@@ -23,7 +24,6 @@ import { b2cPolicies } from './policies';
 @Injectable()
 export default class AuthService {
   private clientApplication: PublicClientApplication;
-  private _account: AccountInfo;
 
   constructor(
     config: Configuration = msalConfig,
@@ -31,7 +31,7 @@ export default class AuthService {
     private TOKEN_KEY: string = ACCESS_TOKEN_KEY,
     private STATE_KEY: string = REQUEST_STATE_KEY,
     private defaultLoginRequest: RedirectRequest = loginRequest,
-    private defaultTokenRequest: RedirectRequest = tokenRequest,
+    private defaultTokenRequest: SilentRequest = tokenRequest,
     private candidateRedirectRequest: Partial<RedirectRequest> = CANDIDATE_REDIRECT_REQUEST,
     private companyRedirectRequest: Partial<RedirectRequest> = COMPANY_REDIRECT_REQUEST,
     private policies: typeof b2cPolicies = b2cPolicies
@@ -44,7 +44,7 @@ export default class AuthService {
   }
 
   public get account() {
-    return this._account;
+    return this.clientApplication.getActiveAccount();
   }
 
   public get state() {
@@ -60,7 +60,7 @@ export default class AuthService {
   }
 
   private setAccount(account: AccountInfo) {
-    this._account = account;
+    this.clientApplication.setActiveAccount(account);
   }
 
   private clearStore() {
@@ -174,17 +174,18 @@ export default class AuthService {
     return this.clientApplication.loginRedirect(redirectRequest);
   }
 
-  async loginCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
+  async registerCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>) {
     this.login(this.companyRedirectRequest, extra);
   }
 
-  async loginCandidate(extra?: Partial<Omit<RedirectRequest, 'redirectUri'>>) {
+  async registerCandidate(extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>) {
     this.login(this.candidateRedirectRequest, extra);
   }
 
-  async logout(request?: EndSessionRequest) {
+  async logout(request?: Omit<EndSessionRequest, 'account'>) {
     const logoutRequest: EndSessionRequest = {
       postLogoutRedirectUri: this.logoutUri,
+      account: this.account,
       ...request,
     };
 
@@ -201,12 +202,12 @@ export default class AuthService {
     return this.state;
   }
 
-  async getTokenRedirect(request: RedirectRequest) {
+  async getTokenRedirect(request: SilentRequest = this.defaultTokenRequest) {
     /**
      * See here for more info on account retrieval:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
      */
-    request.account = this.clientApplication.getAccountByHomeId(this.account.homeAccountId);
+    request.account = this.clientApplication.getAccountByHomeId(this.account?.homeAccountId);
 
     try {
       const response = await this.clientApplication.acquireTokenSilent(request);

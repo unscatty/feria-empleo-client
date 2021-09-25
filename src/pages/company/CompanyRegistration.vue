@@ -54,9 +54,8 @@ export default class CompanyRegistration extends Vue {
   async created() {
     // Register company
     const state = this.authservice.getState();
-    // FIXME: fix when endpoint updated
-    const response = (await this.companyService.register(state)) as any;
-    this.form = response.company;
+    const response = (await this.companyService.register(state));
+    this.form = response;
   }
 }
 </script>

@@ -6,7 +6,7 @@
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/working-with-b2c.md
  */
 
-import { Configuration, LogLevel } from '@azure/msal-browser';
+import { Configuration, LogLevel, RedirectRequest, SilentRequest } from '@azure/msal-browser';
 import { apiConfig } from './api.config';
 import { b2cPolicies } from './policies';
 
@@ -19,8 +19,8 @@ export const msalConfig: Configuration = {
     knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
     navigateToLoginRequestUrl: true,
     postLogoutRedirectUri: ENV.VUE_APP_B2C_LOGOUT_URI,
+    // Default redirect uri
     redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI
-    // Redirect uri will have to be set on login/token request
   },
   cache: {
     cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
@@ -55,12 +55,14 @@ export const msalConfig: Configuration = {
   },
 };
 
-export const CANDIDATE_REDIRECT_REQUEST = {
+export const CANDIDATE_REDIRECT_REQUEST: Partial<RedirectRequest> = {
   redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI,
+  redirectStartPage: ENV.VUE_APP_B2C_REDIRECT_URI
 };
 
-export const COMPANY_REDIRECT_REQUEST = {
+export const COMPANY_REDIRECT_REQUEST: Partial<RedirectRequest> = {
   redirectUri: ENV.VUE_APP_B2C_COMPANY_REGISTER_REDIRECT_URI,
+  redirectStartPage: ENV.VUE_APP_B2C_COMPANY_REGISTER_REDIRECT_URI,
 };
 
 export const ACCESS_TOKEN_KEY = ENV.VUE_APP_B2C_TOKEN;
@@ -73,7 +75,7 @@ export const LOGOUT_REDIRECT_URI = ENV.VUE_APP_B2C_LOGOUT_URI;
  * For more information about OIDC scopes, visit:
  * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
-export const loginRequest = {
+export const loginRequest: RedirectRequest = {
   scopes: ['openid', ...apiConfig.b2cScopes],
 };
 
@@ -82,7 +84,7 @@ export const loginRequest = {
  * To learn more about how to work with scopes and resources, see:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
-export const tokenRequest = {
+export const tokenRequest: SilentRequest = {
   scopes: [...apiConfig.b2cScopes], // e.g. ["https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read"]
   forceRefresh: false, // Set this to "true" to skip a cached token and go to the server to get a new token
 };

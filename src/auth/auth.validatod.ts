@@ -8,6 +8,10 @@ export function validateUnauthorizedError(error: any) {
     const response = error.response;
 
     if (isEqual(response.status, StatusCodes.UNAUTHORIZED)) {
-        authService.login().then().catch(error => { console.error(error); })
+        authService.handleRedirect().then(() => {
+            authService.login().catch(error => { console.error(error); })
+        }).catch(error => {
+            console.error(error);
+        })
     }
 }

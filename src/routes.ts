@@ -39,6 +39,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/apply/:id',
+    name: 'vacante',
     component: () => import('./pages/apply/Apply.vue'),
     beforeEnter: AuthGuard,
     meta: {

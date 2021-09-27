@@ -1,3 +1,5 @@
+import { container } from '@/app.container';
+import AuthService from '@/auth/auth.service';
 import axios from 'axios';
 import { config } from 'dotenv';
 import router from './routes';
@@ -34,8 +36,8 @@ axios.interceptors.response.use(
       const errorCode = error.response.data.error;
 
       if (error.response.status === 401) {
-        // TODO: refresh token
-        // const authService = container.get<AuthService>(cid.AuthService);
+        const authService = container.get(AuthService);
+        authService.login();
       }
 
       switch (errorCode) {

@@ -74,16 +74,11 @@ export default class LayoutDashboard extends Vue {
       title: 'Empresas',
       to: '/dashboard/empresas',
     },
-    {
-      icon: 'mdi-chart-bubble',
-      title: 'Inspire',
-      to: '/inspire',
-    },
   ];
   miniVariant = false;
   right = true;
   rightDrawer = false;
-  title = 'Vuetify.js';
+  title = 'Dashboard';
 
   // Store
   @ui.State

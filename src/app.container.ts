@@ -1,6 +1,7 @@
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 import AuthService from "./auth/auth.service";
+import { UpdateCandidateService } from "./pages/profile/edit/edit-candidate.service";
 import { CompanyService } from "./services/company.service";
 
 const container = new Container();
@@ -14,6 +15,8 @@ container.bind(CompanyService).toConstantValue(new CompanyService(
   "company",
   10_000
 ));
+
+container.bind(UpdateCandidateService).toConstantValue(new UpdateCandidateService());
 
 const { lazyInject } = getDecorators(container);
 

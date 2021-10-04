@@ -7,7 +7,7 @@ export class CompaniesComponent {
 
     public async getCompanies() {
         try {
-            this.companies = await (await axios.get("/company")).data;
+            this.companies = await (await axios.get("/company")).data.items;
         } catch (error) {
             validateUnauthorizedError(error);
         }

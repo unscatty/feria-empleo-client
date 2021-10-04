@@ -20,6 +20,7 @@
     "moment": "^2.29.1",
     "reflect-metadata": "^0.1.13",
     "tiptap-vuetify": "^2.24.0",
+    "v-tooltip": "^2.1.3",
     "vue": "^2.6.11",
     "vue-advanced-cropper": "^1.8.2",
     "vue-class-component": "^7.2.3",

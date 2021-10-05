@@ -7,9 +7,8 @@ export interface IUser {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
-
-  // FIXME: check role serialization
-  role: { name: RoleType };
+  
+  role: RoleType;
 }
 
 export interface IAdmin {

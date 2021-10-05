@@ -7,6 +7,8 @@ import { NavigationGuardNext } from "vue-router";
 
 // Registers company from login redirection
 const CompanyRegisterGuard: CustomNavGuard = async (_, __, next: NavigationGuardNext) => {
+  console.log('executing company registration guard');
+  
   const authService = container.get(AuthService);
   const companyService = container.get(CompanyService);
   const currentUserService = container.get(CurrentUserService);

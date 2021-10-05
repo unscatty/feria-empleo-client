@@ -50,8 +50,7 @@ export class CurrentUserService {
   }
 
   get role(): RoleType {
-    // FIXME: check role serialization structure
-    return this.raw.user.role.name;
+    return this.raw.user.role;
   }
 
   get currentUser(): UserType {

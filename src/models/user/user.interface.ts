@@ -1,3 +1,5 @@
+import RoleType from "../role.type";
+
 export interface IUser {
   id: number;
   email: string;
@@ -6,6 +8,10 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 
-  // Relationships
-  // role: Role;
+  // FIXME: check role serialization
+  role: { name: RoleType };
+}
+
+export interface IAdmin {
+  user: IUser;
 }

@@ -3,9 +3,7 @@ import { container } from "@/app.container";
 import AuthService from "./auth.service";
 import { CustomNavGuard, CustomRoute } from "@/utils/custom-route.types";
 
-const AuthGuard: CustomNavGuard = async (to: CustomRoute, from: CustomRoute, next: NavigationGuardNext) => {
-    console.log('executing auth guard');
-    
+const AuthGuard: CustomNavGuard = async (to: CustomRoute, from: CustomRoute, next: NavigationGuardNext) => {    
     // Get service from container
     const authService = container.get(AuthService);
 

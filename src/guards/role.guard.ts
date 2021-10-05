@@ -19,8 +19,6 @@ export function hasAccessToRoute(role: RoleType, route: CustomRoute): RouteAcces
     }
   }
 
-  console.log(`Permissions for route ${route.name} - ${route.path}: ${permissions}`);
-  
 
   if (!permissions) {
     // TODO: define default access logic here
@@ -34,23 +32,15 @@ export function hasAccessToRoute(role: RoleType, route: CustomRoute): RouteAcces
 }
 
 const RoleGuard: CustomNavGuard = (to: CustomRoute, from: CustomRoute, next: NavigationGuardNext) => {
-  console.log('executing role guard');
-  
   const currentUserService = container.get(CurrentUserService);
   const userRole = currentUserService.role;
 
-  console.log(`User role is ${userRole}`);
-  console.log(`Accesing route ${to.name} -- ${to.path}`);
-  
   const routeAccess = hasAccessToRoute(userRole, to);
-  
 
   if (routeAccess.access) {
     // Route is accessible by current user
     next();
   } else {
-    console.log(`Route ${to.path} is not accessible for role ${userRole}`);
-    
     // Route not accessible, redirect
     next((routeAccess as RouteWithNoAccess).redirect);
   }

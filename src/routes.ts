@@ -2,19 +2,23 @@ import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthGuard from './auth/auth.guard';
+import CompanyRegisterGuard from './guards/company-register.guard';
+import CurrentUserGuard from './guards/current-user.guard';
+import RoleGuard from './guards/role.guard';
 import CandidateRegistration from './pages/candidate-registration/CandidateRegistration.vue';
 import CompanyRegistration from './pages/company/CompanyRegistration.vue';
 import InvitationVerification from './pages/company/InvitationVerification.vue';
 import AdminCompanies from './pages/dashboard/company/companies.vue';
 import { CustomRouteConfig } from './utils/custom-route.types';
 import createMultiGuard from './utils/multi-guard';
+import { MultiGuard as NoDefaultsMultiGuard } from './utils/multi-guard'
 
 dotenv.config();
 
 Vue.use(VueRouter);
 
 // Default guards to be applied
-const MultiGuard = createMultiGuard(AuthGuard);
+const MultiGuard = createMultiGuard(AuthGuard, CurrentUserGuard, RoleGuard);
 
 const routes: Array<CustomRouteConfig> = [
   {
@@ -24,6 +28,11 @@ const routes: Array<CustomRouteConfig> = [
     beforeEnter: MultiGuard(),
     meta: {
       layout: 'LayoutHome',
+      permissions: {
+        default: {
+          access: true
+        }
+      }
     },
   },
   {
@@ -57,6 +66,12 @@ const routes: Array<CustomRouteConfig> = [
     beforeEnter: MultiGuard(),
     meta: {
       layout: 'LayoutDashboard',
+      permissions: {
+        default: {
+          access: false,
+          redirect: { name: 'home' }
+        }
+      }
     },
   },
   {
@@ -72,7 +87,7 @@ const routes: Array<CustomRouteConfig> = [
     path: '/empresas/registro',
     name: 'CompanyRegistration',
     component: CompanyRegistration,
-    beforeEnter: MultiGuard(),
+    beforeEnter: NoDefaultsMultiGuard(AuthGuard, CompanyRegisterGuard),
     meta: {
       layout: 'LayoutHome',
     },

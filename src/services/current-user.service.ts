@@ -97,7 +97,7 @@ export class CurrentUserService {
 
   async fetch(cached = false): Promise<UserType> {
     // Get from previous backend call
-    if (cached && this.raw) {
+    if (cached && this.isPresent) {
       return this.raw;
     }
 

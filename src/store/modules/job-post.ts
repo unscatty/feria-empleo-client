@@ -5,14 +5,21 @@ import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 
 export interface IFilters {
   type?: string;
-  modality?: string;
+  jobMode?: string;
+  jobType?: string;
   experience?: string;
+  search?: string;
   employerId?: string;
   page?: number;
   limit?: number;
+  salaryMinGte?: number;
+  salaryMaxLte?: number;
 }
 export interface JobPostState {
   jobPositions: any[];
+  loadingJobPositions: boolean;
+  jobPositionsGlobalSearch: any[];
+
   jobsPaginationData: any;
 
   skillSets: any[];
@@ -22,6 +29,8 @@ export interface JobPostState {
 @Module({ namespaced: true })
 class JobPost extends VuexModule<JobPostState> {
   public jobPositions: IJobPost[] = [];
+  public loadingJobPositions = false;
+  public jobPositionsGlobalSearch: any[] = [];
   public jobPostFilters: IFilters = {
     page: 1,
     limit: 10,
@@ -33,6 +42,16 @@ class JobPost extends VuexModule<JobPostState> {
   @Mutation
   public setJobPosts(jobPositions: any[]): void {
     this.jobPositions = jobPositions;
+  }
+
+  @Mutation
+  public setLoadingJobPosts(loading: boolean): void {
+    this.loadingJobPositions = loading;
+  }
+
+  @Mutation
+  public setJobPostsGlobalSearch(jobPositions: any[]): void {
+    this.jobPositionsGlobalSearch = jobPositions;
   }
 
   @Mutation
@@ -75,11 +94,24 @@ class JobPost extends VuexModule<JobPostState> {
   @Action
   async findAllJobPosts() {
     try {
+      this.context.commit('setLoadingJobPosts', true);
       const res = await axios.get('job-posts', {
         params: this.context.state.jobPostFilters,
       });
       this.context.commit('setJobPosts', res.data.items);
       this.context.commit('setjobsPaginationData', res.data.meta);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.context.commit('setLoadingJobPosts', false);
+    }
+  }
+
+  @Action
+  async jobPostsGlobalSearch(search: string) {
+    try {
+      const res = await axios.get(`job-posts/global-search/${search}`);
+      this.context.commit('setJobPostsGlobalSearch', res.data);
     } catch (error) {
       console.log(error);
     }

@@ -1,13 +1,30 @@
 .post-bar {
-    padding: 0;
-  }
-  
-  .btn {
-    margin-top: 15%;
-  }
-  
-  .file-content {
-    margin-top: 20px;
-    padding: 30px;
-    background: #efefef;
-  }
+  padding: 0;
+}
+
+.btn {
+  margin-top: 15%;
+}
+
+.file-content {
+  margin-top: 20px;
+  padding: 30px;
+  background: #efefef;
+}
+
+.single-position__banner {
+  height: 300px;
+  padding: 2rem;
+  background: rgb(9, 59, 121);
+  background: linear-gradient(
+    90deg,
+    rgba(9, 59, 121, 1) 0%,
+    rgba(34, 125, 176, 1) 46%,
+    rgba(163, 218, 255, 1) 100%
+  );
+  margin-bottom: 3rem;
+}
+.single-position__banner-content {
+  padding-top: 64px;
+  margin-bottom: 64px;
+}

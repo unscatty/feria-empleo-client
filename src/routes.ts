@@ -30,6 +30,22 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/profile',
+    component: () => import('./pages/profile/Profile.vue'),
+    beforeEnter: AuthGuard,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
+    path: '/profile/edit',
+    component: () => import('./pages/profile/edit/EditProfile.vue'),
+    beforeEnter: AuthGuard,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
     path: '/showCompany/:id',
     component: () => import('./pages/show-company/showCompany.vue'),
     beforeEnter: AuthGuard,
@@ -39,6 +55,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/apply/:id',
+    name: 'vacante',
     component: () => import('./pages/apply/Apply.vue'),
     beforeEnter: AuthGuard,
     meta: {

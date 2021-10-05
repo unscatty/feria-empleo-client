@@ -29,14 +29,10 @@ import { rules } from "@/helpers/form";
 import { ICompany } from "@/models/company/company.interface";
 import { VForm } from "@/models/form";
 import { CompanyService } from "@/services/company.service";
-// import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
 import { Component, Ref, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
 import Wysiwyg from "@/components/general/wysiwyg.vue";
 import { lazyInject } from "@/app.container";
 import AuthService from "@/auth/auth.service";
-
-// const authStore = namespace(AUTH_STORE_NAME);
 
 @Component({ components: { Wysiwyg } })
 export default class CompanyRegistration extends Vue {
@@ -55,13 +51,10 @@ export default class CompanyRegistration extends Vue {
     return rules;
   }
 
-  // @authStore.Getter
-  // responseState: typeof AuthStore.prototype.responseState;
-
   async created() {
     // Register company
     const state = this.authservice.getState();
-    const response = await this.companyService.register(state);
+    const response = (await this.companyService.register(state));
     this.form = response;
   }
 }

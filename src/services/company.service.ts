@@ -41,8 +41,6 @@ export class CompanyService extends ResourceService<ICompany> {
         params: { [tokenName]: token },
       });
 
-      console.log(response);
-
       return true;
     } catch (error) {
       return false;

@@ -18,7 +18,7 @@
               <v-col cols="6">
                 <v-select
                   v-model="form.experience"
-                  :items="emperienceItems"
+                  :items="experienceItems"
                   :rules="[rules.required]"
                   label="Experiencia"
                 ></v-select>
@@ -120,7 +120,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Ref } from 'vue-property-decorator';
 import { diffObjects, rules } from '@/helpers/form';
-import { jobPostTypes, jobPostModes, emperienceItems } from '@/constants/job-post';
+import { jobPostTypes, jobPostModes, experienceItems } from '@/constants/job-post';
 import Cropper from '@/components/general/cropper.vue';
 import Wysiwyg from '@/components/general/wysiwyg.vue';
 
@@ -156,7 +156,7 @@ export default class AddEditJobPost extends Vue {
   public dialogCropper = false;
   public jobPostTypes = jobPostTypes;
   public jobPostModes = jobPostModes;
-  public emperienceItems = emperienceItems;
+  public experienceItems = experienceItems;
   public form: any = {
     jobType: JobPostType.FULL_TIME,
     jobMode: JobPostMode.HOME_OFFICE,

@@ -4,13 +4,9 @@
 
 <script setup lang="ts">
 import { CompanyService } from "@/services/company.service";
-// import AuthStore, { AUTH_STORE_NAME } from "@/store/modules/auth.store";
 import { Component, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
 import { lazyInject } from "@/app.container";
 import AuthService from "@/auth/auth.service";
-
-// const authStore = namespace(AUTH_STORE_NAME);
 
 @Component
 export default class InvitationVerification extends Vue {
@@ -22,10 +18,8 @@ export default class InvitationVerification extends Vue {
 
   message = "";
 
-  // @authStore.Action
-  // loginCompany: typeof AuthStore.prototype.loginCompany;
-
   async created() {
+    await this.authService.handleRedirect();
     const urlToken = this.$route.query.token as string;
 
     if (!urlToken) {
@@ -39,7 +33,9 @@ export default class InvitationVerification extends Vue {
 
     if (validToken) {
       this.message = "Token válido";
-      this.authService.loginCompany({ state: urlToken });
+
+      await this.authService.handleRedirect();
+      await this.authService.registerCompany({ state: urlToken });
     } else {
       this.message = "Token inválido";
     }

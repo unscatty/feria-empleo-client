@@ -1,134 +1,360 @@
 <template>
-  <div class="col-lg-3">
-    <div class="filter-secs">
-      <div class="filter-heading">
-        <h3>Filtros</h3>
-        <a href="#" title=""
-          ><button class="clear" v-on:click="clearAllFilters">
-            Borrar filtros
-          </button></a
+  <v-container>
+    <v-row>
+      <v-col class="pa-0" cols="9">
+        <v-autocomplete
+          :items="jobPositionsGlobalSearch"
+          :loading="loadingSearch"
+          :search-input.sync="localFilters.search"
+          color="white"
+          clearable
+          hide-selected
+          item-text="jobTitle"
+          item-value="API"
+          label="Buscar"
+          prepend-icon="mdi-magnify"
+          return-object
+          @change="searchChange"
         >
-      </div>
-      <!--filter-heading end-->
-      <div class="paddy">
-        <div class="filter-dd">
-          <div class="filter-ttl">
-            <h3>Tipo</h3>
-            <a href="#" title=""
-              ><button class="clear" v-on:click="clearType">Borrar</button></a
+          <template v-slot:no-data>
+            <v-list-item>
+              <v-list-item-title>
+                Buscar
+                <strong>empleos</strong>
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+          <template v-slot:item="data">
+            <template :to="`/apply/${data.item.id}`">
+              <v-list-item-avatar>
+                <v-avatar size="36px">
+                  <img v-if="data.item.image" alt="Avatar" :src="data.item.image" />
+                  <v-icon v-else color="primary" v-text="data.item.jobTitle"></v-icon>
+                </v-avatar>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-html="data.item.jobTitle"></v-list-item-title>
+                <v-list-item-subtitle v-html="data.item.companyName"></v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col class="pt-0" cols="12">
+        <!-- JobType INI -->
+        <v-menu
+          v-model="menuJobType"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          bottom
+          left
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              :value="localFilters.jobType ? localFilters.jobType : false"
+              overlap
+              icon="mdi-checkbox-marked"
+              color="primary"
             >
-          </div>
-            <form class="job-tp">
-              <select v-on:change="selectType($event)" v-model="filterComponent.type">
-                <option disabled>Selecciona una opción</option>
-                <option value="Medio tiempo">Medio Tiempo</option>
-                <option value="Tiempo Completo">Tiempo Completo</option>
-              </select>
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </form>
-        </div>
+              <v-btn color="accent" dark v-bind="attrs" v-on="on">
+                Tipo
+              </v-btn>
+            </v-badge>
+          </template>
+          <v-card>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item v-for="(item, index) in jobPostTypes" :key="index">
+                <v-list-item-action>
+                  <v-switch
+                    v-model="localFilters.jobType"
+                    :value="item.value"
+                    color="primary"
+                  ></v-switch>
+                </v-list-item-action>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
 
-        <div class="filter-dd">
-          <div class="filter-ttl">
-            <h3>Modalidad</h3>
-            <a href="#" title=""
-              ><button class="clear" v-on:click="crearModality">
-                Borrar
-              </button></a
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="clearFilter('jobType')">
+                Limpiar
+              </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange">
+                Aplicar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+        <!-- JobType INI -->
+
+        <!-- JobMode INI -->
+        <v-menu
+          v-model="menuJobMode"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          bottom
+          left
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              :value="localFilters.jobMode ? localFilters.jobMode : false"
+              overlap
+              icon="mdi-checkbox-marked"
+              color="primary"
             >
-          </div>
-           <form class="job-tp">
-              <select v-on:change="selectModality($event)" v-model="filterComponent.modality">
-                <option disabled>Selecciona una opción</option>
-                <option value="Remoto">Remoto</option>
-                <option value="Presencial">Presencial</option>
-                <option value="Hybrid">Híbrido</option>
-              </select>
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </form>
-        </div>
+              <v-btn color="accent" dark class="ml-4" v-bind="attrs" v-on="on">
+                Modalidad
+              </v-btn>
+            </v-badge>
+          </template>
 
-        <div class="filter-dd">
-          <div class="filter-ttl">
-            <h3>Experiencia</h3>
-            <a href="#" title="">
-              <button class="clear" v-on:click="clearExperience">
-                Borrar
-              </button>
-            </a>
-          </div>
-          <form class="job-tp">
-            <select v-on:change="selectExperience($event)" v-model="filterComponent.experience">
-              <option disabled>Selecciona una opción</option>
-              <option value="none">Sin experiencia</option>
-              <option value="1y">1 año</option>
-              <option value="2y">2 años</option>
-              <option value="3yy">3 años en adelante</option>
-            </select>
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-          </form>
-        </div>
+          <v-card>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item v-for="(item, index) in jobPostModes" :key="index">
+                <v-list-item-action>
+                  <v-switch
+                    v-model="localFilters.jobMode"
+                    :value="item.value"
+                    color="primary"
+                  ></v-switch>
+                </v-list-item-action>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
 
-        <div class="filter-dd">
-          <div class="filter-ttl">
-            <h3>Empresa</h3>
-            <a href="#" title="">
-              <button class="clear" v-on:click="clearEmployerId">
-                Borrar
-              </button></a
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="clearFilter('jobMode')">
+                Limpiar
+              </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange">
+                Aplicar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+        <!-- JobMode FIN -->
+
+        <!-- Experience INI -->
+        <v-menu
+          v-model="menuExperience"
+          bottom
+          left
+          :close-on-content-click="false"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              :value="localFilters.experience ? localFilters.experience : false"
+              overlap
+              icon="mdi-checkbox-marked"
+              color="primary"
             >
-          </div>
-          <form class="job-tp">
-            <select v-on:change="selectCompany($event)" v-model="filterComponent.employerId">
-              <option disabled>Selecciona una opción</option>
-              <option
-                v-for="employer in filterComponent.employers"
-                :key="employer.id"
-                :value="employer.id"
-                >{{ employer.name }}</option
-              >
-            </select>
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!--filter-secs end-->
-  </div>
+              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on">
+                Experiencia
+              </v-btn>
+            </v-badge>
+          </template>
+
+          <v-card>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item v-for="(item, index) in experienceItems" :key="index">
+                <v-list-item-action>
+                  <v-switch
+                    v-model="localFilters.experience"
+                    :value="item.value"
+                    color="primary"
+                  ></v-switch>
+                </v-list-item-action>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="clearFilter('experience')">
+                Limpiar
+              </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange">
+                Aplicar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+        <!-- Experience FIN -->
+
+        <!-- Salary INI -->
+        <v-menu
+          v-model="menuSalary"
+          bottom
+          left
+          :close-on-content-click="false"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge :value="salary" overlap icon="mdi-checkbox-marked" color="primary">
+              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on">
+                Salario
+              </v-btn>
+            </v-badge>
+          </template>
+
+          <v-card>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item v-for="(item, index) in salaryItems" :key="index">
+                <v-list-item-action>
+                  <v-switch v-model="salary" :value="item.value" color="primary"></v-switch>
+                </v-list-item-action>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="clearFilter('salary')">
+                Limpiar
+              </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange">
+                Aplicar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+        <!-- Salary FIN -->
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { FiltersComponent } from "./filters.component";
+import { jobPostTypes, jobPostModes, experienceItems, salaryItems } from '@/constants/job-post';
+import { IJobPost } from '@/models/job-post/job-post.interface';
+import { IFilters } from '@/store/modules/job-post';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+
+const jobPost = namespace('JobPost');
+
 @Component
 export default class Filters extends Vue {
-    private filterComponent = new FiltersComponent();
+  menuJobType = false;
+  menuJobMode = false;
+  menuExperience = false;
+  menuSalary = false;
+  delayTimerSearch: any = null;
+  loadingSearch = false;
+  searchItems: any[] = [];
 
-    public selectType(type: string) { this.filterComponent.selectType(this, type); }
+  public jobPostTypes = jobPostTypes;
+  public jobPostModes = jobPostModes;
+  public experienceItems = experienceItems;
+  public salaryItems = salaryItems;
+  public salary: any = null;
 
-    public clearType() { this.filterComponent.clearType(this) }
+  public localFilters: IFilters = {
+    jobType: null,
+    jobMode: null,
+    experience: null,
+    search: null,
+  };
 
-    public selectModality(modality: string) { this.filterComponent.selectModality(this, modality) }
+  // Store
+  @jobPost.State
+  public jobPositions!: IJobPost[];
 
-    public crearModality() { this.filterComponent.clearModality(this) }
+  @jobPost.State
+  public jobPositionsGlobalSearch!: any[];
 
-    public selectExperience(experience: any) { this.filterComponent.selectExperience(this, experience) }
+  @jobPost.State
+  public jobPostFilters!: IFilters;
 
-    public clearExperience() { this.filterComponent.clearExperience(this) }
+  @jobPost.Mutation
+  public updateFilters!: (filters: IFilters) => void;
 
-    public selectCompany(company: any) { this.filterComponent.selectCompany(this, company) }
+  @jobPost.Action
+  public findAllJobPosts!: () => void;
 
-    public clearEmployerId() { this.filterComponent.clearCompany(this) }
+  @jobPost.Action
+  public jobPostsGlobalSearch!: (search: string) => void;
 
-    public clearAllFilters() { this.filterComponent.clearAllFilters(this) }
+  mounted() {
+    this.localFilters = { ...this.jobPostFilters };
+  }
+  @Watch('localFilters.search')
+  onSearch(val: string) {
+    this.loadingSearch = true;
+    clearTimeout(this.delayTimerSearch);
+    this.delayTimerSearch = setTimeout(async () => {
+      await this.jobPostsGlobalSearch(val);
+      this.loadingSearch = false;
+    }, 400);
+  }
 
-    created() {
-      this.filterComponent.getEmployers();
+  searchChange(val: any) {
+    if (val && val.id) {
+      this.$router.push(`/apply/${val.id}`);
     }
-}
+  }
 
+  async onFiltersChange() {
+    const filters = { ...this.localFilters };
+    if (this.salary) {
+      if (this.salary.salaryMinGte) {
+        filters.salaryMinGte = this.salary.salaryMinGte;
+      } else {
+        filters.salaryMinGte = null;
+      }
+      if (this.salary.salaryMaxLte) {
+        filters.salaryMaxLte = this.salary.salaryMaxLte;
+      } else {
+        filters.salaryMaxLte = null;
+      }
+    } else {
+      filters.salaryMinGte = null;
+      filters.salaryMaxLte = null;
+    }
+    this.menuJobType = false;
+    this.menuJobMode = false;
+    this.menuExperience = false;
+    this.menuSalary = false;
+    this.updateFilters(filters);
+    await this.findAllJobPosts();
+  }
+
+  async clearFilter(type: string) {
+    if (type === 'experience') {
+      this.localFilters.experience = null;
+      this.menuExperience = false;
+    }
+    if (type === 'jobType') {
+      this.localFilters.jobType = null;
+      this.menuJobType = false;
+    }
+    if (type === 'jobMode') {
+      this.localFilters.jobMode = null;
+      this.menuJobMode = false;
+    }
+    if (type === 'salary') {
+      this.localFilters.salaryMinGte = null;
+      this.localFilters.salaryMaxLte = null;
+      this.salary = null;
+      this.menuSalary = false;
+    }
+    this.updateFilters(this.localFilters);
+    await this.findAllJobPosts();
+  }
+}
 </script>
 
 <style>
-@import "./filters.css";
+@import './filters.css';
 </style>

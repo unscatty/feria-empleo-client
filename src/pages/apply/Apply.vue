@@ -84,8 +84,8 @@
                       >{{ timeAgo(new Date(applyComponent.data.position.createdAt)) }}</span
                     > -->
               <v-img
-                v-if="applyComponent.data.position.image.imageURL"
-                :src="applyComponent.data.position.image.imageURL"
+                v-if="applyComponent.data.position.imageURL"
+                :src="applyComponent.data.position.imageURL"
                 class="main-img"
               ></v-img>
               <v-row>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="sd-title paymethd">
                   <img
-                    :src="applyComponent.data.position.company.image.imageURL"
+                    :src="applyComponent.data.position.company.imageURL"
                     class="img-thumbnail"
                   />
                 </div>

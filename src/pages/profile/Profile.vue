@@ -20,10 +20,12 @@
 
             <div class="contact">
                 <span class="title"> Contacto </span>  <br> <br>
-                <v-icon color="#1976d2">mdi-phone</v-icon> {{ component.data.contact.phone}} <br> <br>
-                <v-icon color="#1976d2">mdi-mail</v-icon> {{ component.data.contact.address}}
+                <div v-if="component.data.contact != null">
+                    <v-icon color="#1976d2">mdi-phone</v-icon> {{ component.data.contact.phone}} <br> <br>
+                    <v-icon color="#1976d2">mdi-mail</v-icon> {{ component.data.contact.address}}
+                </div>
 
-                <div class="social-networks">
+                <div class="social-networks" v-if="component.data.contact != null">
                     <span v-if="component.data.contact.linkedinUrl">
                         <a v-bind:href="component.data.contact.linkedinUrl" target="_blank"><v-icon color="#1976d2">mdi-linkedin</v-icon></a>
                     </span>

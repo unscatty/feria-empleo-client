@@ -2,7 +2,7 @@ import { lazyInject } from "@/app.container";
 import { validateUnauthorizedError } from "@/auth/auth.validatod";
 import { ISkill } from "@/models/skills/ISkill";
 import axios from "axios";
-import { findIndex, head, isEqual, isNull } from "lodash";
+import { findIndex, head, isEmpty, isEqual, isNull } from "lodash";
 import Vue from "vue";
 import { UpdateCandidateService } from "./edit-candidate.service";
 
@@ -39,8 +39,12 @@ export class EditProfileComponent extends Vue {
         axios.get('/candidate/contact')
             .then((contactDetails: any) => {
                 this.data.contact = head(contactDetails.data);
+                if (isEmpty(this.data.contact) ) {
+                    this.setEmptyContact();
+                }
             })
             .catch((error) =>  {
+                this.setEmptyContact();
                 validateUnauthorizedError(error);
             })
         return;
@@ -76,5 +80,16 @@ export class EditProfileComponent extends Vue {
                 this.candidateService.updateResume(formData);
             }
         })
+    }
+
+    private setEmptyContact() {
+        this.data.contact = {
+            phone: "",
+            address: "",
+            linkedinUrl: "",
+            facebookUrl: "",
+            githubUrl: "",
+            webSite: ""
+        };
     }
 }

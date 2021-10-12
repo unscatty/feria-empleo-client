@@ -25,12 +25,14 @@
       </v-btn>
 
        <v-btn to="/profile" text>
+        <v-icon>mdi-account </v-icon>
         <span class="mr-2">Perfil</span>
       </v-btn>
 
       <v-btn to="/dashboard" text>
         <span class="mr-2">Dashboard</span>
         <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
       <v-btn to="/curriculum" text>
         <v-icon>
           mdi-clipboard-text-multiple-outline

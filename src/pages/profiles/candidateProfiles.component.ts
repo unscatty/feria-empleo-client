@@ -6,7 +6,7 @@ import VTooltip from 'v-tooltip';
 
 Vue.use(VTooltip);
 
-export class ProfileComponent {
+export class CandidateProfilesComponent {
 
     public data = new Vue({
         data: {
@@ -15,18 +15,18 @@ export class ProfileComponent {
         }
     })
 
-    public getCandidate() {
-        axios.get("/candidate")
+    public getCandidate(id: string) {
+        axios.get("/candidate/" + id)
             .then((candidate: any) => {
-                this.data.candidate = head(candidate.data);
+                this.data.candidate = candidate.data;
             })
             .catch((error) => {
                 validateUnauthorizedError(error);
             })
     }
 
-    public getContactDetails() {
-        axios.get('/candidate/contact')
+    public getContactDetails(id: string) {
+        axios.get('/candidate/contact/'+id)
             .then((contactDetails: any) => {
                 this.data.contact = head(contactDetails.data);
             })

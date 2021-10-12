@@ -46,6 +46,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: '/profiles/:id',
+    component: () => import ('./pages/profiles/CandidateProfiles.vue'),
+    beforeEnter: AuthGuard,
+    meta: {
+      layout: 'LayoutHome'
+    }
+  },
+  {
     path: '/showCompany/:id',
     component: () => import('./pages/show-company/showCompany.vue'),
     beforeEnter: AuthGuard,

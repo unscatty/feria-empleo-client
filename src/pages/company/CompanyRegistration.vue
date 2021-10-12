@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <template v-if="form">
-      Haz sido registrado como responsable de la empresa {{ form.name }}
+      Has sido registrado como responsable de la empresa {{ form.name }}
       <v-form ref="form" lazy-validation>
         <v-text-field
           v-model="form.name"
@@ -32,14 +32,14 @@ import { CompanyService } from "@/services/company.service";
 import { Component, Ref, Vue } from "vue-property-decorator";
 import Wysiwyg from "@/components/general/wysiwyg.vue";
 import { lazyInject } from "@/app.container";
-import AuthService from "@/auth/auth.service";
+import { CurrentUserService } from "@/services/current-user.service";
 
 @Component({ components: { Wysiwyg } })
 export default class CompanyRegistration extends Vue {
   form: ICompany = null;
 
-  @lazyInject(AuthService)
-  authservice: AuthService;
+  @lazyInject(CurrentUserService)
+  currentUserService: CurrentUserService;
 
   // Refs
   @Ref("form") readonly formRef!: VForm;
@@ -52,10 +52,7 @@ export default class CompanyRegistration extends Vue {
   }
 
   async created() {
-    // Register company
-    const state = this.authservice.getState();
-    const response = (await this.companyService.register(state));
-    this.form = response;
+    this.form = this.currentUserService.asCompany;
   }
 }
 </script>

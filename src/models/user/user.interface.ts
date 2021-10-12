@@ -1,3 +1,5 @@
+import RoleType from "../role.type";
+
 export interface IUser {
   id: number;
   email: string;
@@ -5,7 +7,10 @@ export interface IUser {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
+  
+  role: RoleType;
+}
 
-  // Relationships
-  // role: Role;
+export interface IAdmin {
+  user: IUser;
 }

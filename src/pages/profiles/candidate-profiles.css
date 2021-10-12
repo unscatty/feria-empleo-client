@@ -1,0 +1,126 @@
+.introduction, .skills, .experience {
+    width: 80%;
+    height: auto;
+    border-radius: 20px;
+    margin: 5% 10% 0% 10%;
+    padding: 3vh 3vw 3vh 3vw;
+    box-shadow:  5px 10px 10px #eeeeee;
+    display: flex
+}
+
+.profile-info {
+    display: block;
+    border-right: 1px solid #eeeeee;
+}
+
+.profile-info .name {
+    font-size:larger;
+    font-weight: bolder;
+    padding: 5vh 3vw 0vh 3vw;
+}
+
+.education {
+    padding: 1vh 3vw 3vh 3vw !important;
+}
+
+.contact {
+    padding: 3vh 5vw 3vh 5vw;
+    border-right: 1px solid #eeeeee;
+}
+
+.social-networks {
+    padding-top: 5vh;
+}
+
+.social-networks a{
+    text-decoration: none;
+    padding-right: 1vw;
+}
+
+.resume {
+    padding: 3vh 5vw 3vh 5vw;
+}
+
+.download {
+    padding-top: 5vh;
+}
+
+.download a { 
+    text-decoration: none;
+    color: black;
+}
+
+.skills {
+    padding: 3vh 3vw 3vh 3vw;
+    display: block;
+}
+
+.skills .chips {
+    display: inline-flex !important;
+}
+
+.skills .chips .chip {
+    margin-right: 1vw;
+    margin-top: 3vh;
+}
+
+.experience {
+    padding: 3vh 5vw 0vh 5vw;
+    display: block;
+}
+
+.job .header {
+    display: flex;
+}
+
+.experience .job {
+    display: block;
+    margin-top: 2vh !important;
+}
+
+.job .name, .job .date {
+    font-size:larger;
+    font-weight: bolder;
+    margin-top: 5vh !important;
+    padding: 0vh 5vw 5vh 0vw !important;
+}
+
+.job .date {
+    float: right !important;
+    font-weight: normal;
+    margin-left: 50%;
+}
+
+.job .description {
+    padding-top: 3vh;
+}
+
+.edit {
+    background-color: #1976d2;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 85%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 94%;
+    display: flex;
+    align-content: center;
+}
+
+.edit .router {
+    margin-left: 25%;
+    margin-top: 25%;
+}
+
+.tooltip .tooltip-inner {
+    background: white;
+    color: #1976d2;
+    border-radius: 16px;
+    padding: 5px 10px 4px;
+    box-shadow:  5px 10px 10px #eeeeee;
+}
+
+.tooltip[x-placement^="top"] {
+    margin-bottom: 15px;
+}

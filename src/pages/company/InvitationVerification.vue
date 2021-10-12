@@ -19,6 +19,7 @@ export default class InvitationVerification extends Vue {
   message = "";
 
   async created() {
+    await this.authService.handleRedirect();
     const urlToken = this.$route.query.token as string;
 
     if (!urlToken) {

@@ -1,6 +1,7 @@
 import { validateUnauthorizedError } from "@/auth/auth.validatod";
 import { rules } from "@/helpers/form";
 import axios from "axios";
+import { head, isNull } from "lodash";
 import Vue from "vue";
 
 export class ApplyComponent {
@@ -11,7 +12,8 @@ export class ApplyComponent {
             file: null,
             loading: false,
             rules: rules,
-            position: null
+            position: null,
+            candidate: null
         }
     });
 
@@ -33,12 +35,15 @@ export class ApplyComponent {
     }
 
     public async submitFile(context: any) {
-        const isValid = context.$refs.form.validate();
-        if (!isValid) {
-          return;
-        }
         const formData = new FormData();
         formData.append('file', this.data.file);
+        
+        if (isNull(this.data.candidate.resume)) {
+          this.data.loading = false;
+          this.data.modal = false;
+          return;
+        }
+
         try {
           this.data.loading = true;
           await axios.post(
@@ -57,4 +62,14 @@ export class ApplyComponent {
           this.data.modal = false;
         }
       }
+
+      public getCandidate() {
+        axios.get("/candidate")
+          .then((candidate: any) => {
+            this.data.candidate = head(candidate.data);
+          })
+          .catch((error) => {
+                validateUnauthorizedError(error);
+            })
+    }
 }

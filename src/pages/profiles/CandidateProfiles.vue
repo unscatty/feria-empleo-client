@@ -1,12 +1,6 @@
 <template>
     <div v-if="component.data.candidate">
 
-        <div class="edit">
-            <router-link :to=" '/profile/edit' "  v-tooltip=" 'Editar perfil' " class="router">
-                <v-icon color="white">mdi-pencil</v-icon>
-            </router-link>
-        </div>
-
         <div class="introduction">
             <div class="profile-info">
                 <div class="name">
@@ -77,24 +71,26 @@
 import Vue from 'vue'
 import Component from 'vue-class-component';
 
-import { ProfileComponent } from './profile.component';
+import { CandidateProfilesComponent } from './candidateProfiles.component';
 
 const month = 1;
 const year = 3;
 
 @Component({})
-export default class Profile extends Vue {
+export default class CandidateProfiles extends Vue {
 
-    public component: ProfileComponent;
+    public component: CandidateProfilesComponent;
+    private id: string;
 
     constructor() {
         super();
-        this.component = new ProfileComponent();
+        this.component = new CandidateProfilesComponent();
     }
 
     created() {
-        this.component.getCandidate();
-        this.component.getContactDetails();
+        this.id = this.$route.params.id;
+        this.component.getCandidate(this.id);
+        this.component.getContactDetails(this.id);
     }
 
     getStringDate(date: string) {
@@ -105,5 +101,5 @@ export default class Profile extends Vue {
 </script>
 
 <style scoped>
-@import "./profile.css";
+@import "./candidate-profiles.css";
 </style>

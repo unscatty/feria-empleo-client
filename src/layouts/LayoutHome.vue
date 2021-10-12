@@ -31,6 +31,7 @@
       <v-btn to="/dashboard" text>
         <span class="mr-2">Dashboard</span>
         <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
       <v-btn to="/curriculum" text>
         <v-icon>
           mdi-clipboard-text-multiple-outline

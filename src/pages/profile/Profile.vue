@@ -8,58 +8,60 @@
 
     <div class="introduction">
       <div class="profile-info">
-        <div class="name">
-          {{ component.data.candidate.name }} {{ component.data.candidate.lastname }}
-        </div>
-<<<<<<< HEAD
-        <div class="education">
-          {{ getInsitutionName }}
-          <br />
-          {{ getDegree }}
-          <br />
-=======
+        <div class="name">{{ component.data.candidate.name }} {{ component.data.candidate.lastname }}</div>
 
         <div class="introduction">
-            <div class="profile-info">
-                <div class="name">
-                    {{ component.data.candidate.name }} {{ component.data.candidate.lastname }}
-                </div>
-                <div class="education">
-                    {{ component.data.candidate.educationDetails[0].institutionName }} <br>
-                    {{ component.data.candidate.educationDetails[0].degree }} <br>
-                </div>
+          <div class="profile-info">
+            <div class="name">
+              {{ component.data.candidate.name }} {{ component.data.candidate.lastname }}
+            </div>
+            <div class="education">
+              {{ component.data.candidate.educationDetails[0].institutionName }} <br />
+              {{ component.data.candidate.educationDetails[0].degree }} <br />
+            </div>
+          </div>
+
+          <div class="contact">
+            <span class="title"> Contacto </span> <br />
+            <br />
+            <div v-if="component.data.contact != null">
+              <v-icon color="#1976d2">mdi-phone</v-icon> {{ component.data.contact.phone }} <br />
+              <br />
+              <v-icon color="#1976d2">mdi-mail</v-icon> {{ component.data.contact.address }}
             </div>
 
-            <div class="contact">
-                <span class="title"> Contacto </span>  <br> <br>
-                <div v-if="component.data.contact != null">
-                    <v-icon color="#1976d2">mdi-phone</v-icon> {{ component.data.contact.phone}} <br> <br>
-                    <v-icon color="#1976d2">mdi-mail</v-icon> {{ component.data.contact.address}}
-                </div>
-
-                <div class="social-networks" v-if="component.data.contact != null">
-                    <span v-if="component.data.contact.linkedinUrl">
-                        <a v-bind:href="component.data.contact.linkedinUrl" target="_blank"><v-icon color="#1976d2">mdi-linkedin</v-icon></a>
-                    </span>
-                    <span v-if="component.data.contact.githubUrl">
-                        <a v-bind:href="component.data.contact.githubUrl" target="_blank"><v-icon color="#1976d2">mdi-github</v-icon></a>
-                    </span>
-                    <span v-if="component.data.contact.facebookUrl">
-                        <a v-bind:href="component.data.contact.facebookUrl" target="_blank"><v-icon color="#1976d2">mdi-facebook</v-icon></a>
-                    </span>
-                    <span v-if="component.data.contact.webSite">
-                       <a v-bind:href="component.data.contact.webSite" target="_blank"><v-icon color="#1976d2">mdi-web</v-icon></a>
-                    </span>
-                </div>
+            <div class="social-networks" v-if="component.data.contact != null">
+              <span v-if="component.data.contact.linkedinUrl">
+                <a v-bind:href="component.data.contact.linkedinUrl" target="_blank"
+                  ><v-icon color="#1976d2">mdi-linkedin</v-icon></a
+                >
+              </span>
+              <span v-if="component.data.contact.githubUrl">
+                <a v-bind:href="component.data.contact.githubUrl" target="_blank"
+                  ><v-icon color="#1976d2">mdi-github</v-icon></a
+                >
+              </span>
+              <span v-if="component.data.contact.facebookUrl">
+                <a v-bind:href="component.data.contact.facebookUrl" target="_blank"
+                  ><v-icon color="#1976d2">mdi-facebook</v-icon></a
+                >
+              </span>
+              <span v-if="component.data.contact.webSite">
+                <a v-bind:href="component.data.contact.webSite" target="_blank"
+                  ><v-icon color="#1976d2">mdi-web</v-icon></a
+                >
+              </span>
             </div>
+          </div>
 
-            <div class="resume">
-                <span class="title"> Curriculum </span> <br>
-                <div class="download">
-                    <a :href="component.data.candidate.resume" target="_blank"><v-icon>mdi-download</v-icon> Descargar</a>
-                </div>
+          <div class="resume">
+            <span class="title"> Curriculum </span> <br />
+            <div class="download">
+              <a :href="component.data.candidate.resume" target="_blank"
+                ><v-icon>mdi-download</v-icon> Descargar</a
+              >
             </div>
->>>>>>> bugfix/auth-redirect
+          </div>
         </div>
       </div>
 
@@ -74,30 +76,22 @@
 
         <div class="social-networks">
           <span v-if="component.data.contact ? component.data.contact.linkedinUrl : ''">
-            <a
-              v-bind:href="component.data.contact ? component.data.contact.linkedinUrl : ''"
-              target="_blank"
+            <a v-bind:href="component.data.contact ? component.data.contact.linkedinUrl : ''" target="_blank"
               ><v-icon color="#1976d2">mdi-linkedin</v-icon></a
             >
           </span>
           <span v-if="component.data.contact ? component.data.contact.githubUrl : ''">
-            <a
-              v-bind:href="component.data.contact ? component.data.contact.githubUrl : ''"
-              target="_blank"
+            <a v-bind:href="component.data.contact ? component.data.contact.githubUrl : ''" target="_blank"
               ><v-icon color="#1976d2">mdi-github</v-icon></a
             >
           </span>
           <span v-if="component.data.contact ? component.data.contact.facebookUrl : ''">
-            <a
-              v-bind:href="component.data.contact ? component.data.contact.facebookUrl : ''"
-              target="_blank"
+            <a v-bind:href="component.data.contact ? component.data.contact.facebookUrl : ''" target="_blank"
               ><v-icon color="#1976d2">mdi-facebook</v-icon></a
             >
           </span>
           <span v-if="component.data.contact ? component.data.contact.webSite : ''">
-            <a
-              v-bind:href="component.data.contact ? component.data.contact.webSite : ''"
-              target="_blank"
+            <a v-bind:href="component.data.contact ? component.data.contact.webSite : ''" target="_blank"
               ><v-icon color="#1976d2">mdi-web</v-icon></a
             >
           </span>
@@ -107,9 +101,7 @@
       <div class="resume">
         <span class="title"> Curriculum </span> <br />
         <div class="download">
-          <a
-            href="https://poccompany.blob.core.windows.net/feria/Josue Ruiz resume.pdf"
-            target="_blank"
+          <a href="https://poccompany.blob.core.windows.net/feria/Josue Ruiz resume.pdf" target="_blank"
             ><v-icon>mdi-download</v-icon> Descargar</a
           >
         </div>
@@ -130,9 +122,7 @@
       <div class="job" v-for="job in component.data.candidate.experienceDetails" :key="job.id">
         <div class="header">
           <span class="name"> {{ job.companyName }}</span> <br />
-          <span class="date"
-            >{{ getStringDate(job.startDate) }} - {{ getStringDate(job.endDate) }}</span
-          >
+          <span class="date">{{ getStringDate(job.startDate) }} - {{ getStringDate(job.endDate) }}</span>
           <br />
         </div>
         <span class="description">

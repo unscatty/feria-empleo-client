@@ -27,28 +27,14 @@ export class ProfileComponent {
       });
   }
 
-<<<<<<< HEAD
   public getContactDetails() {
     axios
       .get('/candidate/contact')
       .then((contactDetails: any) => {
         this.data.contact = head(contactDetails.data);
-        console.log(this.data.contact);
       })
       .catch((error) => {
         validateUnauthorizedError(error);
       });
   }
 }
-=======
-    public getContactDetails() {
-        axios.get('/candidate/contact')
-            .then((contactDetails: any) => {
-                this.data.contact = head(contactDetails.data);
-            })
-            .catch((error) =>  {
-                validateUnauthorizedError(error);
-            })
-    }
-}
->>>>>>> bugfix/auth-redirect

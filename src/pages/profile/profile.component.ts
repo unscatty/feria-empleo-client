@@ -27,6 +27,7 @@ export class ProfileComponent {
       });
   }
 
+<<<<<<< HEAD
   public getContactDetails() {
     axios
       .get('/candidate/contact')
@@ -39,3 +40,15 @@ export class ProfileComponent {
       });
   }
 }
+=======
+    public getContactDetails() {
+        axios.get('/candidate/contact')
+            .then((contactDetails: any) => {
+                this.data.contact = head(contactDetails.data);
+            })
+            .catch((error) =>  {
+                validateUnauthorizedError(error);
+            })
+    }
+}
+>>>>>>> bugfix/auth-redirect

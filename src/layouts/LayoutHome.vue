@@ -24,7 +24,12 @@
         <span class="ml-2">Empresas</span>
       </v-btn>
 
+<<<<<<< HEAD
       <v-btn to="/profile" text>
+=======
+       <v-btn to="/profile" text>
+        <v-icon>mdi-account </v-icon>
+>>>>>>> bugfix/auth-redirect
         <span class="mr-2">Perfil</span>
       </v-btn>
 

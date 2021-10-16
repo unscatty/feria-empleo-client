@@ -28,3 +28,16 @@
   padding-top: 64px;
   margin-bottom: 64px;
 }
+
+.question {
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  text-align: center;
+  margin-top: 5%;
+}
+
+.router {
+  text-decoration: none;
+  color: gray !important;
+}

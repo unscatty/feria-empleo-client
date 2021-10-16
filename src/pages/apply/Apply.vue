@@ -1,22 +1,27 @@
 <template>
-  <div v-if="applyComponent.data.position !== null">
+  <div v-if="applyComponent.data.position !== null && applyComponent.data.candidate != null">
     <v-dialog v-model="applyComponent.data.modal" max-width="650">
       <v-card>
         <v-card-title style="background: #1a7eba" class="headline text-center white--text">
           Aplica a esta vacante
         </v-card-title>
-        <v-card-text>
-          <v-card-subtitle class="title ">Adjunta tu CV en formato PDF </v-card-subtitle>
+        <v-card-text v-if="applyComponent.data.candidate.resume == null">
+          <v-card-subtitle class="title ">Actualiza tu perfil </v-card-subtitle>
           <v-form ref="form" lazy-validation>
             <div class="file-content">
-              <v-file-input
-                v-model="applyComponent.data.file"
-                show-size
-                :rules="[applyComponent.data.rules.required]"
-                label="Curriculum"
-              ></v-file-input>
+              Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que las
+              empresas puedan saber mas sobre ti y tus habilidades. <br /><br />
+              <router-link :to="'/profile/edit'" class="router">
+                Editar perfil
+                <v-icon color="black">mdi-account</v-icon>
+              </router-link>
             </div>
           </v-form>
+        </v-card-text>
+        <v-card-text v-if="applyComponent.data.candidate.resume != null" class="question">
+          <div class="file-content">
+            ¿Seguro desea aplicar a esta vacante?
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -27,7 +32,7 @@
             :loading="applyComponent.data.loading"
             v-on:click="submitFile"
           >
-            Guardar
+            Aceptar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -39,9 +44,7 @@
           <h1 class="text-h4  mb-4">
             {{ applyComponent.data.position.jobTitle }}
           </h1>
-          <p
-            v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax"
-          >
+          <p v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax">
             <b>
               {{ formatMoney(applyComponent.data.position.salaryMin) }} -
               {{ formatMoney(applyComponent.data.position.salaryMax) }} Mensual
@@ -73,14 +76,9 @@
         <v-row>
           <v-col lg="9" cols="12">
             <v-card>
-              <!-- <span
-                      v-if="applyComponent.data.position.createdAt"
-                      class="position__creation-date"
-                      >{{ timeAgo(new Date(applyComponent.data.position.createdAt)) }}</span
-                    > -->
               <v-img
-                v-if="applyComponent.data.position.image.imageURL"
-                :src="applyComponent.data.position.image.imageURL"
+                v-if="applyComponent.data.position.image"
+                :src="applyComponent.data.position.image"
                 class="main-img"
               ></v-img>
               <v-row>
@@ -113,10 +111,12 @@
                 <div class="sd-title">
                   <h3>Acerca del empleador</h3>
                 </div>
-                <div class="sd-title paymethd">
+                <div class="sd-title paymethd text-center mt-5">
                   <img
-                    :src="applyComponent.data.position.company.image.imageURL"
+                    :src="applyComponent.data.position.company.imageURL"
                     class="img-thumbnail"
+                    width="150"
+                    height="150"
                   />
                 </div>
                 <div class="sd-title">
@@ -170,6 +170,7 @@ export default class Apply extends Vue {
     this.id = this.$route.params.id;
     this.applyComponent.validateId(this.id, this);
     await this.applyComponent.getPosition(this.id);
+    await this.applyComponent.getCandidate();
   }
 
   public submitFile() {

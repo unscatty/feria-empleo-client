@@ -2,7 +2,7 @@
   <div class="col-lg-3 col-md-4 col-sm-6">
     <div class="company_profile_info">
       <div class="company-up-info">
-        <img :src="company.image.imageURL" alt="" />
+        <img :src="company.imageURL" alt="" />
         <h3>{{ company.name }}</h3>
         <h4>{{ company.description }}</h4>
       </div>

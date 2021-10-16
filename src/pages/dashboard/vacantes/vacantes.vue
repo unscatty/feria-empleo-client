@@ -62,6 +62,9 @@
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
+                <v-icon class="mx-2" @click="goToAppliedCandidates(item)">
+                  mdi-eye
+                </v-icon>
                 <v-icon class="mx-2" @click="component.editPosition(item)">
                   mdi-pencil
                 </v-icon>
@@ -178,6 +181,10 @@ export default class AdminVacantes extends Vue {
   closeDialog() {
     this.component.dialog = false;
     this.component.updating = false;
+  }
+
+  goToAppliedCandidates(jobPost: any) {
+    this.$router.push(`/dashboard/candidatos-aplicados/${jobPost.id}`);
   }
 
   imageUrlError(index: any) {

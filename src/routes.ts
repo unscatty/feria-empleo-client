@@ -34,16 +34,16 @@ const routes: Array<RouteConfig> = [
     component: () => import('./pages/profile/Profile.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/profile/edit',
     component: () => import('./pages/profile/edit/EditProfile.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/showCompany/:id',
@@ -65,6 +65,15 @@ const routes: Array<RouteConfig> = [
   {
     path: '/dashboard',
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
+    beforeEnter: AuthGuard,
+    meta: {
+      layout: 'LayoutDashboard',
+    },
+  },
+  {
+    path: '/dashboard/candidatos-aplicados/:id',
+    component: () =>
+      import('./pages/dashboard/vacantes/candidatos-aplicados/candidatos-aplicados.vue'),
     beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutDashboard',

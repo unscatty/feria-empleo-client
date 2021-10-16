@@ -5,13 +5,14 @@ import AuthGuard from './auth/auth.guard';
 import CompanyRegisterGuard from './guards/company-register.guard';
 import CurrentUserGuard from './guards/current-user.guard';
 import RoleGuard from './guards/role.guard';
+import RoleType from './models/role.type';
 import CandidateRegistration from './pages/candidate-registration/CandidateRegistration.vue';
 import CompanyRegistration from './pages/company/CompanyRegistration.vue';
 import InvitationVerification from './pages/company/InvitationVerification.vue';
 import AdminCompanies from './pages/dashboard/company/companies.vue';
 import { CustomRouteConfig } from './utils/custom-route.types';
 import createMultiGuard from './utils/multi-guard';
-import { MultiGuard as NoDefaultsMultiGuard } from './utils/multi-guard'
+import { MultiGuard as NoDefaultsMultiGuard } from './utils/multi-guard';
 
 dotenv.config();
 
@@ -30,9 +31,9 @@ const routes: Array<CustomRouteConfig> = [
       layout: 'LayoutHome',
       permissions: {
         default: {
-          access: true
-        }
-      }
+          access: true,
+        },
+      },
     },
   },
   {
@@ -48,24 +49,24 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/profile/Profile.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/profile/edit',
     component: () => import('./pages/profile/edit/EditProfile.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/profiles/:id',
-    component: () => import ('./pages/profiles/CandidateProfiles.vue'),
+    component: () => import('./pages/profiles/CandidateProfiles.vue'),
     beforeEnter: AuthGuard,
     meta: {
-      layout: 'LayoutHome'
-    }
+      layout: 'LayoutHome',
+    },
   },
   {
     path: '/showCompany/:id',
@@ -91,11 +92,15 @@ const routes: Array<CustomRouteConfig> = [
     meta: {
       layout: 'LayoutDashboard',
       permissions: {
+        roles: [
+          { role: RoleType.COMPANY, access: true },
+          { role: RoleType.ADMIN, access: true },
+        ],
         default: {
           access: false,
-          redirect: { name: 'home' }
-        }
-      }
+          redirect: { name: 'home' },
+        },
+      },
     },
   },
   {
@@ -125,7 +130,6 @@ const routes: Array<CustomRouteConfig> = [
     path: '/registro',
     name: 'CandidateRegistration',
     component: CandidateRegistration,
-    beforeEnter: MultiGuard(),
     meta: {
       layout: 'LayoutVuetifyDefault',
     },

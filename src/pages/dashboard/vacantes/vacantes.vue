@@ -43,9 +43,7 @@
                     max-height="60"
                     aspect-ratio="1"
                     contain
-                    :src="
-                      value && value.imageURL ? value.imageURL : require('@/assets/no-image.png')
-                    "
+                    :src="value || require('@/assets/no-image.png')"
                   >
                   </v-img>
                 </div>
@@ -96,12 +94,7 @@
           >
             Cancelar
           </v-btn>
-          <v-btn
-            :loading="component.loading"
-            color="green darken-1"
-            text
-            @click="onDeleteJobPost()"
-          >
+          <v-btn :loading="component.loading" color="green darken-1" text @click="onDeleteJobPost()">
             Aceptar
           </v-btn>
         </v-card-actions>

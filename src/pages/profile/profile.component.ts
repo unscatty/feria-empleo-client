@@ -18,8 +18,6 @@ export class ProfileComponent {
     axios
       .get('/candidate')
       .then((candidate: any) => {
-        console.log(candidate);
-
         this.data.candidate = head(candidate.data);
       })
       .catch((error) => {

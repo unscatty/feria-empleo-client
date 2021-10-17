@@ -173,8 +173,22 @@ export default class Apply extends Vue {
     await this.applyComponent.getCandidate();
   }
 
-  public submitFile() {
-    this.applyComponent.submitFile(this);
+  public async submitFile() {
+    const res = await this.applyComponent.submitFile(this);
+    if (res === 'success') {
+      this.$store.dispatch(
+        'Ui/showToast',
+        { text: 'Vacante aplicada con éxito', color: 'success' },
+        { root: true }
+      );
+    } else {
+      this.$store.dispatch(
+        'Ui/showToast',
+        { text: 'Parece ya haz aplicado a esta vacante', color: 'warning' },
+        { root: true }
+      );
+    }
+    console.log(res);
   }
 
   public formatMoney(value: number) {

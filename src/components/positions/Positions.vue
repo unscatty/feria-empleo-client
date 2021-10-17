@@ -14,11 +14,7 @@
       }}</span>
     </v-toolbar>
 
-    <v-img
-      v-if="position.image.imageURL && !compacted"
-      :src="position.image.imageURL"
-      class="main-img"
-    ></v-img>
+    <v-img v-if="position.image && !compacted" :src="position.image" class="main-img"></v-img>
 
     <v-card-title> {{ position.company.name }} </v-card-title>
     <v-card-text>
@@ -30,10 +26,10 @@
           <strong class="ml-2">{{ formatMoney(position.salaryMin) }} / mes</strong>
         </v-col>
         <v-col cols="12">
-          <p>{{ position.description }}</p>
+          <p>{{ truncate(position.description, 300) }}</p>
         </v-col>
         <v-col cols="8" class="text-left">
-          <v-chip class="mr-3" v-for="(tag, index) in position.tags" :key="index">
+          <v-chip class="mr-3 mt-2" v-for="(tag, index) in position.tags" :key="index">
             {{ tag.name }}
           </v-chip>
         </v-col>
@@ -53,13 +49,13 @@ import { formatMoney } from '../../utils/format-money';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { JobTypeEnum } from '@/utils/enums';
 import { isEqual } from 'lodash';
-
+import { truncate } from '@/helpers/text';
 @Component
 export default class Positions extends Vue {
   @Prop(Object) readonly position: any;
   public compacted: boolean;
   public showSeeMore: boolean;
-
+  truncate = truncate;
   constructor() {
     super();
     this.compacted = false;

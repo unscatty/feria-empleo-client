@@ -45,6 +45,13 @@ class JobPost extends VuexModule<JobPostState> {
   }
 
   @Mutation
+  public addJobPosts(jobPositions: any[]): void {
+    const newArr = [...this.jobPositions, ...jobPositions];
+    // remover duplicados
+    this.jobPositions = newArr.filter((v, index, arr) => arr.findIndex((t) => t.id === v.id) === index);
+  }
+
+  @Mutation
   public setLoadingJobPosts(loading: boolean): void {
     this.loadingJobPositions = loading;
   }
@@ -108,6 +115,22 @@ class JobPost extends VuexModule<JobPostState> {
   }
 
   @Action
+  async fetchMoreJobPosts() {
+    try {
+      this.context.commit('setLoadingJobPosts', true);
+      const res = await axios.get('job-posts', {
+        params: this.context.state.jobPostFilters,
+      });
+      this.context.commit('addJobPosts', res.data.items);
+      this.context.commit('setjobsPaginationData', res.data.meta);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.context.commit('setLoadingJobPosts', false);
+    }
+  }
+
+  @Action
   async jobPostsGlobalSearch(search: string) {
     try {
       const res = await axios.get(`job-posts/global-search/${search}`);
@@ -146,11 +169,7 @@ class JobPost extends VuexModule<JobPostState> {
       const formData = new FormData();
       buildFormData(formData, data);
       const res = await axios.put(`job-posts/${id}`, formData);
-      this.context.dispatch(
-        'Ui/showToast',
-        { text: 'Vacante actualizada con éxito' },
-        { root: true }
-      );
+      this.context.dispatch('Ui/showToast', { text: 'Vacante actualizada con éxito' }, { root: true });
       this.context.commit('addUpdateJobPost', res.data);
     } catch (error) {
       console.log(error);
@@ -161,11 +180,7 @@ class JobPost extends VuexModule<JobPostState> {
   async deleteJobPost(id: number) {
     try {
       const res = await axios.delete(`job-posts/${id}`);
-      this.context.dispatch(
-        'Ui/showToast',
-        { text: 'Vacante eliminada con éxito' },
-        { root: true }
-      );
+      this.context.dispatch('Ui/showToast', { text: 'Vacante eliminada con éxito' }, { root: true });
       this.context.commit('removeJobPost', res.data?.id);
     } catch (error) {
       console.log(error);

@@ -9,9 +9,9 @@
           <v-card-subtitle class="title ">Actualiza tu perfil </v-card-subtitle>
           <v-form ref="form" lazy-validation>
             <div class="file-content">
-              Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que las empresas puedan saber
-              mas sobre ti y tus habilidades. <br><br>
-              <router-link :to=" '/profile/edit' "  class="router">
+              Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que las
+              empresas puedan saber mas sobre ti y tus habilidades. <br /><br />
+              <router-link :to="'/profile/edit'" class="router">
                 Editar perfil
                 <v-icon color="black">mdi-account</v-icon>
               </router-link>
@@ -44,9 +44,7 @@
           <h1 class="text-h4  mb-4">
             {{ applyComponent.data.position.jobTitle }}
           </h1>
-          <p
-            v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax"
-          >
+          <p v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax">
             <b>
               {{ formatMoney(applyComponent.data.position.salaryMin) }} -
               {{ formatMoney(applyComponent.data.position.salaryMax) }} Mensual
@@ -78,14 +76,9 @@
         <v-row>
           <v-col lg="9" cols="12">
             <v-card>
-              <!-- <span
-                      v-if="applyComponent.data.position.createdAt"
-                      class="position__creation-date"
-                      >{{ timeAgo(new Date(applyComponent.data.position.createdAt)) }}</span
-                    > -->
               <v-img
-                v-if="applyComponent.data.position.imageURL"
-                :src="applyComponent.data.position.imageURL"
+                v-if="applyComponent.data.position.image"
+                :src="applyComponent.data.position.image"
                 class="main-img"
               ></v-img>
               <v-row>
@@ -118,10 +111,12 @@
                 <div class="sd-title">
                   <h3>Acerca del empleador</h3>
                 </div>
-                <div class="sd-title paymethd">
+                <div class="sd-title paymethd text-center mt-5">
                   <img
                     :src="applyComponent.data.position.company.imageURL"
                     class="img-thumbnail"
+                    width="150"
+                    height="150"
                   />
                 </div>
                 <div class="sd-title">
@@ -178,8 +173,22 @@ export default class Apply extends Vue {
     await this.applyComponent.getCandidate();
   }
 
-  public submitFile() {
-    this.applyComponent.submitFile(this);
+  public async submitFile() {
+    const res = await this.applyComponent.submitFile(this);
+    if (res === 'success') {
+      this.$store.dispatch(
+        'Ui/showToast',
+        { text: 'Vacante aplicada con éxito', color: 'success' },
+        { root: true }
+      );
+    } else {
+      this.$store.dispatch(
+        'Ui/showToast',
+        { text: 'Parece ya haz aplicado a esta vacante', color: 'warning' },
+        { root: true }
+      );
+    }
+    console.log(res);
   }
 
   public formatMoney(value: number) {

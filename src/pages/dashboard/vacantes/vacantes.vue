@@ -43,9 +43,7 @@
                     max-height="60"
                     aspect-ratio="1"
                     contain
-                    :src="
-                      value && value.imageURL ? value.imageURL : require('@/assets/no-image.png')
-                    "
+                    :src="value || require('@/assets/no-image.png')"
                   >
                   </v-img>
                 </div>
@@ -62,6 +60,9 @@
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
+                <v-icon class="mx-2" @click="goToAppliedCandidates(item)">
+                  mdi-eye
+                </v-icon>
                 <v-icon class="mx-2" @click="component.editPosition(item)">
                   mdi-pencil
                 </v-icon>
@@ -96,12 +97,7 @@
           >
             Cancelar
           </v-btn>
-          <v-btn
-            :loading="component.loading"
-            color="green darken-1"
-            text
-            @click="onDeleteJobPost()"
-          >
+          <v-btn :loading="component.loading" color="green darken-1" text @click="onDeleteJobPost()">
             Aceptar
           </v-btn>
         </v-card-actions>
@@ -178,6 +174,10 @@ export default class AdminVacantes extends Vue {
   closeDialog() {
     this.component.dialog = false;
     this.component.updating = false;
+  }
+
+  goToAppliedCandidates(jobPost: any) {
+    this.$router.push(`/dashboard/candidatos-aplicados/${jobPost.id}`);
   }
 
   imageUrlError(index: any) {

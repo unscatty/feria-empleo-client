@@ -37,7 +37,17 @@
                           <v-text-field
                             label="Nombre"
                             v-model="form.name"
-                            :value="getAccount ? getAccount.idTokenClaims.name : ''"
+                            :value="getAccount ? getAccount.idTokenClaims.given_name : ''"
+                            prepend-icon="mdi-email"
+                            type="text"
+                            :rules="[rules.required]"
+                          />
+                        </v-col>
+                        <v-col cols="12" class="candidate-registration__input-item">
+                          <v-text-field
+                            label="Apellido"
+                            v-model="form.lastname"
+                            :value="getAccount ? getAccount.idTokenClaims.family_name : ''"
                             prepend-icon="mdi-email"
                             type="text"
                             :rules="[rules.required]"
@@ -150,7 +160,7 @@ import { VForm } from '@/models/form';
 import { namespace } from 'vuex-class';
 import EducationDetailsForm from '../../components/candidate/EducationDetailsForm.vue';
 import ExperienceDetailForm from '../../components/candidate/ExperienceDetailForm.vue';
-import { container } from '@/app.container';
+import { lazyInject } from '@/app.container';
 
 import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
 import AuthService from '../../auth/auth.service';
@@ -159,7 +169,6 @@ import axios from 'axios';
 const jobStore = namespace(JOBPOST_STORE_NAME);
 const uiStore = namespace('Ui');
 
-const authService = container.get(AuthService);
 @Component({
   components: {
     EducationDetailsForm,
@@ -185,6 +194,9 @@ export default class CandidateRegistration extends Vue {
   @uiStore.Action
   public showToast!: (config: any) => void;
 
+  @lazyInject(AuthService)
+  authService: AuthService;
+
   get rules() {
     return rules;
   }
@@ -194,12 +206,18 @@ export default class CandidateRegistration extends Vue {
   }
 
   get getAccount() {
-    return authService.account;
+    return this.authService.account;
+  }
+
+  get tokenClaims() : any {
+    return this.getAccount.idTokenClaims;
   }
 
   created() {
     this.findAllSkillSets();
-    this.form.name = this.getAccount.name;
+
+    this.form.name = this.tokenClaims.given_name;
+    this.form.lastname = this.tokenClaims.family_name;
   }
 
   async save() {

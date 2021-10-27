@@ -67,7 +67,7 @@ export class EditProfileComponent extends Vue {
         formData.append('resume', this.resume);
 
         const candidateDto = {
-            name: this.data.candidate.name,
+            name: this.data.candidate.user.name,
             email: this.data.candidate.email,
             experienceDetails: this.data.candidate.experienceDetails,
             updateSkillSets: this.data.candidate.skillSets,

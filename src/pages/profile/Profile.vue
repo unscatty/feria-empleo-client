@@ -8,12 +8,12 @@
 
     <div class="introduction">
       <div class="profile-info">
-        <div class="name">{{ component.data.candidate.name }} {{ component.data.candidate.lastname }}</div>
+        <div class="name">{{ component.data.candidate.user.name }} {{ component.data.candidate.user.lastname }}</div>
 
         <div class="introduction">
           <div class="profile-info">
             <div class="name">
-              {{ component.data.candidate.name }} {{ component.data.candidate.lastname }}
+              {{ component.data.candidate.user.name }} {{ component.data.candidate.user.lastname }}
             </div>
             <div class="education">
               {{ component.data.candidate.educationDetails[0].institutionName }} <br />

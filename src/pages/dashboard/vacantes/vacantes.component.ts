@@ -76,4 +76,7 @@ export class AdminVacantesComponent {
     this.currentPosition = jobPost;
     this.deleteDialog = true;
   }
+
+  seeAppliedCandidates(jobPost: any) {
+  }
 }

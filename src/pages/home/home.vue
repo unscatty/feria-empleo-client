@@ -19,6 +19,10 @@
               class="position "
               :class="index !== 0 ? 'mt-5' : ''"
             />
+            <infinite-loading @infinite="infiniteHandler">
+              <div slot="no-more"></div>
+              <div slot="no-results"></div>
+            </infinite-loading>
           </v-col>
           <v-col v-else md="8" cols="12" class="d-flex justify-center align-center">
             <h2>
@@ -43,6 +47,8 @@
 </template>
 
 <script lang="ts">
+import InfiniteLoading from 'vue-infinite-loading';
+
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { HomeComponent } from './home.component';
 import Filters from '../../components/filters/Filters.vue';
@@ -50,6 +56,7 @@ import Positions from '../../components/positions/Positions.vue';
 import TopChart from '../../components/topchart/TopChart.vue';
 import { namespace } from 'vuex-class';
 import { IJobPost } from '@/models/job-post/job-post.interface';
+import { IFilters } from '@/store/modules/job-post';
 const jobPost = namespace('JobPost');
 
 @Component({
@@ -57,6 +64,7 @@ const jobPost = namespace('JobPost');
     Filters,
     Positions,
     TopChart,
+    InfiniteLoading,
   },
 })
 export default class Home extends Vue {
@@ -71,11 +79,39 @@ export default class Home extends Vue {
   @jobPost.State
   public loadingJobPositions!: boolean;
 
+  @jobPost.State
+  public jobsPaginationData!: any;
+
+  @jobPost.State
+  public jobPostFilters!: IFilters;
+
+  @jobPost.Mutation
+  public updateFilters!: (filters: IFilters) => void;
+
   @jobPost.Action
   public findAllJobPosts!: () => void;
 
+  @jobPost.Action
+  public fetchMoreJobPosts!: () => void;
+
   created() {
     this.findAllJobPosts();
+  }
+
+  destroyed() {
+    this.updateFilters({ page: 1 });
+  }
+
+  infiniteHandler($state: any) {
+    if (this.jobPostFilters.page === this.jobsPaginationData.totalPages) {
+      $state.complete();
+    } else {
+      setTimeout(() => {
+        this.updateFilters({ page: this.jobPostFilters.page + 1 });
+        this.fetchMoreJobPosts();
+        $state.loaded();
+      }, 500);
+    }
   }
 }
 </script>

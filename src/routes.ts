@@ -53,14 +53,6 @@ const routes: Array<CustomRouteConfig> = [
     },
   },
   {
-    path: '/profile/edit',
-    component: () => import('./pages/profile/edit/EditProfile.vue'),
-    beforeEnter: AuthGuard,
-    meta: {
-      layout: 'LayoutHome',
-    },
-  },
-  {
     path: '/profiles/:id',
     component: () => import('./pages/profiles/CandidateProfiles.vue'),
     beforeEnter: AuthGuard,

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col class="text-center text-md-right mb-3">
+      <v-col v-if="userRole === 'COMPANY'" class="text-center text-md-right mb-3">
         <v-btn
           color="primary"
           @click="
@@ -115,6 +115,9 @@ import { namespace } from 'vuex-class';
 import { IJobPost } from '@/models/job-post/job-post.interface';
 import { AdminVacantesComponent } from './vacantes.component';
 import { IFilters } from '@/store/modules/job-post';
+import { container } from '@/app.container';
+import { CurrentUserService } from '@/services/current-user.service';
+import RoleType from '@/models/role.type';
 
 const jobPost = namespace('JobPost');
 @Component({
@@ -122,7 +125,7 @@ const jobPost = namespace('JobPost');
 })
 export default class AdminVacantes extends Vue {
   private component: AdminVacantesComponent = new AdminVacantesComponent();
-
+  userRole: RoleType = null;
   // Store
   @jobPost.State
   public jobPositions!: IJobPost[];
@@ -162,6 +165,11 @@ export default class AdminVacantes extends Vue {
     };
 
     this.findAllSkillSets();
+  }
+
+  mounted() {
+    const currentUserService = container.get(CurrentUserService);
+    this.userRole = currentUserService.role;
   }
 
   async onDeleteJobPost() {

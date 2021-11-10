@@ -50,7 +50,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { HomeComponent } from './home.component';
+
 import Filters from '../../components/filters/Filters.vue';
 import Positions from '../../components/positions/Positions.vue';
 import TopChart from '../../components/topchart/TopChart.vue';
@@ -68,7 +68,6 @@ const jobPost = namespace('JobPost');
   },
 })
 export default class Home extends Vue {
-  private component: HomeComponent = new HomeComponent();
   changeToolbar = false;
   fixedToobar = false;
 

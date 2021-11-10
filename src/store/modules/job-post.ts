@@ -9,7 +9,7 @@ export interface IFilters {
   jobType?: string;
   experience?: string;
   search?: string;
-  employerId?: string;
+  companyId?: string;
   page?: number;
   limit?: number;
   salaryMinGte?: number;

@@ -95,7 +95,7 @@ export default class AppliedCandidates extends Vue {
     try {
       const res = await axios.get(`job-posts/${this.$route.params.id}/candidates-applied`);
       this.candidatesItems = res.data.map((r: any) => ({
-        name: r.candidate.name,
+        name: r.candidate.user.name,
         email: r.candidate.user.email,
         resume: r.candidate.resume,
         userId: r.candidate.user.id,

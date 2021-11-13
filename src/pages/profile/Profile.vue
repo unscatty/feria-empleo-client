@@ -6,9 +6,6 @@
       </router-link>
     </div>
 
-    <div class="introduction">
-      <div class="profile-info">
-        <div class="name">{{ component.data.candidate.name }} {{ component.data.candidate.lastname }}</div>
 
         <div class="introduction">
           <div class="profile-info">
@@ -63,50 +60,7 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="contact">
-        <span class="title"> Contacto </span> <br />
-        <br />
-        <v-icon color="#1976d2">mdi-phone</v-icon>
-        {{ component.data.contact ? component.data.contact.phone : '' }} <br />
-        <br />
-        <v-icon color="#1976d2">mdi-mail</v-icon>
-        {{ component.data.contact ? component.data.contact.address : '' }}
-
-        <div class="social-networks">
-          <span v-if="component.data.contact ? component.data.contact.linkedinUrl : ''">
-            <a v-bind:href="component.data.contact ? component.data.contact.linkedinUrl : ''" target="_blank"
-              ><v-icon color="#1976d2">mdi-linkedin</v-icon></a
-            >
-          </span>
-          <span v-if="component.data.contact ? component.data.contact.githubUrl : ''">
-            <a v-bind:href="component.data.contact ? component.data.contact.githubUrl : ''" target="_blank"
-              ><v-icon color="#1976d2">mdi-github</v-icon></a
-            >
-          </span>
-          <span v-if="component.data.contact ? component.data.contact.facebookUrl : ''">
-            <a v-bind:href="component.data.contact ? component.data.contact.facebookUrl : ''" target="_blank"
-              ><v-icon color="#1976d2">mdi-facebook</v-icon></a
-            >
-          </span>
-          <span v-if="component.data.contact ? component.data.contact.webSite : ''">
-            <a v-bind:href="component.data.contact ? component.data.contact.webSite : ''" target="_blank"
-              ><v-icon color="#1976d2">mdi-web</v-icon></a
-            >
-          </span>
-        </div>
-      </div>
-
-      <div class="resume">
-        <span class="title"> Curriculum </span> <br />
-        <div class="download">
-          <a href="https://poccompany.blob.core.windows.net/feria/Josue Ruiz resume.pdf" target="_blank"
-            ><v-icon>mdi-download</v-icon> Descargar</a
-          >
-        </div>
-      </div>
-    </div>
+     
 
     <div class="skills">
       <span class="title"> Habilidades </span> <br />

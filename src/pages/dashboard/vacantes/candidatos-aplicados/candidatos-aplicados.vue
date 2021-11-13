@@ -44,7 +44,7 @@
               <v-icon>mdi-download</v-icon>
             </v-btn>
 
-            <v-btn icon :to="`/profiles/${item.userId}`" target="_blank">
+            <v-btn icon :to="`/profiles/${item.id}`" target="_blank">
               <v-icon>mdi-eye</v-icon>
             </v-btn>
           </template>
@@ -95,10 +95,10 @@ export default class AppliedCandidates extends Vue {
     try {
       const res = await axios.get(`job-posts/${this.$route.params.id}/candidates-applied`);
       this.candidatesItems = res.data.map((r: any) => ({
-        name: r.candidate.name,
+        name: r.candidate.user.name,
         email: r.candidate.user.email,
         resume: r.candidate.resume,
-        userId: r.candidate.user.id,
+        id: r.candidate.id,
       }));
     } catch (error) {
       console.log(error);

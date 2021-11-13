@@ -1,6 +1,10 @@
 <template>
-  <div v-if="applyComponent.data.position !== null && applyComponent.data.candidate != null">
-    <v-dialog v-model="applyComponent.data.modal" max-width="650">
+  <div v-if="applyComponent.data.position !== null">
+    <v-dialog
+      v-if="applyComponent.data.candidate != null"
+      v-model="applyComponent.data.modal"
+      max-width="650"
+    >
       <v-card>
         <v-card-title style="background: #1a7eba" class="headline text-center white--text">
           Aplica a esta vacante
@@ -91,6 +95,7 @@
           </v-col>
           <v-col lg="3" cols="12">
             <v-btn
+              v-if="applyComponent.data.candidate != null"
               data-toggle="modal"
               data-target="#mymodal"
               color="primary"

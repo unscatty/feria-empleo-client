@@ -12,11 +12,7 @@ export class CurrentUserService {
   protected axiosInstance: AxiosInstance;
   private _currentUser: UserType;
 
-  constructor(
-    protected baseURL: string,
-    protected resourceURL: string,
-    timeout = 1_000,
-  ) {
+  constructor(protected baseURL: string, protected resourceURL: string, timeout = 1_000) {
     const url = new URL(this.resourceURL, this.baseURL);
     const instanceConfig: AxiosRequestConfig = {
       baseURL: url.toString(),
@@ -50,7 +46,7 @@ export class CurrentUserService {
   }
 
   get role(): RoleType {
-    return this.raw.user.role;
+    return this.raw?.user.role;
   }
 
   get currentUser(): UserType {

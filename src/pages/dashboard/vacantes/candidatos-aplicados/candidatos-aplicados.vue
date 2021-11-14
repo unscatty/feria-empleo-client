@@ -35,7 +35,7 @@
 
           <template v-slot:[`item.avatar`]="{ item }">
             <v-avatar color="primary" size="36">
-              <span class="white--text ">{{ speakerInitials(item.name) }}</span>
+              <span class="white--text">{{ speakerInitials(item.name) }}</span>
             </v-avatar>
           </template>
 

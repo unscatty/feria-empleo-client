@@ -19,11 +19,11 @@
         <v-spacer></v-spacer>
         <v-btn
           color="blue darken-1"
+          text
           @click="
             $emit('uploadPicture', file);
             show = false;
           "
-          text
           >Recortar</v-btn
         >
       </v-card-actions>

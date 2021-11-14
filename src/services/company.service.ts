@@ -21,12 +21,13 @@ export class CompanyService extends ResourceService<ICompany> {
   async invite(company: CompanyInvite, endpoint = '/invite') {
     const formData = CompanyService.toFormaData(company);
 
-    const response = await this.axiosInstance.post<
-      ICompany,
-      AxiosResponse<ICompany>
-    >(endpoint, formData, {
-      headers: { ContentType: 'multipart/form-data' },
-    });
+    const response = await this.axiosInstance.post<ICompany, AxiosResponse<ICompany>>(
+      endpoint,
+      formData,
+      {
+        headers: { ContentType: 'multipart/form-data' },
+      }
+    );
 
     return response.data;
   }
@@ -48,11 +49,10 @@ export class CompanyService extends ResourceService<ICompany> {
   }
 
   async register(stateToken: string, endpoint = '/register') {
-    const response = await this.axiosInstance.post<
-      ICompany,
-      AxiosResponse<ICompany>
-    >(endpoint, { token: stateToken });
-    
+    const response = await this.axiosInstance.post<ICompany, AxiosResponse<ICompany>>(endpoint, {
+      token: stateToken,
+    });
+
     return response.data;
   }
 }

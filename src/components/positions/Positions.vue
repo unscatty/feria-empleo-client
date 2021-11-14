@@ -29,7 +29,7 @@
           <p>{{ truncate(position.description, 300) }}</p>
         </v-col>
         <v-col cols="8" class="text-left">
-          <v-chip class="mr-3 mt-2" v-for="(tag, index) in position.tags" :key="index">
+          <v-chip v-for="(tag, index) in position.tags" :key="index" class="mr-3 mt-2">
             {{ tag.name }}
           </v-chip>
         </v-col>

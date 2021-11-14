@@ -1,4 +1,4 @@
 export interface AuthConfigInterface {
-    clientID: string,
-    authority: string
+  clientID: string;
+  authority: string;
 }

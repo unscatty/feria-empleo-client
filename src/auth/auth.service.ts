@@ -174,11 +174,15 @@ export default class AuthService {
     return this.clientApplication.loginRedirect(redirectRequest);
   }
 
-  async registerCompany(extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>) {
+  async registerCompany(
+    extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>
+  ) {
     this.login(this.companyRedirectRequest, extra);
   }
 
-  async registerCandidate(extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>) {
+  async registerCandidate(
+    extra?: Partial<Omit<RedirectRequest, 'redirectUri' | 'redirectStartPage'>>
+  ) {
     this.login(this.candidateRedirectRequest, extra);
   }
 

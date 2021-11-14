@@ -20,7 +20,7 @@ export const msalConfig: Configuration = {
     navigateToLoginRequestUrl: true,
     postLogoutRedirectUri: ENV.VUE_APP_B2C_LOGOUT_URI,
     // Default redirect uri
-    redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI
+    redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI,
   },
   cache: {
     cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
@@ -28,11 +28,7 @@ export const msalConfig: Configuration = {
   },
   system: {
     loggerOptions: {
-      loggerCallback: (
-        level: LogLevel,
-        message: string,
-        containsPii: boolean
-      ) => {
+      loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
         if (containsPii) {
           return;
         }
@@ -57,7 +53,7 @@ export const msalConfig: Configuration = {
 
 export const CANDIDATE_REDIRECT_REQUEST: Partial<RedirectRequest> = {
   redirectUri: ENV.VUE_APP_B2C_REDIRECT_URI,
-  redirectStartPage: ENV.VUE_APP_B2C_REDIRECT_URI
+  redirectStartPage: ENV.VUE_APP_B2C_REDIRECT_URI,
 };
 
 export const COMPANY_REDIRECT_REQUEST: Partial<RedirectRequest> = {

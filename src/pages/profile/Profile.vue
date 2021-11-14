@@ -9,7 +9,7 @@
               src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
             ></v-img>
             <v-col>
-              <v-avatar color="primary" size="70" style="position:absolute; top: 130px">
+              <v-avatar color="primary" size="70" style="position: absolute; top: 130px">
                 <span class="white--text text-h5">{{ userInitials }}</span>
               </v-avatar>
             </v-col>
@@ -28,7 +28,7 @@
               <v-toolbar-title>Datos de contacto</v-toolbar-title>
               <v-spacer></v-spacer>
 
-              <v-btn v-if="!addEditContact" @click="onEditContact" text color="primary">
+              <v-btn v-if="!addEditContact" text color="primary" @click="onEditContact">
                 Cambiar
               </v-btn>
             </v-toolbar>
@@ -83,36 +83,34 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
+                      v-model="contact.phone"
                       :rules="[rules.required]"
                       label="Telefono"
-                      v-model="contact.phone"
                       type="text"
                     />
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
+                      v-model="contact.address"
                       :rules="[rules.required]"
                       label="Dirección"
-                      v-model="contact.address"
                       type="text"
                     />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Web" v-model="contact.webSite" type="text" />
+                    <v-text-field v-model="contact.webSite" label="Web" type="text" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Linkedin" v-model="contact.linkedinUrl" type="text" />
+                    <v-text-field v-model="contact.linkedinUrl" label="Linkedin" type="text" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Facebook" v-model="contact.facebookUrl" type="text" />
+                    <v-text-field v-model="contact.facebookUrl" label="Facebook" type="text" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field label="Github" v-model="contact.githubUrl" type="text" />
+                    <v-text-field v-model="contact.githubUrl" label="Github" type="text" />
                   </v-col>
                   <v-col cols="12">
-                    <v-btn color="danger" @click="addEditContact = false">
-                      Cancelar
-                    </v-btn>
+                    <v-btn color="danger" @click="addEditContact = false"> Cancelar </v-btn>
                     <v-btn color="primary" text class="ml-2" @click="updateCandidate">
                       Actualizar
                     </v-btn>
@@ -128,9 +126,9 @@
 
               <v-btn
                 v-if="!addEditResume && candidate.resume"
-                @click="addEditResume = !addEditResume"
                 text
                 color="primary"
+                @click="addEditResume = !addEditResume"
               >
                 Cambiar
               </v-btn>
@@ -176,12 +174,12 @@
 
               <v-btn
                 v-if="!addEditExperience"
+                text
+                color="primary"
                 @click="
                   experienceDetailForm = {};
                   addEditExperience = !addEditExperience;
                 "
-                text
-                color="primary"
               >
                 Agregar
               </v-btn>
@@ -191,12 +189,12 @@
             <v-card-text>
               <div v-if="!addEditExperience">
                 <v-list-item
+                  v-for="experience in candidate.experienceDetails"
+                  :key="experience.id"
                   @click="
                     experienceDetailForm = experience;
                     addEditExperience = true;
                   "
-                  v-for="experience in candidate.experienceDetails"
-                  :key="experience.id"
                 >
                   <v-list-item-content>
                     <v-list-item-title class="title"
@@ -215,24 +213,18 @@
               </div>
 
               <ExperienceDetailForm
+                v-if="addEditExperience"
                 :form="experienceDetailForm"
                 @onSubmitForm="updateCandidate"
-                v-if="addEditExperience"
               >
                 <v-col class="text-right" cols="12">
-                  <v-btn @click="removeExperienceDetail" color="danger" text>
-                    <v-icon color="error">
-                      mdi-minus-circle-outline
-                    </v-icon>
+                  <v-btn color="danger" text @click="removeExperienceDetail">
+                    <v-icon color="error"> mdi-minus-circle-outline </v-icon>
                   </v-btn>
                 </v-col>
                 <template slot="footer" slot-scope="{ onSubmit }">
-                  <v-btn color="danger" @click="addEditExperience = false">
-                    Cancelar
-                  </v-btn>
-                  <v-btn text class="ml-2" @click="onSubmit">
-                    Actualizar
-                  </v-btn>
+                  <v-btn color="danger" @click="addEditExperience = false"> Cancelar </v-btn>
+                  <v-btn text class="ml-2" @click="onSubmit"> Actualizar </v-btn>
                 </template>
               </ExperienceDetailForm>
             </v-card-text>
@@ -245,9 +237,9 @@
               <v-spacer></v-spacer>
 
               <v-btn
-                @click="addEditSkillSets ? (addEditSkillSets = false) : onAddSkillSets()"
                 text
                 color="primary"
+                @click="addEditSkillSets ? (addEditSkillSets = false) : onAddSkillSets()"
               >
                 {{ addEditSkillSets ? 'Cancelar' : 'Agregar' }}
               </v-btn>
@@ -262,9 +254,9 @@
               </div>
 
               <v-autocomplete
-                :loading="loadingSkillSets"
                 v-if="addEditSkillSets"
                 v-model="skillSetsForm"
+                :loading="loadingSkillSets"
                 :items="skillSetItems"
                 label="Habilidades"
                 item-text="name"
@@ -294,12 +286,12 @@
 
               <v-btn
                 v-if="!addEditEducation"
+                text
+                color="primary"
                 @click="
                   educationDetailForm = {};
                   addEditEducation = !addEditEducation;
                 "
-                text
-                color="primary"
               >
                 Agregar
               </v-btn>
@@ -309,12 +301,12 @@
             <v-card-text>
               <div v-if="!addEditEducation">
                 <v-list-item
+                  v-for="education in candidate.educationDetails"
+                  :key="education.id"
                   @click="
                     educationDetailForm = education;
                     addEditEducation = true;
                   "
-                  v-for="education in candidate.educationDetails"
-                  :key="education.id"
                 >
                   <v-list-item-content>
                     <v-list-item-title class="title">{{
@@ -333,25 +325,19 @@
               </div>
 
               <EducationDetailsForm
+                v-if="addEditEducation"
                 :form="educationDetailForm"
                 @onSubmitForm="updateCandidate"
-                v-if="addEditEducation"
               >
                 <v-col class="text-right" cols="12">
-                  <v-btn @click="removeEducationDetail" color="danger" text>
-                    <v-icon color="error">
-                      mdi-minus-circle-outline
-                    </v-icon>
+                  <v-btn color="danger" text @click="removeEducationDetail">
+                    <v-icon color="error"> mdi-minus-circle-outline </v-icon>
                   </v-btn>
                 </v-col>
 
                 <template slot="footer" slot-scope="{ onSubmit }">
-                  <v-btn color="danger" @click="addEditEducation = false">
-                    Cancelar
-                  </v-btn>
-                  <v-btn text class="ml-2" color="primary" @click="onSubmit">
-                    Actualizar
-                  </v-btn>
+                  <v-btn color="danger" @click="addEditEducation = false"> Cancelar </v-btn>
+                  <v-btn text class="ml-2" color="primary" @click="onSubmit"> Actualizar </v-btn>
                 </template>
               </EducationDetailsForm>
             </v-card-text>
@@ -422,7 +408,7 @@ export default class Profile extends Vue {
   }
 
   get skillSetItems() {
-    return this.skillSets.map(s => ({ name: s.name, value: s.id }));
+    return this.skillSets.map((s) => ({ name: s.name, value: s.id }));
   }
 
   get rules() {
@@ -461,7 +447,7 @@ export default class Profile extends Vue {
   }
 
   getLevel(level: string) {
-    return levelItems.find(v => (v.value = level)).text;
+    return levelItems.find((v) => (v.value = level)).text;
   }
 
   get user() {
@@ -634,7 +620,7 @@ export default class Profile extends Vue {
       this.candidate.experienceDetails = newExperienceDetails;
       if (skillSetsChange) {
         this.candidate.skillSets = this.skillSets.filter((s: any) =>
-          this.skillSetsForm.some(value => s.id === value)
+          this.skillSetsForm.some((value) => s.id === value)
         );
       }
       if (contactChange) {

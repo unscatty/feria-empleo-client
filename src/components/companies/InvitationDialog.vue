@@ -2,14 +2,11 @@
   <div class="text-center">
     <v-dialog v-model="show" max-width="650">
       <v-card>
-        <v-card-title
-          style="background: #1a7eba"
-          class="headline text-center white--text"
-        >
+        <v-card-title style="background: #1a7eba" class="headline text-center white--text">
           Invitar empresa
         </v-card-title>
         <v-container grid-list-md class="pa-5">
-          <v-form :disabled="loading" ref="form" lazy-validation>
+          <v-form ref="form" :disabled="loading" lazy-validation>
             <v-row class="px-1">
               <v-col cols="12">
                 <v-text-field
@@ -39,36 +36,22 @@
                 <Cropper
                   :dialog="dialogCropper"
                   :image="image"
-                  :imageName="imageName"
+                  :image-name="imageName"
                   @uploadPicture="onCropperResult"
                   @close="dialogCropper = false"
                 ></Cropper>
               </v-col>
 
-              <v-col
-                class="text-center justify-center d-flex"
-                v-if="imagePreview"
-                cols="12"
-              >
-                <v-img
-                  max-height="200"
-                  max-width="200"
-                  contain
-                  :src="imagePreview"
-                >
-                </v-img>
+              <v-col v-if="imagePreview" class="text-center justify-center d-flex" cols="12">
+                <v-img max-height="200" max-width="200" contain :src="imagePreview"> </v-img>
               </v-col>
             </v-row>
           </v-form>
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :loading="loading" color="darken-1" text @click="show = false"
-            >Cancelar</v-btn
-          >
-          <v-btn :loading="loading" color="#FF5072" dark @click="send">
-            Invitar
-          </v-btn>
+          <v-btn :loading="loading" color="darken-1" text @click="show = false">Cancelar</v-btn>
+          <v-btn :loading="loading" color="#FF5072" dark @click="send"> Invitar </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -76,13 +59,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch, Ref } from "vue-property-decorator";
-import { rules } from "@/helpers/form";
-import Cropper from "@/components/general/cropper.vue";
+import { Component, Vue, Prop, Watch, Ref } from 'vue-property-decorator';
+import { rules } from '@/helpers/form';
+import Cropper from '@/components/general/cropper.vue';
 
-import { VForm } from "@/models/form";
-import { CompanyService } from "@/services/company.service";
-import { CompanyInvite } from "@/models/company/company-forms";
+import { VForm } from '@/models/form';
+import { CompanyService } from '@/services/company.service';
+import { CompanyInvite } from '@/models/company/company-forms';
 
 @Component({ components: { Cropper } })
 export default class InviteModal extends Vue {
@@ -103,13 +86,13 @@ export default class InviteModal extends Vue {
   public loading = false;
   public dialogCropper = false;
   public form: CompanyInvite = {
-    name: "",
-    email: "",
+    name: '',
+    email: '',
     image: null,
   };
 
   // Refs
-  @Ref("form") readonly formRef!: VForm;
+  @Ref('form') readonly formRef!: VForm;
 
   get show() {
     return this.dialog;
@@ -118,11 +101,11 @@ export default class InviteModal extends Vue {
   set show(value) {
     if (!value) {
       this.resetForm();
-      this.$emit("close");
+      this.$emit('close');
     }
   }
 
-  @Watch("dialog")
+  @Watch('dialog')
   dialogChange(value: boolean) {
     if (value) {
       if (this.formRef) {
@@ -130,7 +113,7 @@ export default class InviteModal extends Vue {
       }
     }
   }
-  @Watch("dialogCropper")
+  @Watch('dialogCropper')
   dialogCropperChange(value: boolean) {
     // if cropper is closed and no action is taken
     // remove value from input
@@ -152,10 +135,10 @@ export default class InviteModal extends Vue {
 
     console.log(response);
 
-    this.$emit("invited", response);
+    this.$emit('invited', response);
 
     this.loading = false;
-    this.$emit("close");
+    this.$emit('close');
   }
 
   onCropperResult(data: any) {
@@ -169,8 +152,8 @@ export default class InviteModal extends Vue {
 
   resetForm() {
     this.form = {
-      name: "",
-      email: "",
+      name: '',
+      email: '',
       image: null,
     };
 
@@ -185,11 +168,11 @@ export default class InviteModal extends Vue {
       return;
     }
     this.imageName = file.name;
-    if (!file.type.includes("image/")) {
-      alert("Please select an image file");
+    if (!file.type.includes('image/')) {
+      alert('Please select an image file');
       return;
     }
-    if (typeof FileReader === "function") {
+    if (typeof FileReader === 'function') {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.image = e.target.result;
@@ -197,7 +180,7 @@ export default class InviteModal extends Vue {
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Sorry, FileReader API not supported");
+      alert('Sorry, FileReader API not supported');
     }
   }
 }

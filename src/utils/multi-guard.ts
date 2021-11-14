@@ -1,7 +1,12 @@
-import { NavigationGuard, NavigationGuardNext, Route } from "vue-router"
-import { CustomNavGuard } from "./custom-route.types";
+import { NavigationGuard, NavigationGuardNext, Route } from 'vue-router';
+import { CustomNavGuard } from './custom-route.types';
 
-async function evaluateGuards(guards: NavigationGuard[], to: Route, from: Route, next: NavigationGuardNext) {
+async function evaluateGuards(
+  guards: NavigationGuard[],
+  to: Route,
+  from: Route,
+  next: NavigationGuardNext
+) {
   const guardsLeft = guards.slice(0); // clone the array so we do not accidentally modify it
   const nextGuard = guardsLeft.shift();
 
@@ -23,7 +28,7 @@ async function evaluateGuards(guards: NavigationGuard[], to: Route, from: Route,
 export function MultiGuard(...guards: CustomNavGuard[]): CustomNavGuard {
   return (to, from, next) => {
     return evaluateGuards(guards, to, from, next);
-  }
+  };
 }
 
 export default function createMultiGuard(...defaultGuards: CustomNavGuard[]) {
@@ -31,5 +36,5 @@ export default function createMultiGuard(...defaultGuards: CustomNavGuard[]) {
     // Prepend default guards to guard array
     const allGuards = defaultGuards.concat(guards);
     return MultiGuard(...allGuards);
-  }
+  };
 }

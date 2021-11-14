@@ -1,4 +1,4 @@
-import { IUser } from "../user/user.interface";
+import { IUser } from '../user/user.interface';
 import { IJobPost } from '../job-post/job-post.interface';
 
 export interface ICandidate {

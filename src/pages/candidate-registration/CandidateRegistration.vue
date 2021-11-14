@@ -16,13 +16,11 @@
                 </v-col>
                 <v-col cols="12">
                   <v-card-text class="mt-3">
-                    <h1 class="text-center display-2 " color="primary">
-                      Feria del empleo en ESCOM
-                    </h1>
+                    <h1 class="text-center display-2" color="primary">Feria del empleo en ESCOM</h1>
                     <h4 class="text-center mt-4">
                       Ingresa tus datos para que las empresas puedan conocerte mejor
                     </h4>
-                    <v-form :disabled="loading" class="mt-4" ref="form" lazy-validation>
+                    <v-form ref="form" :disabled="loading" class="mt-4" lazy-validation>
                       <v-row>
                         <v-col cols="12" class="candidate-registration__input-item">
                           <v-text-field
@@ -35,8 +33,8 @@
                         </v-col>
                         <v-col cols="12" class="candidate-registration__input-item">
                           <v-text-field
-                            label="Nombre"
                             v-model="form.name"
+                            label="Nombre"
                             :value="getAccount ? getAccount.idTokenClaims.given_name : ''"
                             prepend-icon="mdi-email"
                             type="text"
@@ -45,8 +43,8 @@
                         </v-col>
                         <v-col cols="12" class="candidate-registration__input-item">
                           <v-text-field
-                            label="Apellido"
                             v-model="form.lastname"
+                            label="Apellido"
                             :value="getAccount ? getAccount.idTokenClaims.family_name : ''"
                             prepend-icon="mdi-email"
                             type="text"
@@ -54,7 +52,7 @@
                           />
                         </v-col>
                         <v-col cols="12">
-                          <h3 class="mt-2 subtitle ">Habilidades</h3>
+                          <h3 class="mt-2 subtitle">Habilidades</h3>
                         </v-col>
                         <v-col cols="12">
                           <v-autocomplete
@@ -68,13 +66,11 @@
                           ></v-autocomplete>
                         </v-col>
                         <v-col cols="6">
-                          <h3 class="mt-2 subtitle ">Experiencia profesional</h3>
+                          <h3 class="mt-2 subtitle">Experiencia profesional</h3>
                         </v-col>
                         <v-col class="text-right" cols="6">
-                          <v-btn @click="form.experienceDetails.push({})" color="primary" text>
-                            <v-icon color="primary">
-                              mdi-plus-circle-outline
-                            </v-icon>
+                          <v-btn color="primary" text @click="form.experienceDetails.push({})">
+                            <v-icon color="primary"> mdi-plus-circle-outline </v-icon>
                             Agregar
                           </v-btn>
                         </v-col>
@@ -88,13 +84,11 @@
                               <ExperienceDetailForm :form="detail">
                                 <v-col class="text-right" cols="12">
                                   <v-btn
-                                    @click="form.experienceDetails.splice(index, 1)"
                                     color="danger"
                                     text
+                                    @click="form.experienceDetails.splice(index, 1)"
                                   >
-                                    <v-icon color="error">
-                                      mdi-minus-circle-outline
-                                    </v-icon>
+                                    <v-icon color="error"> mdi-minus-circle-outline </v-icon>
                                   </v-btn>
                                 </v-col>
                               </ExperienceDetailForm>
@@ -102,13 +96,11 @@
                           </v-card>
                         </v-col>
                         <v-col cols="6">
-                          <h3 class="mt-2 subtitle ">Educación</h3>
+                          <h3 class="mt-2 subtitle">Educación</h3>
                         </v-col>
                         <v-col class="text-right" cols="6">
-                          <v-btn @click="form.educationDetails.push({})" color="primary" text>
-                            <v-icon color="primary">
-                              mdi-plus-circle-outline
-                            </v-icon>
+                          <v-btn color="primary" text @click="form.educationDetails.push({})">
+                            <v-icon color="primary"> mdi-plus-circle-outline </v-icon>
                             Agregar
                           </v-btn>
                         </v-col>
@@ -122,13 +114,11 @@
                               <EducationDetailsForm :form="detail">
                                 <v-col class="text-right" cols="12">
                                   <v-btn
-                                    @click="form.educationDetails.splice(index, 1)"
                                     color="danger"
                                     text
+                                    @click="form.educationDetails.splice(index, 1)"
                                   >
-                                    <v-icon color="error">
-                                      mdi-minus-circle-outline
-                                    </v-icon>
+                                    <v-icon color="error"> mdi-minus-circle-outline </v-icon>
                                   </v-btn>
                                 </v-col>
                               </EducationDetailsForm>
@@ -139,7 +129,7 @@
                     </v-form>
                   </v-card-text>
                   <div class="text-center mt-3 py-3 pb-5">
-                    <v-btn :loading="loading" rounded color="primary" @click="save" dark>
+                    <v-btn :loading="loading" rounded color="primary" dark @click="save">
                       Guardar
                     </v-btn>
                   </div>
@@ -209,7 +199,7 @@ export default class CandidateRegistration extends Vue {
     return this.authService.account;
   }
 
-  get tokenClaims() : any {
+  get tokenClaims(): any {
     return this.getAccount.idTokenClaims;
   }
 

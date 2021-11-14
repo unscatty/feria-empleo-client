@@ -15,7 +15,7 @@
     </v-navigation-drawer>
 
     <v-app-bar clipped-left fixed app color="primary" dark>
-      <div @click="goToMain" class="d-flex align-center">
+      <div class="d-flex align-center" @click="goToMain">
         <v-img width="70" class="logo-white my-3" src="@/assets/img/escom_logo.png"></v-img>
       </div>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -31,9 +31,7 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-icon light> mdi-repeat </v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>

@@ -3,7 +3,7 @@
     <v-container>
       <div class="main-section-data">
         <v-row class="row">
-          <v-col md="8" cols="12" v-if="loadingJobPositions">
+          <v-col v-if="loadingJobPositions" md="8" cols="12">
             <v-skeleton-loader
               v-for="(item, index) in [0, 1]"
               :key="index"
@@ -11,12 +11,12 @@
               type="card-avatar, article, actions"
             ></v-skeleton-loader>
           </v-col>
-          <v-col md="8" cols="12" v-else-if="jobPositions.length > 0">
+          <v-col v-else-if="jobPositions.length > 0" md="8" cols="12">
             <Positions
               v-for="(position, index) in jobPositions"
               :key="position.id"
               :position="position"
-              class="position "
+              class="position"
               :class="index !== 0 ? 'mt-5' : ''"
             />
             <infinite-loading @infinite="infiniteHandler">
@@ -25,9 +25,7 @@
             </infinite-loading>
           </v-col>
           <v-col v-else md="8" cols="12" class="d-flex justify-center align-center">
-            <h2>
-              Sin vacantes para mostrar
-            </h2>
+            <h2>Sin vacantes para mostrar</h2>
           </v-col>
           <v-col md="4" cols="12">
             <TopChart :endpoint="$router.resolve({ name: 'TopViewed' }).href">

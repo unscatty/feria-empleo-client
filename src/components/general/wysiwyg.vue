@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tiptap-vuetify v-bind:value="value" v-on:input="updateValue" :extensions="extensions" />
+    <tiptap-vuetify :value="value" :extensions="extensions" @input="updateValue" />
   </div>
 </template>
 

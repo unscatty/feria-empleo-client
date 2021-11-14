@@ -1,14 +1,11 @@
-import ObjectLiteral from "./object-literal.interface";
+import ObjectLiteral from './object-literal.interface';
 
 export enum PaginationTypeEnum {
   LIMIT_AND_OFFSET = 'limit',
   TAKE_AND_SKIP = 'take',
 }
 
-export interface PaginationResponse<
-  Resource,
-  Meta extends ObjectLiteral = IPaginationMeta
-> {
+export interface PaginationResponse<Resource, Meta extends ObjectLiteral = IPaginationMeta> {
   items: Resource[];
   meta: Meta;
   links?: IPaginationLinks;

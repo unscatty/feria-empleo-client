@@ -16,15 +16,16 @@ export const rules = {
   maxLength: (maxnum: number, v: string) =>
     (v && v.length <= maxnum) || `Maximo ${maxnum} caracteres`,
   email: (v: string) => {
-    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const pattern =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return pattern.test(v) || 'Ingresa un email valido';
   },
 };
 
-export const diffObjects = function(obj1: any, obj2: any) {
+export const diffObjects = function (obj1: any, obj2: any) {
   return reduce(
     obj1,
-    function(result: any, value: any, key: any) {
+    function (result: any, value: any, key: any) {
       if (isPlainObject(value)) {
         result[key] = diffObjects(value, obj2[key]);
       } else if (!isEqual(value, obj2[key])) {

@@ -1,9 +1,9 @@
-import { container } from "@/app.container";
-import AuthService from "@/auth/auth.service";
-import { CompanyService } from "@/services/company.service";
-import { CurrentUserService } from "@/services/current-user.service";
-import { CustomNavGuard } from "@/utils/custom-route.types";
-import { NavigationGuardNext } from "vue-router";
+import { container } from '@/app.container';
+import AuthService from '@/auth/auth.service';
+import { CompanyService } from '@/services/company.service';
+import { CurrentUserService } from '@/services/current-user.service';
+import { CustomNavGuard } from '@/utils/custom-route.types';
+import { NavigationGuardNext } from 'vue-router';
 
 // Registers company from login redirection
 const CompanyRegisterGuard: CustomNavGuard = async (_, __, next: NavigationGuardNext) => {
@@ -18,11 +18,11 @@ const CompanyRegisterGuard: CustomNavGuard = async (_, __, next: NavigationGuard
 
     currentUserService.raw = response;
 
-    next()
+    next();
   } catch (err) {
     // FIXME: check for error type and import redirect route
     next('/');
   }
-}
+};
 
 export default CompanyRegisterGuard;

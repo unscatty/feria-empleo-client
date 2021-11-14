@@ -4,7 +4,7 @@
     <v-text-field v-model="search" label="Buscar" :loading="loadingSearch"></v-text-field>
 
     <v-row v-if="jobPositions.length !== 0">
-      <v-col md="6" cols="12" v-for="position in jobPositions" :key="position.id">
+      <v-col v-for="position in jobPositions" :key="position.id" md="6" cols="12">
         <Positions class="mt-5" :position="position" />
       </v-col>
       <v-col class="text-center">
@@ -15,10 +15,8 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col style="height:300px" cols="12" class="d-flex justify-center align-center">
-        <h2>
-          Sin vacantes para mostrar
-        </h2>
+      <v-col style="height: 300px" cols="12" class="d-flex justify-center align-center">
+        <h2>Sin vacantes para mostrar</h2>
       </v-col>
     </v-row>
     <!--   <div class="col-lg-6">

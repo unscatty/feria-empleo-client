@@ -1,8 +1,14 @@
-import { container } from "@/app.container";
-import RoleType from "@/models/role.type";
-import { CurrentUserService } from "@/services/current-user.service";
-import { CustomNavGuard, CustomRoute, PermissionsConfig, RouteAccess, RouteWithNoAccess } from "@/utils/custom-route.types";
-import { NavigationGuardNext } from "vue-router";
+import { container } from '@/app.container';
+import RoleType from '@/models/role.type';
+import { CurrentUserService } from '@/services/current-user.service';
+import {
+  CustomNavGuard,
+  CustomRoute,
+  PermissionsConfig,
+  RouteAccess,
+  RouteWithNoAccess,
+} from '@/utils/custom-route.types';
+import { NavigationGuardNext } from 'vue-router';
 
 export function hasAccessToRoute(role: RoleType, route: CustomRoute): RouteAccess {
   if (route.meta?.isPublic) {
@@ -19,11 +25,10 @@ export function hasAccessToRoute(role: RoleType, route: CustomRoute): RouteAcces
     }
   }
 
-
   if (!permissions) {
     // TODO: define default access logic here
     // No rules defined, access is granted
-    return { access: true }
+    return { access: true };
   }
 
   const matchedRole = permissions.roles?.find((roleConfig) => roleConfig.role === role);
@@ -31,7 +36,11 @@ export function hasAccessToRoute(role: RoleType, route: CustomRoute): RouteAcces
   return matchedRole || permissions.default;
 }
 
-const RoleGuard: CustomNavGuard = (to: CustomRoute, from: CustomRoute, next: NavigationGuardNext) => {
+const RoleGuard: CustomNavGuard = (
+  to: CustomRoute,
+  from: CustomRoute,
+  next: NavigationGuardNext
+) => {
   const currentUserService = container.get(CurrentUserService);
   const userRole = currentUserService.role;
 
@@ -44,6 +53,6 @@ const RoleGuard: CustomNavGuard = (to: CustomRoute, from: CustomRoute, next: Nav
     // Route not accessible, redirect
     next((routeAccess as RouteWithNoAccess).redirect);
   }
-}
+};
 
 export default RoleGuard;

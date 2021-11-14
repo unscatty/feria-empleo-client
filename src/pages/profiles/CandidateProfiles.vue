@@ -9,7 +9,7 @@
               src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
             ></v-img>
             <v-col>
-              <v-avatar color="primary" size="70" style="position:absolute; top: 130px">
+              <v-avatar color="primary" size="70" style="position: absolute; top: 130px">
                 <span class="white--text text-h5">{{ userInitials }}</span>
               </v-avatar>
             </v-col>
@@ -73,22 +73,16 @@
                 </v-col>
               </v-row>
             </v-card-text>
-            <v-card-text class="text-center" v-else>
-              Sin datos
-            </v-card-text>
+            <v-card-text v-else class="text-center"> Sin datos </v-card-text>
           </v-card>
           <v-card class="mt-8">
-            <v-card-title>
-              Curriculum
-            </v-card-title>
+            <v-card-title> Curriculum </v-card-title>
             <v-card-text v-if="candidate.resume">
               <a :href="candidate.resume" target="_blank"
                 ><v-icon>mdi-download</v-icon> Descargar</a
               >
             </v-card-text>
-            <v-card-text class="text-center" v-else>
-              Sin datos
-            </v-card-text>
+            <v-card-text v-else class="text-center"> Sin datos </v-card-text>
           </v-card>
         </v-col>
 
@@ -227,7 +221,7 @@ export default class Profile extends Vue {
   }
 
   getLevel(level: string) {
-    return levelItems.find(v => (v.value = level)).text;
+    return levelItems.find((v) => (v.value = level)).text;
   }
 
   get user() {

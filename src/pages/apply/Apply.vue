@@ -10,11 +10,11 @@
           Aplica a esta vacante
         </v-card-title>
         <v-card-text v-if="applyComponent.data.candidate.resume == null">
-          <v-card-subtitle class="title ">Actualiza tu perfil </v-card-subtitle>
+          <v-card-subtitle class="title">Actualiza tu perfil </v-card-subtitle>
           <v-form ref="form" lazy-validation>
             <div class="file-content">
-              Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que las
-              empresas puedan saber mas sobre ti y tus habilidades. <br /><br />
+              Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que
+              las empresas puedan saber mas sobre ti y tus habilidades. <br /><br />
               <router-link :to="'/profile/edit'" class="router">
                 Editar perfil
                 <v-icon color="black">mdi-account</v-icon>
@@ -23,9 +23,7 @@
           </v-form>
         </v-card-text>
         <v-card-text v-if="applyComponent.data.candidate.resume != null" class="question">
-          <div class="file-content">
-            ¿Seguro desea aplicar a esta vacante?
-          </div>
+          <div class="file-content">¿Seguro desea aplicar a esta vacante?</div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -34,7 +32,7 @@
             color="primary"
             :disabled="applyComponent.data.loading"
             :loading="applyComponent.data.loading"
-            v-on:click="submitFile"
+            @click="submitFile"
           >
             Aceptar
           </v-btn>
@@ -45,10 +43,12 @@
     <v-parallax class="single-position__banner" dark height="350">
       <v-row class="p-5">
         <v-col class="single-position__banner-content" cols="12">
-          <h1 class="text-h4  mb-4">
+          <h1 class="text-h4 mb-4">
             {{ applyComponent.data.position.jobTitle }}
           </h1>
-          <p v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax">
+          <p
+            v-if="applyComponent.data.position.salaryMin && applyComponent.data.position.salaryMax"
+          >
             <b>
               {{ formatMoney(applyComponent.data.position.salaryMin) }} -
               {{ formatMoney(applyComponent.data.position.salaryMax) }} Mensual
@@ -100,9 +100,9 @@
               data-target="#mymodal"
               color="primary"
               block
-              @click="applyComponent.data.modal = true"
               class="white--text"
               data-whatever="@mdo"
+              @click="applyComponent.data.modal = true"
             >
               Aplicar a esta vacante
             </v-btn>

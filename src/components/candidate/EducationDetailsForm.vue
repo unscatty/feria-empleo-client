@@ -4,13 +4,28 @@
       <slot />
 
       <v-col cols="12" class="candidate-registration__input-item">
-        <v-select :rules="[rules.required]" v-model="form.level" :items="levelItems" label="Nivel"></v-select>
+        <v-select
+          v-model="form.level"
+          :rules="[rules.required]"
+          :items="levelItems"
+          label="Nivel"
+        ></v-select>
       </v-col>
       <v-col cols="6" class="candidate-registration__input-item">
-        <v-text-field :rules="[rules.required]" label="Escuela" v-model="form.institutionName" type="text" />
+        <v-text-field
+          v-model="form.institutionName"
+          :rules="[rules.required]"
+          label="Escuela"
+          type="text"
+        />
       </v-col>
       <v-col cols="6" class="candidate-registration__input-item">
-        <v-text-field :rules="[rules.required]" label="Titulo o carrera" v-model="form.degree" type="text" />
+        <v-text-field
+          v-model="form.degree"
+          :rules="[rules.required]"
+          label="Titulo o carrera"
+          type="text"
+        />
       </v-col>
       <v-col cols="4" class="candidate-registration__input-item">
         <v-menu
@@ -32,14 +47,14 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker type="month" v-model="form.startDate" @input="menuStartDate = false">
+          <v-date-picker v-model="form.startDate" type="month" @input="menuStartDate = false">
           </v-date-picker>
         </v-menu>
       </v-col>
       <v-col cols="4" class="candidate-registration__input-item">
         <v-menu
-          :disabled="form.currentlyInSchool"
           v-model="menuEndDate"
+          :disabled="form.currentlyInSchool"
           :close-on-content-click="false"
           :nudge-right="40"
           transition="scale-transition"
@@ -56,7 +71,8 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker type="month" v-model="form.endDate" @input="menuEndDate = false"> </v-date-picker>
+          <v-date-picker v-model="form.endDate" type="month" @input="menuEndDate = false">
+          </v-date-picker>
         </v-menu>
       </v-col>
 

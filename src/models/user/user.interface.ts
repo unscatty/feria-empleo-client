@@ -1,4 +1,4 @@
-import RoleType from "../role.type";
+import RoleType from '../role.type';
 
 export interface IUser {
   id: number;
@@ -9,7 +9,7 @@ export interface IUser {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
-  
+
   role: RoleType;
 }
 

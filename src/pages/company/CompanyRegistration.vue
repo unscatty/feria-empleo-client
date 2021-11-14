@@ -25,14 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import { rules } from "@/helpers/form";
-import { ICompany } from "@/models/company/company.interface";
-import { VForm } from "@/models/form";
-import { CompanyService } from "@/services/company.service";
-import { Component, Ref, Vue } from "vue-property-decorator";
-import Wysiwyg from "@/components/general/wysiwyg.vue";
-import { lazyInject } from "@/app.container";
-import { CurrentUserService } from "@/services/current-user.service";
+import { rules } from '@/helpers/form';
+import { ICompany } from '@/models/company/company.interface';
+import { VForm } from '@/models/form';
+import { CompanyService } from '@/services/company.service';
+import { Component, Ref, Vue } from 'vue-property-decorator';
+import Wysiwyg from '@/components/general/wysiwyg.vue';
+import { lazyInject } from '@/app.container';
+import { CurrentUserService } from '@/services/current-user.service';
 
 @Component({ components: { Wysiwyg } })
 export default class CompanyRegistration extends Vue {
@@ -42,7 +42,7 @@ export default class CompanyRegistration extends Vue {
   currentUserService: CurrentUserService;
 
   // Refs
-  @Ref("form") readonly formRef!: VForm;
+  @Ref('form') readonly formRef!: VForm;
 
   @lazyInject(CompanyService)
   protected companyService: CompanyService;
@@ -57,5 +57,4 @@ export default class CompanyRegistration extends Vue {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

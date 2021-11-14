@@ -97,7 +97,8 @@ const routes: Array<CustomRouteConfig> = [
   },
   {
     path: '/dashboard/candidatos-aplicados/:id',
-    component: () => import('./pages/dashboard/vacantes/candidatos-aplicados/candidatos-aplicados.vue'),
+    component: () =>
+      import('./pages/dashboard/vacantes/candidatos-aplicados/candidatos-aplicados.vue'),
     beforeEnter: AuthGuard,
     meta: {
       layout: 'LayoutDashboard',

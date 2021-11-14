@@ -56,9 +56,7 @@
               icon="mdi-checkbox-marked"
               color="primary"
             >
-              <v-btn color="accent" dark v-bind="attrs" v-on="on">
-                Tipo
-              </v-btn>
+              <v-btn color="accent" dark v-bind="attrs" v-on="on"> Tipo </v-btn>
             </v-badge>
           </template>
           <v-card>
@@ -79,12 +77,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="clearFilter('jobType')">
-                Limpiar
-              </v-btn>
-              <v-btn color="primary" text @click="onFiltersChange">
-                Aplicar
-              </v-btn>
+              <v-btn text @click="clearFilter('jobType')"> Limpiar </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange"> Aplicar </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -105,9 +99,7 @@
               icon="mdi-checkbox-marked"
               color="primary"
             >
-              <v-btn color="accent" dark class="ml-4" v-bind="attrs" v-on="on">
-                Modalidad
-              </v-btn>
+              <v-btn color="accent" dark class="ml-4" v-bind="attrs" v-on="on"> Modalidad </v-btn>
             </v-badge>
           </template>
 
@@ -129,12 +121,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="clearFilter('jobMode')">
-                Limpiar
-              </v-btn>
-              <v-btn color="primary" text @click="onFiltersChange">
-                Aplicar
-              </v-btn>
+              <v-btn text @click="clearFilter('jobMode')"> Limpiar </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange"> Aplicar </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -155,9 +143,7 @@
               icon="mdi-checkbox-marked"
               color="primary"
             >
-              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on">
-                Experiencia
-              </v-btn>
+              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on"> Experiencia </v-btn>
             </v-badge>
           </template>
 
@@ -179,12 +165,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="clearFilter('experience')">
-                Limpiar
-              </v-btn>
-              <v-btn color="primary" text @click="onFiltersChange">
-                Aplicar
-              </v-btn>
+              <v-btn text @click="clearFilter('experience')"> Limpiar </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange"> Aplicar </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -200,9 +182,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-badge :value="salary" overlap icon="mdi-checkbox-marked" color="primary">
-              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on">
-                Salario
-              </v-btn>
+              <v-btn color="accent" class="ml-4" dark v-bind="attrs" v-on="on"> Salario </v-btn>
             </v-badge>
           </template>
 
@@ -220,12 +200,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="clearFilter('salary')">
-                Limpiar
-              </v-btn>
-              <v-btn color="primary" text @click="onFiltersChange">
-                Aplicar
-              </v-btn>
+              <v-btn text @click="clearFilter('salary')"> Limpiar </v-btn>
+              <v-btn color="primary" text @click="onFiltersChange"> Aplicar </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>

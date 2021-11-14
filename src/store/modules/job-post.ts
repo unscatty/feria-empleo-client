@@ -48,7 +48,9 @@ class JobPost extends VuexModule<JobPostState> {
   public addJobPosts(jobPositions: any[]): void {
     const newArr = [...this.jobPositions, ...jobPositions];
     // remover duplicados
-    this.jobPositions = newArr.filter((v, index, arr) => arr.findIndex((t) => t.id === v.id) === index);
+    this.jobPositions = newArr.filter(
+      (v, index, arr) => arr.findIndex((t) => t.id === v.id) === index
+    );
   }
 
   @Mutation
@@ -169,7 +171,11 @@ class JobPost extends VuexModule<JobPostState> {
       const formData = new FormData();
       buildFormData(formData, data);
       const res = await axios.put(`job-posts/${id}`, formData);
-      this.context.dispatch('Ui/showToast', { text: 'Vacante actualizada con éxito' }, { root: true });
+      this.context.dispatch(
+        'Ui/showToast',
+        { text: 'Vacante actualizada con éxito' },
+        { root: true }
+      );
       this.context.commit('addUpdateJobPost', res.data);
     } catch (error) {
       console.log(error);
@@ -180,7 +186,11 @@ class JobPost extends VuexModule<JobPostState> {
   async deleteJobPost(id: number) {
     try {
       const res = await axios.delete(`job-posts/${id}`);
-      this.context.dispatch('Ui/showToast', { text: 'Vacante eliminada con éxito' }, { root: true });
+      this.context.dispatch(
+        'Ui/showToast',
+        { text: 'Vacante eliminada con éxito' },
+        { root: true }
+      );
       this.context.commit('removeJobPost', res.data?.id);
     } catch (error) {
       console.log(error);

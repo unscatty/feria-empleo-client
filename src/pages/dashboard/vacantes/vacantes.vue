@@ -60,12 +60,8 @@
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
-                <v-icon class="mx-2" @click="goToAppliedCandidates(item)">
-                  mdi-eye
-                </v-icon>
-                <v-icon class="mx-2" @click="component.editPosition(item)">
-                  mdi-pencil
-                </v-icon>
+                <v-icon class="mx-2" @click="goToAppliedCandidates(item)"> mdi-eye </v-icon>
+                <v-icon class="mx-2" @click="component.editPosition(item)"> mdi-pencil </v-icon>
                 <v-icon class="mx-2" @click="component.openDeleteDialog(item)">
                   mdi-trash-can-outline
                 </v-icon>
@@ -79,7 +75,7 @@
     <AddEditJobPost
       :position="component.currentPosition"
       :dialog="component.dialog"
-      :isUpdate="component.updating"
+      :is-update="component.updating"
       @close="closeDialog"
     ></AddEditJobPost>
 
@@ -97,7 +93,12 @@
           >
             Cancelar
           </v-btn>
-          <v-btn :loading="component.loading" color="green darken-1" text @click="onDeleteJobPost()">
+          <v-btn
+            :loading="component.loading"
+            color="green darken-1"
+            text
+            @click="onDeleteJobPost()"
+          >
             Aceptar
           </v-btn>
         </v-card-actions>

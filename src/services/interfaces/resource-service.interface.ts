@@ -1,31 +1,19 @@
 import ObjectLiteral from '@/utils/object-literal.interface';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import {
-  IPaginationMeta,
-  PaginationResponse,
-} from '../../utils/pagination.interface';
+import { IPaginationMeta, PaginationResponse } from '../../utils/pagination.interface';
 
 export interface IResourceService<T> {
   getAll(...args: any[]): Promise<T[]> | T[];
   getById(id: string | number, ...args: any[]): Promise<T> | T;
   save(resource: T, ...args: any[]): Promise<T> | T | void;
-  update(
-    resource: T,
-    id: string | number,
-    ...args: any[]
-  ): Promise<T> | T | void;
+  update(resource: T, id: string | number, ...args: any[]): Promise<T> | T | void;
   delete(resource: T, id: string | number, ...args: any[]): void;
 }
 
-export class ResourceService<T extends { id?: string | number }>
-  implements IResourceService<T> {
+export class ResourceService<T extends { id?: string | number }> implements IResourceService<T> {
   protected axiosInstance: AxiosInstance;
 
-  constructor(
-    protected baseURL: string,
-    protected resourceURL: string,
-    timeout = 1_000
-  ) {
+  constructor(protected baseURL: string, protected resourceURL: string, timeout = 1_000) {
     const url = new URL(this.resourceURL, this.baseURL);
     const instanceConfig: AxiosRequestConfig = {
       baseURL: url.toString(),
@@ -51,10 +39,7 @@ export class ResourceService<T extends { id?: string | number }>
   }
 
   async getAll(config?: AxiosRequestConfig) {
-    const response = await this.axiosInstance.get<T, AxiosResponse<T[]>>(
-      '/',
-      config
-    );
+    const response = await this.axiosInstance.get<T, AxiosResponse<T[]>>('/', config);
     return response.data;
   }
 
@@ -69,46 +54,24 @@ export class ResourceService<T extends { id?: string | number }>
   }
 
   async getById(id: string | number, config?: AxiosRequestConfig) {
-    const response = await this.axiosInstance.get<T, AxiosResponse<T>>(
-      `/${id}`,
-      config
-    );
+    const response = await this.axiosInstance.get<T, AxiosResponse<T>>(`/${id}`, config);
 
     return response.data;
   }
 
   async save(resource: T, config?: AxiosRequestConfig) {
-    const response = await this.axiosInstance.post<T, AxiosResponse<T>>(
-      '/',
-      resource,
-      config
-    );
+    const response = await this.axiosInstance.post<T, AxiosResponse<T>>('/', resource, config);
 
     return response.data;
   }
 
-  async update(
-    resource: T,
-    id: string | number = resource.id,
-    config?: AxiosRequestConfig
-  ) {
-    const response = await this.axiosInstance.put<T, AxiosResponse<T>>(
-      `/${id}`,
-      resource,
-      config
-    );
+  async update(resource: T, id: string | number = resource.id, config?: AxiosRequestConfig) {
+    const response = await this.axiosInstance.put<T, AxiosResponse<T>>(`/${id}`, resource, config);
 
     return response.data;
   }
 
-  async delete(
-    resource: T,
-    id: string | number = resource.id,
-    config?: AxiosRequestConfig
-  ) {
-    return await this.axiosInstance.delete<T, AxiosResponse<void>>(
-      `/${id}`,
-      config
-    );
+  async delete(resource: T, id: string | number = resource.id, config?: AxiosRequestConfig) {
+    return await this.axiosInstance.delete<T, AxiosResponse<void>>(`/${id}`, config);
   }
 }

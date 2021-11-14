@@ -6,7 +6,7 @@
           Agregar vacante
         </v-card-title>
         <v-container grid-list-md class="pa-5">
-          <v-form :disabled="loading" ref="form" lazy-validation>
+          <v-form ref="form" :disabled="loading" lazy-validation>
             <v-row class="px-1">
               <v-col cols="6">
                 <v-text-field
@@ -93,13 +93,13 @@
                 <Cropper
                   :dialog="dialogCropper"
                   :image="image"
-                  :imageName="imageName"
+                  :image-name="imageName"
                   @uploadPicture="onCropperResult"
                   @close="dialogCropper = false"
                 ></Cropper>
               </v-col>
 
-              <v-col class="text-center justify-center d-flex" v-if="imagePreview" cols="12">
+              <v-col v-if="imagePreview" class="text-center justify-center d-flex" cols="12">
                 <v-img max-height="200" max-width="200" contain :src="imagePreview"> </v-img>
               </v-col>
             </v-row>
@@ -108,9 +108,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :loading="loading" color="darken-1" text @click="show = false">Cancelar</v-btn>
-          <v-btn :loading="loading" color="#FF5072" dark @click="save">
-            Guardar
-          </v-btn>
+          <v-btn :loading="loading" color="#FF5072" dark @click="save"> Guardar </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -1,6 +1,6 @@
 <template>
   <v-app v-scroll="onScroll">
-    <v-app-bar ref="appBar" id="app-bar" app color="primary" dark hide-on-scroll>
+    <v-app-bar id="app-bar" ref="appBar" app color="primary" dark hide-on-scroll>
       <div class="d-flex align-center">
         <v-img width="70" class="logo-white my-3" src="@/assets/img/escom_logo.png"></v-img>
       </div>
@@ -31,7 +31,10 @@
         </template>
 
         <v-list>
-          <v-list-item v-if="userRole && (userRole === 'ADMIN' || userRole === 'COMPANY')" to="/dashboard">
+          <v-list-item
+            v-if="userRole && (userRole === 'ADMIN' || userRole === 'COMPANY')"
+            to="/dashboard"
+          >
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>
           <v-list-item @click="logout">
@@ -42,16 +45,16 @@
     </v-app-bar>
     <v-card
       v-if="showFilters"
+      ref="banner"
       dark
       color="secondary"
       class="layout-banner"
       :style="'margin-top:' + marginTop + 'px'"
-      ref="banner"
     >
       <Filters />
     </v-card>
 
-    <v-main :class="$route.name === 'home' || $route.name === 'vacante' ? 'pa-0' : ''" class=" my-8">
+    <v-main :class="$route.name === 'home' || $route.name === 'vacante' ? 'pa-0' : ''" class="my-8">
       <slot />
     </v-main>
 

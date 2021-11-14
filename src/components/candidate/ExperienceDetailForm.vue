@@ -3,13 +3,23 @@
     <v-row>
       <slot />
       <v-col cols="6" class="pt-0">
-        <v-text-field :rules="[rules.required]" label="Puesto" v-model="form.jobTitle" type="text" />
+        <v-text-field
+          v-model="form.jobTitle"
+          :rules="[rules.required]"
+          label="Puesto"
+          type="text"
+        />
       </v-col>
       <v-col cols="6" class="pt-0">
-        <v-text-field label="Empresa" :rules="[rules.required]" v-model="form.companyName" type="text" />
+        <v-text-field
+          v-model="form.companyName"
+          label="Empresa"
+          :rules="[rules.required]"
+          type="text"
+        />
       </v-col>
       <v-col cols="12" class="pt-0">
-        <v-textarea label="Actividades y logros" v-model="form.jobDescription" type="text" />
+        <v-textarea v-model="form.jobDescription" label="Actividades y logros" type="text" />
       </v-col>
       <v-col cols="4" class="pt-0">
         <v-menu
@@ -27,18 +37,18 @@
               label="Inicio"
               readonly
               v-bind="attrs"
-              v-on="on"
               :rules="[rules.required]"
+              v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker type="month" v-model="form.startDate" @input="menuStartDate = false">
+          <v-date-picker v-model="form.startDate" type="month" @input="menuStartDate = false">
           </v-date-picker>
         </v-menu>
       </v-col>
       <v-col cols="4" class="pt-0">
         <v-menu
-          :disabled="form.currentlyInSchool"
           v-model="menuEndDate"
+          :disabled="form.currentlyInSchool"
           :close-on-content-click="false"
           :nudge-right="40"
           transition="scale-transition"
@@ -55,7 +65,8 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker type="month" v-model="form.endDate" @input="menuEndDate = false"> </v-date-picker>
+          <v-date-picker v-model="form.endDate" type="month" @input="menuEndDate = false">
+          </v-date-picker>
         </v-menu>
       </v-col>
 

@@ -48,9 +48,7 @@
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
-                <v-icon class="mx-2" @click="component.editCompany(item)">
-                  mdi-pencil
-                </v-icon>
+                <v-icon class="mx-2" @click="component.editCompany(item)"> mdi-pencil </v-icon>
                 <v-icon class="mx-2" @click="component.openDeleteDialog(item)">
                   mdi-trash-can-outline
                 </v-icon>
@@ -64,7 +62,7 @@
     <InviteDialog
       :position="component.currentPosition"
       :dialog="component.dialog"
-      :isUpdate="component.updating"
+      :is-update="component.updating"
       :service="companyService"
       @close="closeDialog"
       @invited="invitationSent"
@@ -73,9 +71,7 @@
     <v-dialog v-model="component.deleteDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> Eliminar vacante </v-card-title>
-        <v-card-text>
-          ¿Estas seguro que deseas eliminar esta vacante?</v-card-text
-        >
+        <v-card-text> ¿Estas seguro que deseas eliminar esta vacante?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -101,15 +97,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { CompanyService } from "@/services/company.service";
-import { PaginationResponse } from "@/utils/pagination.interface";
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { CompanyService } from '@/services/company.service';
+import { PaginationResponse } from '@/utils/pagination.interface';
 
-import InviteDialog from "@/components/companies/InvitationDialog.vue";
+import InviteDialog from '@/components/companies/InvitationDialog.vue';
 
-import { ICompany } from "@/models/company/company.interface";
-import { AdminCompaniesComponent } from "./companies.component";
-import { lazyInject } from "@/app.container";
+import { ICompany } from '@/models/company/company.interface';
+import { AdminCompaniesComponent } from './companies.component';
+import { lazyInject } from '@/app.container';
 
 @Component({
   components: { InviteDialog },
@@ -134,7 +130,7 @@ export default class AdminCompanies extends Vue {
 
   public pagOptions: any = {};
 
-  @Watch("pagOptions")
+  @Watch('pagOptions')
   async pagOptionsChange() {
     // const { page } = this.pagOptions;
     this.component.loadingTable = true;

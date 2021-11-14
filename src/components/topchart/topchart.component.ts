@@ -15,8 +15,9 @@ export class TopChartComponent {
 
   public async getPositions(): Promise<void> {
     try {
-      this.topPositions = await (await axios.get(this.endpoint, { params: { limit: this.limit } }))
-        .data;
+      this.topPositions = await (
+        await axios.get(this.endpoint, { params: { limit: this.limit } })
+      ).data;
     } catch (error) {
       this.topPositions = [];
     }

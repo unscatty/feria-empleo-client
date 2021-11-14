@@ -16,8 +16,6 @@ export class ApplyComponent {
     },
   });
 
-  constructor() {}
-
   public async getPosition(id: string) {
     try {
       this.data.position = await (await axios.get('job-posts/' + id)).data;
@@ -53,7 +51,8 @@ export class ApplyComponent {
       });
       return 'success';
     } catch (error) {
-      return error?.response || error;
+      const err: any = error;
+      return err?.response || error;
 
       //validateUnauthorizedError(error);
     } finally {

@@ -42,7 +42,9 @@ axios.interceptors.response.use(
 
       switch (errorCode) {
         case 'NOT_USER_REGISTER':
-          router.replace('/registro').catch(() => {});
+          router.replace('/registro').catch((e) => {
+            console.log(e);
+          });
           break;
 
         default:

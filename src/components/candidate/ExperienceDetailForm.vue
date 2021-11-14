@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { rules } from '@/helpers/form';
 import { VForm } from '@/models/form';
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 
 import { levelItems } from '@/constants/candidate';
 @Component
@@ -94,7 +94,7 @@ export default class ExperienceDetailsForm extends Vue {
       startDate: new Date(),
     },
   })
-  form!: Object;
+  form!: any;
   @Ref('form') readonly formRef!: VForm;
 
   menuStartDate: any = null;

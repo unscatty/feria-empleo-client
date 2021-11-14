@@ -350,7 +350,7 @@
 
 <script lang="ts">
 import axios from 'axios';
-import { head, findIndex } from 'lodash';
+import { head } from 'lodash';
 import moment from 'moment';
 import Vue from 'vue';
 import Component from 'vue-class-component';

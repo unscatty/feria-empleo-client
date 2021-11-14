@@ -47,7 +47,7 @@
 <script lang="ts">
 import InfiniteLoading from 'vue-infinite-loading';
 
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 import Filters from '../../components/filters/Filters.vue';
 import Positions from '../../components/positions/Positions.vue';

@@ -38,7 +38,7 @@ export class CompanyService extends ResourceService<ICompany> {
     tokenName = 'token'
   ) {
     try {
-      const response = await this.axiosInstance.get(endpoint, {
+      await this.axiosInstance.get(endpoint, {
         params: { [tokenName]: token },
       });
 

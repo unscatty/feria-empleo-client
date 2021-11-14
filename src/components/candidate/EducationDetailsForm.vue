@@ -101,7 +101,7 @@ export default class EducationDetailsForm extends Vue {
       currentlyInSchool: false,
     },
   })
-  form!: Object;
+  form!: any;
   @Ref('form') readonly formRef!: VForm;
 
   menuStartDate: any = null;

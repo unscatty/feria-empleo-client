@@ -1,6 +1,6 @@
 import { CompanyInvite } from '@/models/company/company-forms';
-import { ICompany } from '@/models/company/company.interface';
-import { AxiosResponse } from 'axios';
+import ICompany from '@/models/company/company.interface';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { injectable as Injectable } from 'inversify';
 import { ResourceService } from './interfaces/resource-service.interface';
 
@@ -52,6 +52,16 @@ export class CompanyService extends ResourceService<ICompany> {
     const response = await this.axiosInstance.post<ICompany, AxiosResponse<ICompany>>(endpoint, {
       token: stateToken,
     });
+
+    return response.data;
+  }
+
+  async updateCurrent(company: ICompany, config?: AxiosRequestConfig) {
+    const response = await this.axiosInstance.put<ICompany, AxiosResponse<ICompany>>(
+      '',
+      company,
+      config
+    );
 
     return response.data;
   }

@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { rules } from '@/helpers/form';
-import { ICompany } from '@/models/company/company.interface';
+import ICompany from '@/models/company/company.interface';
 import { VForm } from '@/models/form';
 import { CompanyService } from '@/services/company.service';
 import { Component, Ref, Vue } from 'vue-property-decorator';

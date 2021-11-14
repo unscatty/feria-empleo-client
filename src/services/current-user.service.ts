@@ -1,5 +1,5 @@
 import { ICandidate } from '@/models/candidate/candidate.interface';
-import { ICompany } from '@/models/company/company.interface';
+import ICompany from '@/models/company/company.interface';
 import RoleType from '@/models/role.type';
 import { IAdmin } from '@/models/user/user.interface';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';

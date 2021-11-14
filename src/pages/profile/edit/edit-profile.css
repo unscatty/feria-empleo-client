@@ -1,0 +1,37 @@
+.contact-details {
+    width: 80%;
+    height: auto;
+    border-radius: 20px;
+    margin: 5% 10% 0% 10%;
+    padding: 3vh 3vw 3vh 3vw;
+    box-shadow:  5px 10px 10px #eeeeee;
+    display: flex;
+}
+
+.skills {
+    padding: 3vh 3vw 3vh 3vw;
+    display: block;
+}
+
+ .chips {
+    display: inline-flex !important;
+    padding: 3vh 1vw 3vh 3vw;
+}
+
+ .chips .chip {
+    margin-right: 1vw;
+    margin-top: 3vh;
+}
+
+.add {
+    margin-left: 80%;
+}
+
+.download {
+    padding-top: 5vh;
+}
+
+.download a { 
+    text-decoration: none;
+    color: black;
+}

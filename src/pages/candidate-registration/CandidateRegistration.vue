@@ -155,6 +155,7 @@ import { lazyInject } from '@/app.container';
 import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
 import AuthService from '../../auth/auth.service';
 import axios from 'axios';
+import { isUndefined } from 'lodash';
 
 const jobStore = namespace(JOBPOST_STORE_NAME);
 const uiStore = namespace('Ui');
@@ -192,6 +193,9 @@ export default class CandidateRegistration extends Vue {
   }
 
   get skillSetItems() {
+    if (isUndefined(this.skillSets)) {
+      return [];
+    }
     return this.skillSets.map((s) => ({ name: s.name, value: s.id }));
   }
 

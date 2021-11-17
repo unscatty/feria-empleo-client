@@ -25,7 +25,7 @@
         <v-card-text v-if="applyComponent.data.candidate.resume != null" class="question">
           <div class="file-content">¿Seguro desea aplicar a esta vacante?</div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="applyComponent.data.candidate.resume !== null">
           <v-spacer></v-spacer>
           <v-btn color="darken-1" text @click="applyComponent.data.modal = false">Cancelar</v-btn>
           <v-btn

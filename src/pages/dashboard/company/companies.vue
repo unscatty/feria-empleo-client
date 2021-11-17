@@ -183,6 +183,12 @@ export default class AdminCompanies extends Vue {
 
   invitationSent(company: ICompany) {
     this.companies.push(company);
+    this.$forceUpdate();
+    this.$store.dispatch(
+      'Ui/showToast',
+      { text: 'Invitación enviada con éxito', color: 'success' },
+      { root: true }
+    );
   }
 
   closeDialog() {

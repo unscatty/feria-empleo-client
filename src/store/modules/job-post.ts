@@ -160,8 +160,15 @@ class JobPost extends VuexModule<JobPostState> {
       await axios.post('job-posts', formData);
       this.context.dispatch('Ui/showToast', { text: 'Vacante creada con éxito' }, { root: true });
       this.context.dispatch('findAllJobPosts');
+      return true;
     } catch (error) {
+      this.context.dispatch(
+        'Ui/showToast',
+        { text: 'Ocurrio un error al crear la vacante', color: 'error' },
+        { root: true }
+      );
       console.log(error);
+      return false;
     }
   }
 
@@ -177,8 +184,15 @@ class JobPost extends VuexModule<JobPostState> {
         { root: true }
       );
       this.context.commit('addUpdateJobPost', res.data);
+      return true;
     } catch (error) {
+      this.context.dispatch(
+        'Ui/showToast',
+        { text: 'Ocurrio un error al actualizar la vacante', color: 'error' },
+        { root: true }
+      );
       console.log(error);
+      return false;
     }
   }
 
@@ -193,6 +207,11 @@ class JobPost extends VuexModule<JobPostState> {
       );
       this.context.commit('removeJobPost', res.data?.id);
     } catch (error) {
+      this.context.dispatch(
+        'Ui/showToast',
+        { text: 'Ocurrio un error al eliminar la vacante', color: 'error' },
+        { root: true }
+      );
       console.log(error);
     }
   }

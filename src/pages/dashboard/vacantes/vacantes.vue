@@ -180,9 +180,12 @@ export default class AdminVacantes extends Vue {
     this.component.deleteDialog = false;
   }
 
-  closeDialog() {
+  closeDialog(refresh: boolean) {
     this.component.dialog = false;
     this.component.updating = false;
+    if (refresh) {
+      this.findAllSkillSets();
+    }
   }
 
   goToAppliedCandidates(jobPost: any) {

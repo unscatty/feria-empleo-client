@@ -135,10 +135,10 @@ export default class AddEditJobPost extends Vue {
 
   // Store
   @jobPost.Action
-  public createJobPost!: (data: IJobPost) => void;
+  public createJobPost!: (data: IJobPost) => boolean;
 
   @jobPost.Action
-  public updateJobPost!: ({ id, data }: any) => void;
+  public updateJobPost!: ({ id, data }: any) => boolean;
 
   @jobPost.State
   public skillSets!: any[];
@@ -234,7 +234,7 @@ export default class AddEditJobPost extends Vue {
         }
       }
     }
-
+    let successRes = false;
     if (this.isUpdate) {
       // Update
       const formDiff = diffObjects(this.form, this.oldForm);
@@ -244,14 +244,16 @@ export default class AddEditJobPost extends Vue {
         this.$emit('close');
       }
 
-      await this.updateJobPost({ id: this.position.id, data: formDiff });
+      successRes = await this.updateJobPost({ id: this.position.id, data: formDiff });
     } else {
       // Create
-      await this.createJobPost(data);
+      successRes = await this.createJobPost(data);
     }
 
     this.loading = false;
-    this.$emit('close');
+    if (successRes) {
+      this.$emit('close', true);
+    }
   }
 
   onCropperResult(data: any) {

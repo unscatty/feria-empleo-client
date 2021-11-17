@@ -28,6 +28,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/home/home.vue'),
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Home',
       layout: 'LayoutHome',
       permissions: {
         default: {
@@ -41,6 +42,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/companies/Companies.vue'),
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Empresas',
       layout: 'LayoutHome',
     },
   },
@@ -49,6 +51,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/profile/Profile.vue'),
     beforeEnter: AuthGuard,
     meta: {
+      title: 'Perfil',
       layout: 'LayoutHome',
     },
   },
@@ -57,6 +60,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/profiles/CandidateProfiles.vue'),
     beforeEnter: AuthGuard,
     meta: {
+      title: 'Perfil',
       layout: 'LayoutHome',
     },
   },
@@ -65,6 +69,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/show-company/showCompany.vue'),
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Empresa',
       layout: 'LayoutHome',
     },
   },
@@ -74,6 +79,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/apply/Apply.vue'),
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Aplicar',
       layout: 'LayoutHome',
     },
   },
@@ -82,6 +88,7 @@ const routes: Array<CustomRouteConfig> = [
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Dashboard',
       layout: 'LayoutDashboard',
       permissions: {
         roles: [
@@ -110,6 +117,7 @@ const routes: Array<CustomRouteConfig> = [
     component: AdminCompanies,
     beforeEnter: MultiGuard(),
     meta: {
+      title: 'Dashboard',
       layout: 'LayoutDashboard',
     },
   },
@@ -119,6 +127,7 @@ const routes: Array<CustomRouteConfig> = [
     component: CompanyRegistration,
     beforeEnter: NoDefaultsMultiGuard(AuthGuard, CompanyRegisterGuard),
     meta: {
+      title: 'Dashboard',
       layout: 'LayoutHome',
     },
   },
@@ -132,6 +141,7 @@ const routes: Array<CustomRouteConfig> = [
     name: 'CandidateRegistration',
     component: CandidateRegistration,
     meta: {
+      title: 'Registro',
       layout: 'LayoutVuetifyDefault',
     },
   },
@@ -149,7 +159,18 @@ const routes: Array<CustomRouteConfig> = [
   },
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes,
 });
+
+const DEFAULT_TITLE = 'Feria empleo ipn';
+router.afterEach((to, from) => {
+  // Use next tick to handle router history correctly
+  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+  Vue.nextTick(() => {
+    document.title =
+      to.meta && to.meta.title ? `${DEFAULT_TITLE} - ${to.meta.title}` : DEFAULT_TITLE;
+  });
+});
+export default router;

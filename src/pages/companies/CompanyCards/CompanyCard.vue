@@ -9,7 +9,7 @@
       <v-img height="250" :src="company.imageURL || require('@/assets/no-image.png')"></v-img>
       <v-card-title>{{ company.name }}</v-card-title>
       <v-card-text>
-        <div>{{ truncate(company.description || "", 100) }}</div>
+        <div>{{ truncate(company.description || '', 100) }}</div>
       </v-card-text>
     </v-card>
   </v-hover>

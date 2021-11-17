@@ -466,7 +466,9 @@ export default class Profile extends Vue {
 
   onAddSkillSets() {
     this.addEditSkillSets = true;
-    this.skillSetsForm = !isUndefined(this.candidate.skillSets) ? this.candidate.skillSets.map((s: any) => s.id) : [];
+    this.skillSetsForm = !isUndefined(this.candidate.skillSets)
+      ? this.candidate.skillSets.map((s: any) => s.id)
+      : [];
   }
 
   onEditContact() {

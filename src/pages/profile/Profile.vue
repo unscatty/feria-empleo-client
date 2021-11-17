@@ -350,7 +350,7 @@
 
 <script lang="ts">
 import axios from 'axios';
-import { head } from 'lodash';
+import { head, isUndefined } from 'lodash';
 import moment from 'moment';
 import Vue from 'vue';
 import Component from 'vue-class-component';
@@ -408,6 +408,9 @@ export default class Profile extends Vue {
   }
 
   get skillSetItems() {
+    if (isUndefined(this.skillSets)) {
+      return [];
+    }
     return this.skillSets.map((s) => ({ name: s.name, value: s.id }));
   }
 
@@ -463,7 +466,7 @@ export default class Profile extends Vue {
 
   onAddSkillSets() {
     this.addEditSkillSets = true;
-    this.skillSetsForm = this.candidate.skillSets.map((s: any) => s.id);
+    this.skillSetsForm = !isUndefined(this.candidate.skillSets) ? this.candidate.skillSets.map((s: any) => s.id) : [];
   }
 
   onEditContact() {
@@ -567,7 +570,7 @@ export default class Profile extends Vue {
       const diffContact = diffObjects(this.contact, this.oldContact);
       if (
         (diffContact && Object.keys(diffContact).length > 0) ||
-        (Object.keys(this.contact).length === 0 && this.addEditContact)
+        (Object.keys(this.contact || {}).length === 0 && this.addEditContact)
       ) {
         contactChange = true;
         // validate form

@@ -15,7 +15,7 @@
             <div class="file-content">
               Parece que no haz actualizado tu perfil, por favor actualizalo y agrega tu CV para que
               las empresas puedan saber mas sobre ti y tus habilidades. <br /><br />
-              <router-link :to="'/profile/edit'" class="router">
+              <router-link :to="'/profile/'" class="router">
                 Editar perfil
                 <v-icon color="black">mdi-account</v-icon>
               </router-link>

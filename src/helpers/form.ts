@@ -15,6 +15,15 @@ export const rules = {
   required: (v: any) => !!v || 'Este campo es requerido',
   maxLength: (maxnum: number, v: string) =>
     (v && v.length <= maxnum) || `Maximo ${maxnum} caracteres`,
+  maxLengthUnrequired: (maxnum: number, v: string) => {
+    if (v && v.length > maxnum) {
+      return `Maximo ${maxnum} caracteres`;
+    }
+
+    return true;
+  },
+  minLength: (minnum: number, v: string) =>
+    (v && v.length >= minnum) || `Mínimo ${minnum} caracteres`,
   email: (v: string) => {
     const pattern =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -35,4 +44,21 @@ export const diffObjects = function (obj1: any, obj2: any) {
     },
     {}
   );
+};
+
+export const objectToFormData = (obj: any, rootName = ''): FormData => {
+  function _buildFormData(formData: FormData, data: any, parentKey: string) {
+    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+      Object.entries(data).forEach(([key, value]) => {
+        _buildFormData(formData, value, parentKey ? `${parentKey}['${key}']` : key);
+      });
+    } else {
+      formData.append(parentKey, data);
+    }
+  }
+
+  const formData = new FormData();
+  _buildFormData(formData, obj, rootName);
+
+  return formData;
 };

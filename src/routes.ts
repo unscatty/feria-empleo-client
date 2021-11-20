@@ -21,22 +21,24 @@ Vue.use(VueRouter);
 // Default guards to be applied
 const MultiGuard = createMultiGuard(AuthGuard, CurrentUserGuard, RoleGuard);
 
-const routes: Array<CustomRouteConfig> = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('./pages/home/home.vue'),
-    beforeEnter: MultiGuard(),
-    meta: {
-      title: 'Home',
-      layout: 'LayoutHome',
-      permissions: {
-        default: {
-          access: true,
-        },
+export const homePath: CustomRouteConfig = {
+  path: '/',
+  name: 'home',
+  component: () => import('./pages/home/home.vue'),
+  beforeEnter: MultiGuard(),
+  meta: {
+    title: 'Home',
+    layout: 'LayoutHome',
+    permissions: {
+      default: {
+        access: true,
       },
     },
   },
+};
+
+const routes: Array<CustomRouteConfig> = [
+  homePath,
   {
     path: '/companies',
     component: () => import('./pages/companies/Companies.vue'),

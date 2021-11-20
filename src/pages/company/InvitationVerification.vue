@@ -1,12 +1,17 @@
-<template>
+<!-- <template>
   <div>{{ message }}</div>
-</template>
+</template> -->
 
-<script setup lang="ts">
-import { CompanyService } from '@/services/company.service';
-import { Component, Vue } from 'vue-property-decorator';
+<script lang="ts">
 import { lazyInject } from '@/app.container';
 import AuthService from '@/auth/auth.service';
+import { homePath } from '@/routes';
+import { CompanyService } from '@/services/company.service';
+import Ui from '@/store/modules/ui';
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+
+const uiStore = namespace('Ui');
 
 @Component
 export default class InvitationVerification extends Vue {
@@ -15,6 +20,9 @@ export default class InvitationVerification extends Vue {
 
   @lazyInject(AuthService)
   authService: AuthService;
+
+  @uiStore.Action
+  showToast: typeof Ui.prototype.showToast;
 
   message = '';
 
@@ -36,6 +44,13 @@ export default class InvitationVerification extends Vue {
       await this.authService.registerCompany({ state: urlToken });
     } else {
       this.message = 'Token inválido';
+
+      this.showToast({
+        text: 'El token te invitación no es válido o ha caducado. Por favor contacta a un administrador',
+        color: 'error',
+      });
+
+      this.$router.push(homePath);
     }
   }
 }

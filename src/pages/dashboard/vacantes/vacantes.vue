@@ -116,8 +116,8 @@ import AddEditJobPost from '@/components/job-post/AddEditJobPost.vue';
 
 import { AdminVacantesComponent } from './vacantes.component';
 import { container } from '@/app.container';
-import { CurrentUserService, UserType } from '@/services/current-user.service';
-import { ICompany } from '@/models/company/company.interface';
+import { CurrentUserService } from '@/services/current-user.service';
+import { ICompany } from '../../../models/company/company.interface';
 import { IFilters } from '@/store/modules/job-post';
 import { IJobPost } from '@/models/job-post/job-post.interface';
 import RoleType from '@/models/role.type';
@@ -164,7 +164,7 @@ export default class AdminVacantes extends Vue {
 
   async created() {
     const currentUserService = container.get(CurrentUserService);
-    let user: UserType = currentUserService.raw as ICompany;
+    let user: ICompany = currentUserService.raw as ICompany;
     this.pagOptions = {
       itemsPerPage: this.jobPostFilters.limit,
     };

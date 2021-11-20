@@ -3,7 +3,7 @@ import RoleType from '../role.type';
 export interface IUser {
   id: number;
   name: string;
-  lastName: string;
+  lastname: string;
   email: string;
 
   // Timestamps
@@ -16,3 +16,5 @@ export interface IUser {
 export interface IAdmin {
   user: IUser;
 }
+
+export type UserUpdateFields = Partial<Pick<IUser, 'name' | 'lastname'>>;

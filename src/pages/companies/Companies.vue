@@ -42,7 +42,6 @@ export default class CompaniesList extends Vue {
   async created() {
     await this.companyComponent.getCompanies();
     this.vm.companies = this.companyComponent.companies;
-    console.log(this.vm.companies);
   }
 }
 </script>

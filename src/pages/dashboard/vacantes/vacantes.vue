@@ -117,7 +117,7 @@ import AddEditJobPost from '@/components/job-post/AddEditJobPost.vue';
 import { AdminVacantesComponent } from './vacantes.component';
 import { container } from '@/app.container';
 import { CurrentUserService } from '@/services/current-user.service';
-import { ICompany } from '../../../models/company/company.interface';
+import { ICompany } from '@/models/company/company.interface';
 import { IFilters } from '@/store/modules/job-post';
 import { IJobPost } from '@/models/job-post/job-post.interface';
 import RoleType from '@/models/role.type';

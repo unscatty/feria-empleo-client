@@ -19,7 +19,6 @@ export class ApplyComponent {
   public async getPosition(id: string) {
     try {
       this.data.position = await (await axios.get('job-posts/' + id)).data;
-      console.log(this.data.position);
     } catch (error) {
       validateUnauthorizedError(error);
     }
@@ -66,7 +65,6 @@ export class ApplyComponent {
       .get('/candidate')
       .then((candidate: any) => {
         this.data.candidate = head(candidate.data);
-        console.log(this.data.candidate);
       })
       .catch((error) => {
         validateUnauthorizedError(error);

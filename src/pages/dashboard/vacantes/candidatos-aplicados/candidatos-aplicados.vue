@@ -55,6 +55,7 @@
 </template>
 
 <script lang="ts">
+import { validateUnauthorizedError } from '@/auth/auth.validatod';
 import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 
@@ -101,7 +102,7 @@ export default class AppliedCandidates extends Vue {
         id: r.candidate.id,
       }));
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     }
   }
   speakerInitials(userName: string) {

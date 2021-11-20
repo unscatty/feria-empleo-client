@@ -110,14 +110,16 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 
-import AddEditJobPost from '@/components/job-post/AddEditJobPost.vue';
+import { isEqual } from 'lodash';
 import { namespace } from 'vuex-class';
+import AddEditJobPost from '@/components/job-post/AddEditJobPost.vue';
 
-import { IJobPost } from '@/models/job-post/job-post.interface';
 import { AdminVacantesComponent } from './vacantes.component';
-import { IFilters } from '@/store/modules/job-post';
 import { container } from '@/app.container';
-import { CurrentUserService } from '@/services/current-user.service';
+import { CurrentUserService, UserType } from '@/services/current-user.service';
+import { ICompany } from '@/models/company/company.interface';
+import { IFilters } from '@/store/modules/job-post';
+import { IJobPost } from '@/models/job-post/job-post.interface';
 import RoleType from '@/models/role.type';
 
 const jobPost = namespace('JobPost');
@@ -161,10 +163,15 @@ export default class AdminVacantes extends Vue {
   }
 
   async created() {
+    const currentUserService = container.get(CurrentUserService);
+    let user: UserType = currentUserService.raw;
     this.pagOptions = {
       itemsPerPage: this.jobPostFilters.limit,
     };
-
+    if (isEqual(user.user.role, RoleType.COMPANY)) {
+      user = user as ICompany;
+      this.jobPostFilters.companyId = user.id.toString();
+    }
     this.findAllSkillSets();
   }
 
@@ -190,20 +197,6 @@ export default class AdminVacantes extends Vue {
 
   goToAppliedCandidates(jobPost: any) {
     this.$router.push(`/dashboard/candidatos-aplicados/${jobPost.id}`);
-  }
-
-  imageUrlError(index: any) {
-    console.log(index);
-
-    /* const itemImage: any = this.$refs.itemImage as any;
-    console.log(index);
-    console.log(itemImage);
-
-    if (itemImage) {
-      //console.log(itemImage[index]);
-
-      itemImage.src = require('@/assets/no-image.png');
-    } */
   }
 }
 </script>

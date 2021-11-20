@@ -109,11 +109,6 @@ export default class EducationDetailsForm extends Vue {
 
   levelItems: any[] = levelItems;
 
-  @Watch('form')
-  changeForm() {
-    console.log(this.form);
-  }
-
   get rules() {
     return rules;
   }

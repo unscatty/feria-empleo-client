@@ -164,8 +164,8 @@ const router = new VueRouter({
   routes,
 });
 
-const DEFAULT_TITLE = 'Feria empleo ipn';
-router.afterEach((to, from) => {
+const DEFAULT_TITLE = 'Feria empleo IPN';
+router.afterEach((to) => {
   // Use next tick to handle router history correctly
   // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
   Vue.nextTick(() => {

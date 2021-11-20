@@ -1,3 +1,4 @@
+import { validateUnauthorizedError } from '@/auth/auth.validatod';
 import { buildFormData } from '@/helpers/form';
 import { IJobPost } from '@/models/job-post/job-post.interface';
 import axios from 'axios';
@@ -110,7 +111,7 @@ class JobPost extends VuexModule<JobPostState> {
       this.context.commit('setJobPosts', res.data.items);
       this.context.commit('setjobsPaginationData', res.data.meta);
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     } finally {
       this.context.commit('setLoadingJobPosts', false);
     }
@@ -126,7 +127,7 @@ class JobPost extends VuexModule<JobPostState> {
       this.context.commit('addJobPosts', res.data.items);
       this.context.commit('setjobsPaginationData', res.data.meta);
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     } finally {
       this.context.commit('setLoadingJobPosts', false);
     }
@@ -138,7 +139,7 @@ class JobPost extends VuexModule<JobPostState> {
       const res = await axios.get(`job-posts/global-search/${search}`);
       this.context.commit('setJobPostsGlobalSearch', res.data);
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     }
   }
 
@@ -148,7 +149,7 @@ class JobPost extends VuexModule<JobPostState> {
       const res = await axios.get('skill-set');
       this.context.commit('setSkillSets', res.data);
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     }
   }
 
@@ -167,7 +168,6 @@ class JobPost extends VuexModule<JobPostState> {
         { text: 'Ocurrio un error al crear la vacante', color: 'error' },
         { root: true }
       );
-      console.log(error);
       return false;
     }
   }
@@ -191,7 +191,6 @@ class JobPost extends VuexModule<JobPostState> {
         { text: 'Ocurrio un error al actualizar la vacante', color: 'error' },
         { root: true }
       );
-      console.log(error);
       return false;
     }
   }
@@ -212,7 +211,6 @@ class JobPost extends VuexModule<JobPostState> {
         { text: 'Ocurrio un error al eliminar la vacante', color: 'error' },
         { root: true }
       );
-      console.log(error);
     }
   }
 }

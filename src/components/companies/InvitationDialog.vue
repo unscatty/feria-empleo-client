@@ -133,8 +133,6 @@ export default class InviteModal extends Vue {
 
     const response = await this.service.invite(companyInvitation);
 
-    console.log(response);
-
     this.$emit('invited', response);
 
     this.loading = false;

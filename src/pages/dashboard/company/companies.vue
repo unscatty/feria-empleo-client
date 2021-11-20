@@ -155,9 +155,6 @@ export default class AdminCompanies extends Vue {
       const response = await this.companyService.getAllPaginated({
         params: { page, limit: itemsPerPage },
       });
-
-      console.log(response);
-
       this.paginationResponse = response;
 
       this.companies = this.paginationResponse.items;

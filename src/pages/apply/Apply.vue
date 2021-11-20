@@ -193,7 +193,6 @@ export default class Apply extends Vue {
         { root: true }
       );
     }
-    console.log(res);
   }
 
   public formatMoney(value: number) {

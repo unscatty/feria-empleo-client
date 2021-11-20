@@ -195,7 +195,6 @@ export default class Profile extends Vue {
       const res = await axios.get(`/candidate/${id}`);
       this.candidate = res.data;
     } catch (error) {
-      console.log(error);
       this.$router.replace('/');
     }
   }
@@ -205,7 +204,6 @@ export default class Profile extends Vue {
       const res = await axios.get(`/candidate/contact/${id}`);
       this.contact = head(res.data);
     } catch (error) {
-      console.log(error);
       this.$router.replace('/');
     }
   }

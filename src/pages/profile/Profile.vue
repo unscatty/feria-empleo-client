@@ -363,6 +363,7 @@ import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
 import { diffObjects, rules } from '@/helpers/form';
 import { Ref } from 'vue-property-decorator';
 import { VForm } from '@/models/form';
+import { validateUnauthorizedError } from '@/auth/auth.validatod';
 
 const jobStore = namespace(JOBPOST_STORE_NAME);
 
@@ -423,7 +424,7 @@ export default class Profile extends Vue {
       const res = await axios.get('/candidate');
       this.candidate = head(res.data);
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     }
   }
 
@@ -435,7 +436,7 @@ export default class Profile extends Vue {
         this.oldContact = { ...this.contact };
       }
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
     }
   }
 
@@ -596,7 +597,6 @@ export default class Profile extends Vue {
       let experienceChange = false;
       const experienceEducationDetails = this.candidate.experienceDetails || [];
       const newExperienceDetails = [...experienceEducationDetails];
-      console.log(this.experienceDetailForm);
 
       if (this.experienceDetailForm && Object.keys(this.experienceDetailForm).length > 0) {
         if (!this.experienceDetailForm.id) {
@@ -642,7 +642,7 @@ export default class Profile extends Vue {
         { root: true }
       );
     } catch (error) {
-      console.log(error);
+      validateUnauthorizedError(error);
       this.$store.dispatch(
         'Ui/showToast',
         { text: 'Ocurrio un error al actualizar', color: 'error' },

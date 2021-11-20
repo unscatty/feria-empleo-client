@@ -103,7 +103,7 @@ import { PaginationResponse } from '@/utils/pagination.interface';
 
 import InviteDialog from '@/components/companies/InvitationDialog.vue';
 
-import { ICompany } from '@/models/company/company.interface';
+import ICompany from '@/models/company/company.interface';
 import { AdminCompaniesComponent } from './companies.component';
 import { lazyInject } from '@/app.container';
 

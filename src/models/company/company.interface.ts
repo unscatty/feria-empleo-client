@@ -1,8 +1,9 @@
+import ObjectLiteral from '@/utils/object-literal.interface';
 import { IJobPost } from '../job-post/job-post.interface';
 import { IUser } from '../user/user.interface';
 
 // Type expected from backend
-export interface ICompany {
+interface ICompany extends ObjectLiteral {
   id?: number;
   name: string;
   invitationEmail: string;
@@ -20,3 +21,10 @@ export interface ICompany {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export enum CompanyEmailOptions {
+  INVITATION = 'INVITATION',
+  USER = 'USER',
+}
+
+export default ICompany;

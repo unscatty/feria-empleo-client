@@ -1,4 +1,4 @@
-import { ICompany } from '@/models/company/company.interface';
+import ICompany from '@/models/company/company.interface';
 
 export class AdminCompaniesComponent {
   currentPosition: ICompany = null;

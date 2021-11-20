@@ -164,12 +164,11 @@ export default class AdminVacantes extends Vue {
 
   async created() {
     const currentUserService = container.get(CurrentUserService);
-    let user: UserType = currentUserService.raw;
+    let user: UserType = currentUserService.raw as ICompany;
     this.pagOptions = {
       itemsPerPage: this.jobPostFilters.limit,
     };
     if (isEqual(user.user.role, RoleType.COMPANY)) {
-      user = user as ICompany;
       this.jobPostFilters.companyId = user.id.toString();
     }
     this.findAllSkillSets();

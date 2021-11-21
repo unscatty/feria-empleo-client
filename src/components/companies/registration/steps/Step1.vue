@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="companyToUpdate">
     <v-row no-gutters align="center">
       <v-col sm="12" md="6">
         <avatar-change ref="avatarChange"></avatar-change>
@@ -73,13 +73,13 @@ export default class Step1 extends Vue implements Actionable, ValidableForm {
   @Ref('form')
   formRef: ValidableForm;
 
-  @companyStore.State('toUpdate')
+  @companyStore.Getter('companyToUpdate')
   readonly companyToUpdate: ICompany;
 
-  @companyStore.Action(CompanyStore.prototype.setToUpdate.name)
+  @companyStore.Action('setToUpdate')
   setCompanyToUpdate: typeof CompanyStore.prototype.setToUpdate;
 
-  @companyStore.Action(CompanyStore.prototype.setUpdateEmail.name)
+  @companyStore.Action('setUpdateEmail')
   setUpdateEmail: typeof CompanyStore.prototype.setUpdateEmail;
 
   get updateEmail() {
@@ -129,7 +129,6 @@ export default class Step1 extends Vue implements Actionable, ValidableForm {
 
     // Send email to use
     const updateEmail = { update: this.updateEmail, useEmail: this.currentEmailOption.option };
-    console.log(updateEmail);
     this.setUpdateEmail(updateEmail);
   }
 

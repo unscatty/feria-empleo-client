@@ -18,7 +18,13 @@ export type ImageFileUpdate = { update: boolean; imageFile: File };
 export type UpdateEmailOptions = { update: boolean; useEmail: CompanyEmailOptions };
 
 @Module({ namespaced: true })
-export default class CompanyStore extends VuexModule {
+export default class CompanyStore extends VuexModule<any> {
+  @lazyInject(CompanyService)
+  companyService: CompanyService;
+
+  @lazyInject(CurrentUserService)
+  currentUserService: CurrentUserService;
+
   current: ICompany = {
     name: '',
     invitationEmail: '',
@@ -43,11 +49,9 @@ export default class CompanyStore extends VuexModule {
     imageFile: null,
   };
 
-  @lazyInject(CompanyService)
-  companyService: CompanyService;
-
-  @lazyInject(CurrentUserService)
-  currentUserService: CurrentUserService;
+  get companyToUpdate() {
+    return this.toUpdate;
+  }
 
   @Mutation
   [COMPANY_MUTATIONS.SET_IMAGE_URL](imageURL: string) {
@@ -76,28 +80,30 @@ export default class CompanyStore extends VuexModule {
     this.updateEmail = updateEmail;
   }
 
-  @Action({ commit: COMPANY_MUTATIONS.SET_IMAGE_FILE_UPDATE })
+  @Action
   setImageFile(fileUpdate: ImageFileUpdate) {
-    return fileUpdate;
-  }
-
-  @Action({ commit: COMPANY_MUTATIONS.SET_CURRENT })
-  setCurrent(company: ICompany = this.currentUserService.asCompany): ICompany {
-    return company;
-  }
-
-  @Action({ commit: COMPANY_MUTATIONS.SET_TO_UPDATE })
-  setToUpdate(company: ICompany): ICompany {
-    return company;
-  }
-
-  @Action({ commit: COMPANY_MUTATIONS.SET_UPDATE_EMAIL })
-  setUpdateEmail(updateEmail: UpdateEmailOptions) {
-    return updateEmail;
+    this.context.commit(COMPANY_MUTATIONS.SET_IMAGE_FILE_UPDATE, fileUpdate);
   }
 
   @Action
-  setCompany() {
+  setCurrent(company: ICompany = this.currentUserService.asCompany) {
+    this.context.commit(COMPANY_MUTATIONS.SET_CURRENT, company);
+  }
+
+  @Action
+  setToUpdate(company: ICompany) {
+    this.context.commit(COMPANY_MUTATIONS.SET_TO_UPDATE, company);
+  }
+
+  @Action
+  setUpdateEmail(updateEmail: UpdateEmailOptions) {
+    this.context.commit(COMPANY_MUTATIONS.SET_UPDATE_EMAIL, updateEmail);
+  }
+
+  @Action
+  async setCompany() {
+    await this.currentUserService.fetch(true);
+
     const company = this.currentUserService.asCompany;
 
     this.context.commit(COMPANY_MUTATIONS.SET_CURRENT, company);
@@ -127,14 +133,14 @@ export default class CompanyStore extends VuexModule {
     this.context.dispatch('sync');
   }
 
-  @Action({ commit: COMPANY_MUTATIONS.SET_IMAGE_URL, rawError: true })
+  @Action({ rawError: true })
   async updateImageCurrent() {
     if (this.imageUpdate.update && this.imageUpdate.imageFile !== null) {
       const updatedImageURL = this.companyService.updateImageCurrent({
         image: this.imageUpdate.imageFile,
       });
 
-      return updatedImageURL;
+      this.context.commit(COMPANY_MUTATIONS.SET_IMAGE_URL, updatedImageURL);
     }
   }
 
@@ -144,4 +150,4 @@ export default class CompanyStore extends VuexModule {
   }
 }
 
-export const COMPANY_STORE_NAME = CompanyStore.name;
+export const COMPANY_STORE_NAME = 'CompanyStore';

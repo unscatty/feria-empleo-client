@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="companyToUpdate">
     <v-row no-gutters align="start">
       <v-col sm="12" md="6" cols="6" class="pa-2">
         <p class="text-md-h5 text-h6">Datos de la empresa</p>
@@ -99,7 +99,7 @@ export default class Step2 extends Vue implements Actionable, ValidableForm {
     return this.companyToUpdate?.user;
   }
 
-  @companyStore.State('toUpdate')
+  @companyStore.Getter('companyToUpdate')
   readonly companyToUpdate: ICompany;
 
   @companyStore.Action('setToUpdate')

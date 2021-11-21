@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container class="fill-height" fluid>
+    <v-container v-if="companyToUpdate" class="fill-height" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="8">
           <p class="text-md-left text-sm-center text-h4 text-md-h4 text-sm-h5 mt-n6">
@@ -93,12 +93,14 @@
 </template>
 
 <script lang="ts">
+import { lazyInject } from '@/app.container';
 import Step1 from '@/components/companies/registration/steps/Step1.vue';
 import Step2 from '@/components/companies/registration/steps/Step2.vue';
 import Actionable from '@/helpers/actionable.interface';
 import ValidableForm from '@/helpers/validable-form.interface';
 import ICompany from '@/models/company/company.interface';
 import { homePath } from '@/routes';
+import { CurrentUserService } from '@/services/current-user.service';
 import CompanyStore, { COMPANY_STORE_NAME } from '@/store/modules/company';
 import Ui from '@/store/modules/ui';
 import { Component, Ref, Vue } from 'vue-property-decorator';
@@ -116,6 +118,30 @@ type Step = { title: string; component: Type<StepType> };
 
 @Component({})
 export default class CompanyRegisration extends Vue {
+  @uiStore.Action
+  showToast: typeof Ui.prototype.showToast;
+
+  @companyStore.Getter('companyToUpdate')
+  readonly companyToUpdate: ICompany;
+
+  @companyStore.Action('setToUpdate')
+  setToUpdate: typeof CompanyStore.prototype.setToUpdate;
+
+  @companyStore.Action('setCurrent')
+  setCurrent: typeof CompanyStore.prototype.setCurrent;
+
+  @companyStore.Action('setCompany')
+  setCompany: typeof CompanyStore.prototype.setCompany;
+
+  @companyStore.Action('updateCurrent')
+  updateCurrentCompany: typeof CompanyStore.prototype.updateCurrent;
+
+  @companyStore.Action('updateImageCurrent')
+  updateImageCurrentCompany: typeof CompanyStore.prototype.updateImageCurrent;
+
+  @lazyInject(CurrentUserService)
+  currentUserService: CurrentUserService;
+
   steps: Step[] = [
     {
       title: 'Imagen y nombre de la empresa',
@@ -137,21 +163,6 @@ export default class CompanyRegisration extends Vue {
 
   @Ref()
   stepRefs: StepType[];
-
-  @uiStore.Action
-  showToast: typeof Ui.prototype.showToast;
-
-  @companyStore.State('toUpdate')
-  readonly companyToUpdate: ICompany;
-
-  @companyStore.Action(CompanyStore.prototype.setCompany.name)
-  setCompany: typeof CompanyStore.prototype.setCompany;
-
-  @companyStore.Action(CompanyStore.prototype.updateCurrent.name)
-  updateCurrentCompany: typeof CompanyStore.prototype.updateCurrent;
-
-  @companyStore.Action(CompanyStore.prototype.updateImageCurrent.name)
-  updateImageCurrentCompany: typeof CompanyStore.prototype.updateImageCurrent;
 
   get nextButtonName() {
     if (this.currentStepCounter === this.steps.length) {
@@ -185,28 +196,37 @@ export default class CompanyRegisration extends Vue {
     this.isCurrentStepValid = value;
   }
 
-  created() {
-    // Load company info into store
-    this.setCompany();
+  async created() {
+    // // Load company info into store
+    await this.setCompany();
   }
 
   mounted() {
-    this.validations = this.stepRefs.map((step) => step.isValid);
+    // Wait for refs
+    const interval = setInterval(() => {
+      const stepRefs = this.$refs.stepRefs as unknown as StepType[];
 
-    this.steps.forEach((_, index) => {
-      this.$watch(
-        () => {
-          return this.stepRefs[index].isValid;
-        },
-        (val) => {
-          this.validations[index] = val;
+      if (stepRefs) {
+        this.validations = stepRefs.map((step) => step.isValid);
 
-          if (this.currentStepIndex === index) {
-            this.isCurrentStepValid = val;
-          }
-        }
-      );
-    });
+        this.steps.forEach((_, index) => {
+          this.$watch(
+            () => {
+              return stepRefs[index].isValid;
+            },
+            (val) => {
+              this.validations[index] = val;
+
+              if (this.currentStepIndex === index) {
+                this.isCurrentStepValid = val;
+              }
+            }
+          );
+        });
+
+        clearInterval(interval);
+      }
+    }, 50);
   }
 
   nextStep() {
@@ -241,8 +261,10 @@ export default class CompanyRegisration extends Vue {
   }
 
   getCurrentStepRef() {
-    if (this.stepRefs) {
-      return this.stepRefs[this.currentStepIndex];
+    const stepRefs = this.$refs.stepRefs as unknown as StepType[];
+
+    if (stepRefs) {
+      return stepRefs[this.currentStepIndex];
     }
   }
 

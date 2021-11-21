@@ -5,7 +5,7 @@
 <script lang="ts">
 import { lazyInject } from '@/app.container';
 import AuthService from '@/auth/auth.service';
-import { homePath } from '@/routes';
+import { homeRoute } from '@/routes';
 import { CompanyService } from '@/services/company.service';
 import Ui from '@/store/modules/ui';
 import { Component, Vue } from 'vue-property-decorator';
@@ -50,7 +50,7 @@ export default class InvitationVerification extends Vue {
         color: 'error',
       });
 
-      this.$router.push(homePath);
+      this.$router.push(homeRoute);
     }
   }
 }

@@ -42,7 +42,7 @@ const PostReleaseGuard = createPostReleaseDateGuard(releaseDate, homeRoute);
 
 export const comeBackLaterRoute: CustomRouteConfig = {
   path: '/vuelve-despues',
-  name: 'come-back-later',
+  name: 'ComeBackLater',
   component: () => import('./pages/misc/ComeBackLater.vue'),
   beforeEnter: NoDefaultsMultiGuard(AuthGuard, PostReleaseGuard),
   props: { releaseDate },
@@ -177,8 +177,15 @@ const routes: Array<CustomRouteConfig> = [
     path: '/top-job-posts/new',
     name: 'TopNew',
   },
-
   comeBackLaterRoute,
+  {
+    path: '/*',
+    name: 'NotFound',
+    component: () => import('./pages/misc/NotFound.vue'),
+    meta: {
+      layout: 'LayoutHome',
+    },
+  },
 ];
 
 const router = new VueRouter({

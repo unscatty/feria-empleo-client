@@ -24,7 +24,6 @@ const CurrentUserGuard: CustomNavGuard = async (
       } else {
         switch (errorCode) {
           case 'NOT_USER_REGISTER':
-            console.log('redirect to registration');
             next('/registro');
             break;
           default:

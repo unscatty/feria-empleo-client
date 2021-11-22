@@ -79,6 +79,12 @@ export default class LayoutDashboard extends Vue {
       to: '/dashboard/empresas',
       roles: ['ADMIN'],
     },
+    {
+      icon: 'mdi-update',
+      title: 'Actualizar información',
+      to: '/dashboard/actualizar-info',
+      roles: ['COMPANY'],
+    },
   ];
   miniVariant = false;
   right = true;

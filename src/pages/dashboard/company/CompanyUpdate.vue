@@ -2,20 +2,14 @@
   <div>
     <v-container v-if="companyToUpdate" class="fill-height" fluid>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="8">
-          <p class="text-md-left text-sm-center text-h4 text-md-h4 text-sm-h5 mt-n6">
-            Bienvenido {{ companyToUpdate.user.name }} {{ companyToUpdate.user.lastname }}
-          </p>
-          <p class="text-md-left text-sm-center text-h6 text-md-h6 text-sm-subtitle-1">
-            Has sido asignado como responsable de la empresa {{ companyToUpdate.name }}
-          </p>
-          <p class="text-md-left text-sm-center text-subtitle-1 text-md-subtitle-1 text-sm-caption">
-            Por favor proporciona los siguientes datos
+        <v-col cols="12" sm="12" md="12">
+          <p class="text-md-left text-sm-center text-h4 text-md-h4 text-sm-h5 mt-2">
+            Actualizar datos
           </p>
 
           <company-update-form
-            :next-location="homeRoute"
-            :cancel-location="homeRoute"
+            :next-location="nextLocation"
+            :cancel-location="undefined"
           ></company-update-form>
         </v-col>
       </v-row>
@@ -27,15 +21,15 @@
 import ICompany from '@/models/company/company.interface';
 import CompanyStore, { COMPANY_STORE_NAME } from '@/store/modules/company';
 import { Component, Vue } from 'vue-property-decorator';
+import { RawLocation } from 'vue-router';
 import { namespace } from 'vuex-class';
-import CompanyUpdateForm from '../../components/companies/CompanyUpdateForm.vue';
-import { homeRoute } from '@/routes';
+import CompanyUpdateForm from '@/components/companies/CompanyUpdateForm.vue';
 
 const companyStore = namespace(COMPANY_STORE_NAME);
 
 @Component({ components: { CompanyUpdateForm } })
-export default class CompanyRegistration extends Vue {
-  homeRoute = homeRoute;
+export default class CompanyUpdate extends Vue {
+  nextLocation: RawLocation = { name: 'dashboard' };
 
   @companyStore.Getter('companyToUpdate')
   readonly companyToUpdate: ICompany;

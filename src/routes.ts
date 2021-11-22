@@ -105,6 +105,7 @@ const routes: Array<CustomRouteConfig> = [
   {
     path: '/dashboard',
     component: () => import('./pages/dashboard/vacantes/vacantes.vue'),
+    name: 'dashboard',
     beforeEnter: MultiGuard(),
     meta: {
       title: 'Dashboard',
@@ -127,6 +128,15 @@ const routes: Array<CustomRouteConfig> = [
       import('./pages/dashboard/vacantes/candidatos-aplicados/candidatos-aplicados.vue'),
     beforeEnter: AuthGuard,
     meta: {
+      layout: 'LayoutDashboard',
+    },
+  },
+  {
+    path: '/dashboard/actualizar-info',
+    component: () => import('./pages/dashboard/company/CompanyUpdate.vue'),
+    beforeEnter: MultiGuard(),
+    meta: {
+      title: 'Dashboard',
       layout: 'LayoutDashboard',
     },
   },

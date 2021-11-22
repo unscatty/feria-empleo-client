@@ -99,7 +99,7 @@ import Step2 from '@/components/companies/registration/steps/Step2.vue';
 import Actionable from '@/helpers/actionable.interface';
 import ValidableForm from '@/helpers/validable-form.interface';
 import ICompany from '@/models/company/company.interface';
-import { homePath } from '@/routes';
+import { homeRoute } from '@/routes';
 import { CurrentUserService } from '@/services/current-user.service';
 import CompanyStore, { COMPANY_STORE_NAME } from '@/store/modules/company';
 import Ui from '@/store/modules/ui';
@@ -282,7 +282,7 @@ export default class CompanyRegisration extends Vue {
   }
 
   cancel() {
-    this.$router.push(homePath);
+    this.$router.push(homeRoute);
   }
 
   async runUpdate() {
@@ -316,7 +316,7 @@ export default class CompanyRegisration extends Vue {
       color: 'success',
     });
 
-    this.$router.push(homePath);
+    this.$router.push(homeRoute);
   }
 }
 </script>

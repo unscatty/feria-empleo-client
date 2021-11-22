@@ -1,9 +1,9 @@
-import * as dotenv from 'dotenv';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthGuard from './auth/auth.guard';
 import CompanyRegisterGuard from './guards/company-register.guard';
 import CurrentUserGuard from './guards/current-user.guard';
+import { createReleaseDateGuard, createPostReleaseDateGuard } from './guards/release-date-guard';
 import RoleGuard from './guards/role.guard';
 import RoleType from './models/role.type';
 import CandidateRegistration from './pages/candidate-registration/CandidateRegistration.vue';
@@ -14,14 +14,15 @@ import { CustomRouteConfig } from './utils/custom-route.types';
 import createMultiGuard from './utils/multi-guard';
 import { MultiGuard as NoDefaultsMultiGuard } from './utils/multi-guard';
 
-dotenv.config();
-
 Vue.use(VueRouter);
 
 // Default guards to be applied
 const MultiGuard = createMultiGuard(AuthGuard, CurrentUserGuard, RoleGuard);
 
-export const homePath: CustomRouteConfig = {
+// Release date
+const releaseDate = new Date(process.env.VUE_APP_RELEASE_DATE);
+
+export const homeRoute: CustomRouteConfig = {
   path: '/',
   name: 'home',
   component: () => import('./pages/home/home.vue'),
@@ -37,8 +38,24 @@ export const homePath: CustomRouteConfig = {
   },
 };
 
+const PostReleaseGuard = createPostReleaseDateGuard(releaseDate, homeRoute);
+
+export const comeBackLaterRoute: CustomRouteConfig = {
+  path: '/vuelve-despues',
+  name: 'ComeBackLater',
+  component: () => import('./pages/misc/ComeBackLater.vue'),
+  beforeEnter: NoDefaultsMultiGuard(AuthGuard, PostReleaseGuard),
+  props: { releaseDate },
+  meta: {
+    title: '',
+    layout: 'LayoutHome',
+  },
+};
+
+const ReleaseDateGuard = createReleaseDateGuard(releaseDate, comeBackLaterRoute);
+
 const routes: Array<CustomRouteConfig> = [
-  homePath,
+  homeRoute,
   {
     path: '/companies',
     component: () => import('./pages/companies/Companies.vue'),
@@ -142,6 +159,7 @@ const routes: Array<CustomRouteConfig> = [
     path: '/registro',
     name: 'CandidateRegistration',
     component: CandidateRegistration,
+    beforeEnter: NoDefaultsMultiGuard(AuthGuard, ReleaseDateGuard),
     meta: {
       title: 'Registro',
       layout: 'LayoutVuetifyDefault',
@@ -158,6 +176,15 @@ const routes: Array<CustomRouteConfig> = [
   {
     path: '/top-job-posts/new',
     name: 'TopNew',
+  },
+  comeBackLaterRoute,
+  {
+    path: '/*',
+    name: 'NotFound',
+    component: () => import('./pages/misc/NotFound.vue'),
+    meta: {
+      layout: 'LayoutHome',
+    },
   },
 ];
 

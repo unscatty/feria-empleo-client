@@ -20,18 +20,20 @@ const CurrentUserGuard: CustomNavGuard = async (
       const errorCode = error.response.data.error;
       if (error.response.status === 401) {
         const authService = container.get(AuthService);
-        authService.login();
-        return;
+        await authService.login();
       } else {
         switch (errorCode) {
           case 'NOT_USER_REGISTER':
             next('/registro');
             break;
           default:
+            next(new Error(errorCode));
             break;
         }
       }
     }
+
+    next(new Error('User does not exist'));
   }
 };
 

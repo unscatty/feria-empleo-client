@@ -152,12 +152,11 @@ import EducationDetailsForm from '../../components/candidate/EducationDetailsFor
 import ExperienceDetailForm from '../../components/candidate/ExperienceDetailForm.vue';
 import { lazyInject } from '@/app.container';
 
-import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
 import AuthService from '../../auth/auth.service';
 import axios from 'axios';
 import { isUndefined } from 'lodash';
 
-const jobStore = namespace(JOBPOST_STORE_NAME);
+const jobStore = namespace('JobPost');
 const uiStore = namespace('Ui');
 
 @Component({

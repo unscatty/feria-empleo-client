@@ -359,13 +359,12 @@ import ExperienceDetailForm from '@/components/candidate/ExperienceDetailForm.vu
 
 import { levelItems } from '@/constants/candidate';
 import { namespace } from 'vuex-class';
-import { JOBPOST_STORE_NAME } from '@/store/modules/job-post';
 import { diffObjects, rules } from '@/helpers/form';
 import { Ref } from 'vue-property-decorator';
 import { VForm } from '@/models/form';
 import { validateUnauthorizedError } from '@/auth/auth.validatod';
 
-const jobStore = namespace(JOBPOST_STORE_NAME);
+const jobStore = namespace('JobPost');
 
 const month = 1;
 const year = 3;
